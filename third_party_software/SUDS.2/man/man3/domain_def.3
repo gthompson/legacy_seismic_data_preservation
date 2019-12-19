@@ -1,0 +1,31 @@
+.so ../man_macros/suds_man_macros
+.TH DOMAIN_DEF 3 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+domain_def \- list of maximum keys for domain 00000
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+#include <suds/labels_domain.00000>
+.sp 0.5
+.br
+INT4 max_label[sizeof(labels)/sizeof(SUDS_CODE_LIST)];
+.fi
+.ft R
+.SH DESCRIPTION
+\fBLABELS\fR are unique integers that identify a particular instance of
+a structure within a given domain. These numbers are assigned in
+increasing order starting at 1. The largest value assigned to date is
+kept in a file \fBdomain.def\fR where domain is the \fBdomain\fR number
+from the authorities code_list. A domain number uniquely identifies
+which institution and possibly which machine, program, person, or group
+defined these LABELS.  These files are stored in the directory
+\fBsuds/include\fR, which is symbolically linked to
+\fB/usr/include/suds\fR. The format is one long integer in \fBXDR\fR
+binary format for each label in the order listed in the \fBcode_list
+labels\fR (See \fBcode_lists(6)\fR).  This file is created with the
+command \fBmake_lab(1)\fR and accessed with the subroutine
+\fBget_label(2)\fR.
+.SH "SEE ALSO"
+make_lab(1), get_label(2)
+

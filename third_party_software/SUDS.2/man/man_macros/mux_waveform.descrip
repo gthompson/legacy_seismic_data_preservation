@@ -1,0 +1,7 @@
+A number that uniquely refers, within this mux_data_dc, to an instance of
+the \fBmux_data\fR structure. This number is typically assigned by the
+detecting machine for this event trigger. This number must be unique for a
+detector, specified by a \fBrecorder_id\fR that is unique within 
+a recorder_dc.  For consistency, this number should, if possible, represent
+the approximate time of writing the data represented as \fBST_TIME\fR (i.e.
+seconds since beginning of Jan 1, 1970).

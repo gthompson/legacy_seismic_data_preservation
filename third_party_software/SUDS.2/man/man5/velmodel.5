@@ -1,0 +1,75 @@
+.so ../man_macros/suds_man_macros
+.TH VELMODEL 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+velmodel \- velocity model
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netnam;
+	STRING	netname[4];
+	PAD4	pad_R;
+	FIXED	len_modelname;
+	STRING	modelname[6];
+	CHAR	spareE;
+	CHAR	modeltype;
+	LATIT	latA;
+	LONGIT	longA;
+	LATIT	latB;
+	LONGIT	longB;
+	ST_TIME	time_effective;
+	PAD4	pad_W;
+} PCSUDS_VELMODEL;
+.sp 0.5
+#define PC_VELMODEL	18L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  Definition of a flat-layered velocity model.
+This structure should be followed by a number of \fBlayer\fR structures.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netnam\fI len net name\fR
+.TP
+\fBnetname\fI network name\fR
+.TP
+\fBpad_R\fI padding\fR
+.TP
+\fBlen_modelname\fI len model name\fR
+.TP
+\fBmodelname\fI model name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBspareE\fI for future use\fR
+.TP
+\fBmodeltype\fI model type\fR
+p=profile A to B, a=area within corners A B.
+.TP
+\fBlatA\fI latitude A\fR
+Latitude of point A, north is plus.
+.TP
+\fBlongA\fI longitude A\fR
+Longitude of point A, north is plus.
+.TP
+\fBlatB\fI latitude B\fR
+Latitude of point B, north is plus.
+.TP
+\fBlongB\fI longitude B\fR
+Longitude of point B, east is plus.
+.TP
+\fBtime_effective\fI time created\fR
+Time this model was created.
+.TP
+\fBpad_W\fI padding\fR
+.SH "SEE ALSO"

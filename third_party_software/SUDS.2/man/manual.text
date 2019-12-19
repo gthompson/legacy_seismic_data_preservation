@@ -1,0 +1,988 @@
+.nr PO 1.0i
+.nr LL 6.6i
+.nr PS 20
+.nr SS 20
+.nr VS 22
+.LP
+.ce 
+U.S. Department of the Interior
+.sp 0.1i
+.ce
+U.S. Geological Survey 
+.sp 0.4i
+.nr PS 26
+.nr SS 26
+.nr VS 26
+.LP
+.TL
+SUDS
+.nr PS 20
+.nr SS 20
+.nr VS 20
+.LP
+.ce
+____
+.TL
+The Seismic Unified Data System
+.sp 0.2i
+.ce
+Version 2.6
+.ce
+____
+.sp 0.5
+.nr PS 14
+.nr SS 14
+.nr VS 16
+.LP
+.sp 0.1i
+.ce 
+\fB\s+2Peter L. Ward\fR\s-2
+.sp 0.5
+.ce 2
+U.S. Geological Survey
+Menlo Park, CA 94025
+.nr PS 20
+.nr SS 20
+.nr VS 20
+.LP
+.ce
+____
+.nr PS 14
+.nr SS 14
+.nr VS 16
+.sp 3
+.ce 1
+May 11, 1994
+.sp 2
+.ce 1
+Open-File Report 94-003
+.sp 4
+.PP
+This report is preliminary and has not been reviewed for conformity
+with U.S. Geological Survey editorial standards. Any use of trade,
+product, or firm names is for descriptive purposes only and does not
+imply endorsement by the U.S. Government.
+.bp 0
+.ps -4
+.ce
+This page left blank intentionally.
+.ps +4
+.bp 0
+.XS 1
+OVERVIEW
+.XA 2
+ACKNOWLEDGEMENTS
+.XA 2
+GETTING STARTED USING SUDS
+.XA 3
+EACH DATA GROUP IS A STRUCTURE
+.XA 4
+TERMINOLOGY
+.XA 5
+AN EXAMPLE
+.XA 6
+COMPATIBILITY WITH OTHER STANDARDS
+.XA 6
+TABLE-DRIVEN PROGRAMMING
+.XA 7
+VARIABLES IN YOUR ENVIRONMENT
+.XA 7
+READING AND WRITING SUDS STRUCTURES
+.XA 7
+A PROGRAMMING EXAMPLE
+.XA 8
+DATA TYPES AND MISSING DATA
+.XA 9
+SUDS FILE FORMAT AND ORGANIZATION
+.XA 9
+COMMENTS
+.XA 9
+CODE LISTS
+.XA 9
+EXCHANGE FORMAT
+.XA 10
+PORTABLE PROGRAMMING
+.XA 11
+RELATIONSHIPS BETWEEN STRUCTURES
+.XA 16
+DEFINING NEW STRUCTURES AND MEMBERS
+.XA 17
+REFERENCES
+.XA 21
+MANUAL PAGES(1): \fBSUDS\fR COMMANDS
+.XA 47
+MANUAL PAGES(2): \fBSUDS\fR SUBROUTINES
+.XA 103
+MANUAL PAGES(3): SYSTEM STRUCTURE DEFINITIONS
+.XA 133
+MANUAL PAGES(4): USER STRUCTURE DEFINITIONS
+.XA 261
+MANUAL PAGES(5): \fBPC-SUDS\fR STRUCTURE DEFINITIONS
+.XA 317
+MANUAL PAGES(6): \fBSUDS\fR CODE_LISTS
+.XA 355
+MANUAL PAGES(7): Mappings From Other Formats
+.XE
+.PX
+.bp 0
+.nr PO 1.0i
+.nr LL 6.5i
+.nr PS 12
+.nr SS 12
+.nr VS 14
+.LP
+\ 
+.sp 1.0i
+.ps -3
+.TL
+Availability of the Computer Code
+.PP
+\fBSUDS\fR is in the public domain and is available for unlimited and
+unrestricted distribution.  The source code is available over
+Internet via anonymous ftp at the computer \fBdmc.iris.washington.edu\fR
+(128.95.166.2) operated by the Incorporated Research Institutions
+for Seismology in Seattle, Washington.
+.PP
+\fBSUDS\fR is provided "as is" with no expressed or implied guarantee
+as to its operability in a specific environment.  No support can
+be promised.  Please report errors to \fBward@andreas.wr.usgs.gov\fR.
+.LP
+To obtain a copy of the software using \fBftp\fR from a computer connected to Internet, type:
+.PP
+\fBftp dmc.iris.washington.edu\fR
+.LP
+Your computer should respond:
+.PP
+Connected to dmc.iris.washington.edu.
+.PP
+Name (dmc.iris.washington.edu:your_name):
+.LP
+Type:
+.PP
+\fBanonymous\fR
+.LP
+Your computer types:
+.PP
+Password:
+.LP
+You type your complete email address.  It responds:
+.PP
+ftp>
+.LP
+You type:
+.PP
+\fBcd pub/suds/suds_2.6\fR
+.LP
+You can copy the files by typing
+.PP
+\fBprompt\fR
+.LP
+to turn off the interactive prompt and then
+.PP
+\fBmget *\fR
+.sp 0.5
+.PP
+In this directory, the manual is in PostScript format.  The README
+files are in ASCII.  The main software is in the file
+\fBsuds_2.6_tar.Z\fR and you will need a UNIX system to uncompress the
+archive (tar) file and take the files out of the archive as described
+in README.all.  This is a complete distribution, primarily for
+workstations running UNIX, from which distributions for 80386 and 80486
+computers running DOS 6 and Macintosh computers running System 7 can be
+made using the primary Makefile.  If you need floppy diskettes useable
+directly on PCs or Macintosh computers, contact Peter Ward ( U.S. Geological
+Survey, MS 977, 345 Middlefield Road, Menlo Park, CA 94025, email
+\fBward@andreas.wr.usgs.gov\fR, telphone 415/329-4736, fax 415/329-5163).
+.ps+3
+.bp 1
+.TL
+OVERVIEW
+.PP
+\fBSUDS\fR stands for the Seismic Unified Data System. \fBSUDS\fR is:
+.ti 2.0i
+ \(**  a format for seismic data
+.ti 2.0i
+ \(**  a relational database design and implementation
+.ti 2.0i
+ \(**  a table-driven programming system
+.ti 2.0i
+ \(**  a machine-independent environment for data and programs
+.PP
+\fBSUDS\fR, is a new method for organizing data that promotes efficient
+storage, exchange, and use of both data and computer programs by
+seismologists with widely varying needs and interests.  \fBSUDS\fR is
+compact, modular, and self-documenting.  \fBSUDS\fR is machine
+independent, working well in both files and relational database systems
+mounted on different types of storage devices and on different types of
+computers that stand alone or are interconnected by networks.
+\fBSUDS\fR is scalable to meet efficiently the needs of individuals
+with one seismograph, the needs of operators of major seismograph
+networks, the needs of seismologists merging data from all over the
+world, and even the widely varying needs of researchers.
+.PP
+Most existing seismic data formats consist of a large "header",
+containing many fields that are often not used, followed by waveform
+data.  The header typically describes the data (number of samples,
+sampling rate, storage type, etc.) as well as information about the way
+the data were acquired (longitude, latitude, and elevation of the
+station recording the data, parameters of the sensor, and
+characteristics of the recording equipment).  Few seismic data formats
+attempt to define in a standard way the results of calculations made
+from the raw data.  Thus the input and output formats of popular
+analysis programs become the de-facto standards for calculated data and
+they are typically not compatible with the formats of the raw data.
+.PP
+\fBSUDS\fR takes a different approach.  The large, often little used
+"header" is replaced by many different groups of data, each
+specializing in a particular type of information, such as information
+about a seismometer, a recorder, or a waveform.  These data groups may
+be included or not included, depending on whether the information
+exists and whether the information is needed for a particular
+application.  These groups of data can be organized in any order and in
+any number of files.
+.PP
+\fBSUDS\fR is also a relational database design.  While many
+seismologists want to use databases to store and rapidly access large
+volumes of data, few databases have been implemented because of the
+large amount of work necessary to decide which data to include, how to
+organize the data, and how to index the data.  These issues have all
+been addressed in the design of \fBSUDS\fR so that the definition of
+the \fBSUDS\fR data groups is also a relational database model.  In
+addition, the \fBSUDS\fR data groups have been designed so that data
+from throughout the world can be merged uniquely.
+.PP
+\fBSUDS\fR is also a table-driven programming system.  The method of
+organizing \fBSUDS\fR data groups is \fBunified\fR from data
+collection, through routine data processing, and even through
+specialized, research-oriented processing.  All important features of
+each data group are described in detail in a manual that can be
+automatically compiled into three machine readable tables.  These tables
+are used by utility programs to read, display, and modify the data at
+all different stages of processing.  This table-driven approach
+significantly reduces the number of programs needed, promotes modular
+programming and easy exchange of programs, and assures that new data
+groups defined in the future will be compatible with existing programs.
+A library of subroutines makes it easy to read, write, initialize, and
+interpret \fBSUDS\fR data groups and to access the tables.
+.PP
+\fBSUDS\fR is also a machine-independent environment for data and
+programs.  \fBSUDS\fR was developed on SUN workstations, but it runs
+on PCs under MSDOS, on Macintosch computers under system 7, and
+should be readily portable to any 16 or 32 bit computer with an ANSI C
+compiler.  Data mounted on any one computer can be read and written
+on any other computer via the Network File System or on portable
+media.
+.PP
+Thus \fBSUDS\fR is more than a data format, it is a method for storing
+and accessing data and passing the data between programs at all levels
+of data processing and research.  It is a relational database model and
+it is a table-driven programming system.  It is machine independent.  A
+major feature of \fBSUDS\fR is that it is expandable to meet currently
+unknown needs and thus can grow with our research needs.  \fBSUDS\fR
+promotes sharing of data and programs.
+.TL
+ACKNOWLEDGEMENTS
+.PP
+\fBSUDS\fR version 1 was designed by Peter Ward (1989) for the SUN-3
+computers with considerable assistance from Fred Klein, Chris Stephens,
+and John Lahr.  Version 1 was adopted by Willie Lee as the format for
+the IASPEI Seismological Library for personal computers and has become
+known as \fBPC-SUDS\fR.  The adaptation was done by Dean Tottingham,
+with additions by John Rogers.  The final format used was version 1.31
+which is documented in detail by Banfill(1992).  Version 1.4 is
+documented by Banfill (1993).  All of these people either work at or
+were on contract to the U.S. Geological Survey in Menlo Park, CA.
+.PP
+Version 2 is a complete rewrite to make the structures machine
+independent and relational (Ward, 1992).  Fred Williams of the
+Geophysical Institute, University of Alaska played a major role in the
+design of the structures, particularly from the database perspective.
+Ming Jiang of the Computer Science Department of the University of
+Alaska wrote much of the manual compiler and developed a generic
+database interface.   Also at the Geophysical Institute, John Davies,
+Cole Sonafrank, and Mitch Robinson helped in specifying the members of
+many structures and  Mark Anderson is working on the Sybase
+implementation.   Nils Lahr of Lafayette College played a major role
+in modifying SUDS version 2.3 so that it would compile on 
+IBM-compatible and Macintosch personal computers.  Bjoern Rugenstein
+from GeoForschungsZentrum, Potsdam, Germany, provided a detailed
+analysis of the structures and many suggestions.
+.TL
+GETTING STARTED USING SUDS
+.PP
+Learning any new computer system is a bit bewildering at first.  The
+shear size of this manual is enough to scare off the faint at heart!
+\fBSUDS\fR is very straight-forward and logically quite simple.  What
+makes the manual thick is the implementation of all types of seismic
+data within this simple framework.  Thus do not read this manual from
+beginning to end.  Read the first dozen or so pages of text very
+carefully.
+.PP
+You can get a feel for \fBSUDS\fR using some of the general commands
+described in chapter 1 of this manual.  Here is a simple example
+for entry on the command line of you computer:
+.PP
+TYPE: cd data
+.PP
+SUDS can exist in files
+.PP
+TYPE: ls -l
+.PP
+To see the contents of the files
+.PP
+TYPE: stdescr waveform.st or stdescr *
+.PP
+This tells you the kind of structures and the amount of data associated
+with each structure.
+.PP
+To see the members of the structure
+.PP
+TYPE: st2asc waveform.st
+.PP
+To see a verbose description 
+.PP
+TYPE: st2asc -v waveform.st
+.PP
+You can access specific structures in a file just like ASCII lines
+in UNIX
+.PP
+TYPE: sthead -3 calnet.st | st2asc
+.PP
+TYPE: stpart -7 +11 calnet.st | st2asc
+.PP
+You can edit a SUDS file.  This may NOT be possible in a COMMAND_TOOL
+window because the curses terminal library does not always work right
+in COMMAND_TOOL windows.  Either use a SHELL_TOOL window or some dumb
+terminal.
+.PP
+TYPE: stedit calnet.st
+.PP
+You advance to the next structure with the F7 key or ESC n.  You delete
+a structure with the F9 key or ESC d.  You add a new structure into the
+file in sequence with F5 or ESC a.  Note the new structure is
+initialized to all defaults(see st_init(2)).  You quit wth F2 or ESC
+q.  When you quit, answer yes or no to save edits Note codes are
+described automatically in { }.  Note fields are restricted to certain
+types of input.  Stedit is a simple example of the type of forms editor
+that can be implemented using the central tables of SUDS.  A more
+comprehensive editor using windows on many different types of machines
+is being developed.
+.PP
+A sample C program for converting your data into SUDS is found in 
+/suds/cmd/filter.c.
+.TL
+EACH DATA GROUP IS A STRUCTURE
+.PP
+\fBSUDS\fR is based on data stored in structures.  A structure is simply
+a list of variables of specified type, size, and order.  A good example
+of a structure is the summary "card" created by many earthquake
+location programs.  This information was formerly punched on a computer
+card but now is typically contained on one line within a file.  All of
+the most important information about the location of one earthquake is
+contained on one card or line in a specific order and format that both
+people and computer programs can read and write.  These lines can be
+addressed individually or regrouped and reordered.  Thus a structure is
+a single "handle" or reference that makes it easy to grab with one hand
+or refer to with one word, a group of many different types of variables
+that explain the attributes of a more complex entity, in this case the
+location of an earthquake.
+.PP
+Summary "cards" are stored in ASCII format, i.e. letters and numbers
+that are easily understood by people.  Structures in \fBSUDS\fR,
+however, are stored in binary format, which is very compact with
+respect to storage and very efficient when used by computer programs.
+\fBSUDS\fR structures can be readily converted into and out of ASCII,
+but tools provided with \fBSUDS\fR, such as a forms editor, make
+reading and writing \fBSUDS\fR structures easier, more flexible, and
+less error prone than standard methods of reading and modifying ASCII
+files in a text editor.  \fBSUDS\fR structures are encoded in a standard
+binary format called XDR (eXternal Data Representation) that can be
+read and written on all popular computers, even those with widely
+varying native binary formats.  Furthermore \fBSUDS\fR structures are
+encoded in a way that avoids the need for any conversion when reading
+or writing them on most popular work stations.
+.PP
+Several dozen structures are defined in \fBSUDS\fR to meet varying
+needs from data collection, to common types of processing, to
+maintenance of complex networks of equipment.  Each structure stores the
+most important information about a logical entity such as an earthquake
+location, a phase reading, a seismogram, or a piece of equipment.
+Structures referring to data are followed by the data.  Related
+structures can be grouped together in files or directories in any
+order.  Certain structures are also related by keys.  These keys are
+designed to facilitate grouping of related structures in files and
+programs and also to facilitate storage of structures in database
+management systems for rapid search and retrieval.  The keys have been
+designed to be uniquely assigned by a local organization but to also
+have unique meaning throughout the world.  Thus worldwide data can be
+merged readily.
+.TL
+TERMINOLOGY
+.PP
+Throughout this manual there are a few terms that are used repeatedly
+and to some extent interchangeably.  The primary example is the word
+"structure".  In the simplest sense, a structure is simply a group of
+related variables, such as a "phase card" in older location programs.
+In FORTRAN a common block is a simple example of a structure.  In C, and
+in new versions of FORTRAN available on nearly all machines used by
+seismologists, structures are called structures.  In Pascal, and in most
+database systems, they are called records.  Each structure is composed
+of several variables, called members, or fields.  The pages in section 5
+of this manual describe in detail the members of each SUDS structure.  In
+a database implementation of SUDS, there is a table for each type of
+SUDS structure, i.e. all \fIwaveform\fR structures would be put in the
+\fIwaveform\fR table, and all \fIsignal_path\fR structures would be put
+in the \fIsignal_path\fR table.  Thus rough equivalencies in terminology
+are as follows:
+.IP
+structure (as a type) = record type = table definition
+.IP
+a structure (as an instance) = a record = a row in a table
+.IP
+member (as a type) = field type = column definition in a table
+.IP
+a member (as an instance) = a field = the contents of a column in a
+particular row of a table
+.bp
+.TL
+AN EXAMPLE
+.PP
+This diagram shows a simplified example of \fBSUDS\fR structures.  Each
+box represents a data group or structure describing a particular
+logical entity.  Only the members of structures that provide links or
+keys to other structures are shown and these members are connected by
+.br
+.sp 3.2i
+.LP
+lines with arrows.  Keys come in two varieties: primary and foreign.  A
+primary key is a unique identifier of a particular instance of a
+structure such as a particular \fIevent\fR or earthquake.  A foreign key
+is a member of many other structures that provide more information
+about the structure containing the primary key.  In other words there
+may be many \fIsolutions\fR for one \fIevent\fR.  The \fIevent\fR
+structure describing the earthquake would have a primary key that is a
+member containing a unique number that identifies that particular
+earthquake.  Each of the \fIsolution\fR structures would contain a
+foreign key pointing to the primary key.  The foreign key has the same
+value as the primary key.  Thus the primary and foreign keys define
+relationships between structures and are the basic design elements of a
+relational database system.  The arrows point from a foreign key to the
+primary key.  Typically there are many instances of a foreign key
+pointing to one instance of a primary key.  In SUDS, the variables of type
+\fBLABEL\fR are primary keys and the variables of type \fBREFERS2\fR are
+foreign keys.
+.PP
+In the diagram, the \fIsignal_path\fR structure gives information about
+a particular sensor located at a \fIsite\fR and how the data are
+transmitted to a particular recorder.  For each \fIsignal_path\fR, many
+\fIwaveform\fRs or seismograms are recorded.  \fIWaveform\fRs for the
+same earthquake, explosion, or period of time belong to a group defined
+by the structure \fIdata_group\fR.  For each \fIevent\fR there may be
+many \fIsolution\fRs or calculated locations.  For each \fIwaveform\fR
+there may be many \fIpick\fRs or phases.  For each \fIsolution\fR there
+is typically one \fIresidual\fR for each phase and there may be a
+\fIfocal_mech\fRanism. 
+. PP
+These structures can exist in a file, be passed in a data stream
+between computers or programs, or be contained in a database.  In a file
+or stream each structure is preceded by a small structure called a
+\fIstructure_tag\fR that tells which structure follows, how long the
+structure is, and how much data follows the structure.  These pairs of
+structures can then be organized in any order or grouping.  For example
+some people may prefer to put all of the structures describing a
+solution in a file.  Others may prefer to put all of the structures
+describing an event in a file.  In a relational database system the
+structures are stored in the respective tables.
+.PP
+This example describes the essence of \fBSUDS\fR: many different data
+groups or structures whose inter-relationships are defined.  These
+structures can occur in whatever order and form is appropriate for the
+individual scientist.  To allow for future growth, new structures can
+be defined and new members can be added to the end of old structures.
+Definition of the contents of each structure and the relationships
+between the members of each structure are contained in three tables
+that control how the different structures are processed by utility
+programs.  These tables are generated automatically from the pages of
+this manual.  This manual in computer form can be stored with the data
+and thus provide complete documentation.
+.TL
+COMPATABILITY WITH OTHER STANDARDS
+.PP
+\fBSUDS\fR is a logical extension of many standards that have proven
+valuable.  As described above, \fBSUDS\fR is a generalized extension of
+the well known summary "card" and phase "card" formats to include other
+formats describing waveforms, focal mechanisms, equipment, etc.
+.PP
+\fBSUDS\fR is a direct and significant extension of the \fBah\fR or
+"ad-hoc" format developed at Lamont Doherty Geological Observatory in
+1987 and used widely for interactive processing of seismic waveforms.
+\fBah\fR is a single structure of fixed length that contains three
+sub-structures of fixed length explaining the attributes of the
+station, the event, and the waveform.  \fBSUDS\fR provides for dozens of
+different structures in arbitrary order.
+.PP
+\fBSUDS\fR has some similarities to \fBSEED\fR.  In \fBSEED\fR, data
+groups are called blockettes, but unlike the structures in \fBSUDS\fR,
+these blockettes must be stored in a specific order.  \fBSEED\fR is
+designed for exchange of raw data and is a subset of \fBSUDS\fR.
+.PP
+The format designed for the Center for Seismic Studies (\fBCSS\fR) is a
+relational database model for certain types of analysis of seismic
+data.  The \fBCSS\fR format is a subset of \fBSUDS\fR.
+.PP
+The modularity and interconnectability of \fBSUDS\fR extends the very
+powerful "shell" concept of UNIX, i.e. pipes and standard input and
+output, for simple ASCII files to complex files of data.  General
+utilities are being written to act on \fBSUDS\fR files or streams in
+ways similar to UNIX commands such as \fBgrep, sed, sort, etc.\fR
+.PP
+\fBSUDS\fR utility programs are also being written to provide easy ways
+to convert to and from major standard fixed formats such as \fBAH,
+SEG-Y, CSS, SAC, CUSP \fRand\fB SEED\fR.  Thus while ultimately many
+networks may collect data in \fBSUDS\fR format, data from other
+networks and instruments can be converted readily into \fBSUDS\fR
+format at any stage of processing and merged with other \fBSUDS\fR
+data.  Since \fBSUDS\fR is a superset of other formats, these filters
+provide a way to convert between two other formats without loosing
+information.
+.TL
+TABLE-DRIVEN PROGRAMMING
+.PP
+One of the primary features of \fBSUDS\fR is that there are three
+central tables that contain all relevant information about each
+variable type, each structure, and each member of each structure.  These
+tables are available to programmers so that programs can be written
+that work on all structures presently defined or to be defined in the
+future.  These tables are themselves arrays of the structures
+\fIvariable_info, structure_info, and member_info.\fR
+.PP
+One example of using these tables is the program \fBst2asc\fR that
+converts all structures from binary to ASCII.  \fBst2asc\fR reads the
+\fIstructure_tag\fR structure that gives the number and length of the
+following structure.  Then it reads the structure and decodes each
+member by looking up in the table the offset to the beginning of a
+member, the type of the member, and the format for printing the member
+in ASCII.
+.PP
+Use of these three tables is an easy way to write utility programs that
+can work on all structures.  In this way fewer specialized programs are
+needed.  The basic subroutines for using the tables are described in
+Chapter 2, primarily in the section \fBSTRUCTURE_PROPERTIES(2)\fR.
+.TL
+VARIABLES IN YOUR ENVIRONMENT
+.PP
+\fBSUDS\fR uses the following variables that should be set in your
+environment.  Use \fBsetenv\fR for \fBUNIX /bin/csh\fR or \fBset\fR
+for \fBDOS\fR.  On the Macintosh, these variables are put in a SUDS
+file named \fBsuds environment\fR in the system folder.
+.XP
+SUDS_INCLUDE: Usually \fB/usr/include/suds\fR in \fBUNIX\fR and
+\fBC:\\msvc\\include\\suds\fR or \fBC:\\c700\\include\\suds\fR in \fBDOS\fR.
+This is where the include files are found and it is where the \fBlabel\fR
+files (See make_lab(1) and get_label(2)) are put that are used to define
+unique values for \fBLABELS\fR within a given \fBDOMAIN.\fR
+.XP
+HOME: Your home directory.  Typically set by the \fB/bin/csh\fR in
+\fBUNIX\fR, but must be set explicitly in \fBDOS\fR.
+.XP
+LOGNAME: Your login name.  Typically set by the \fB/bin/csh\fR in
+\fBUNIX\fR, but must be set explicitly in \fBDOS\fR.  Used for the
+database.
+.TL
+READING AND WRITING SUDS STRUCTURES
+.PP
+The \fBSUDS\fR library provides subroutines for reading and writing
+\fBSUDS\fR structures easily with all error checking.  The programmer
+simply says in the appropriate language:
+.IP 1)
+Open a file, stream, or database for reading
+.IP 2)
+Read the next structure, the subroutine returns a pointer to the memory
+dynamically allocated for the structure
+.IP 3)
+Decide what to do with this structure
+.IP 4)
+Continue reading structures until the end of file
+.IP 5)
+Close the file, stream, or database
+.LP
+To write a \fBSUDS\fR file or stream,
+.IP 1)
+Open a file, stream, or database for writing
+.IP 2)
+Write the structures
+.IP 3)
+Close the file, stream, or database
+.LP
+All errors are checked, error messages are given, and the programmer
+can decide what happens on report of each error.
+.TL
+A PROGRAMMING EXAMPLE
+.PP
+Let's write a simple program in C that reads \fBSUDS\fR data from many
+files, lists the name of each structure read, and extracts the WAVEFORM
+and PICK structures for use in a waveform analysis program.
+.br
+.sp 1
+.na
+.nf
+\fB/* include file with SUDS structures, defines, and externals */\fR
+#include <suds/suds.h>
+
+\fB/* subroutine called by error subroutines for fatal errors */\fR
+die(n)  int n; {exit(n);}
+
+main(argc,argv)
+        int argc;
+        char **argv;
+{
+        FILE *input;
+        char *next_struct,*data;
+        int i,type,data_len,num_waves,num_picks;
+        \fB/* declare arrays of pointers to waveforms and picks */\fR
+        SUDS_WAVEFORM *wv[100];
+        SUDS_PICK *pk[200];
+
+        progname=argv[0]; \fB/* initialize program name for error subroutines */\fR
+        num_waves=0;
+        num_picks=0;
+
+        for(i=1;i<argc;i++) {
+                \fB/* read each file listed after program name */\fR
+                input=st_open(argv[i],"r");
+                \fB/* for each file read each structure until end of file */\fR
+                while(st_get(&next_struct,input)!=EOF) {
+                        type=type_of_structure(next_struct);
+                        printf("read structure %s\\n",name_of_structure(type));
+                        switch(type) {
+                                case WAVEFORMS: wv[num_waves++]=next_struct; break;
+                                case PICKS:             pk[num_picks++]=next_struct; break;
+                                default:                        st_free[next_struct]; break;
+                        }
+                }
+                st_close(input);
+        }
+        call waveform_processor(wv,num_waves,pk,num_picks);
+}
+.ad
+.fi
+.PP
+Assignment statements in \fBC\fR for each structure member are given in
+the file \fB<suds/assigns.txt>\fR.
+.TL
+DATA TYPES AND MISSING DATA
+.PP
+Members of \fBSUDS\fR structures can be of many different types
+described in \fBvariable_info(3)\fR and further explained in
+\fBst_intro(4)\fR.  These types include characters, long and short
+integers, floating point, double precision floating point,
+longitudes/latitudes, and two types of time.  Programmers are strongly
+encouraged to use the typedefs defined in \fBvariable_info(3)\fR and
+\fBsuds.h\fR to assure compatibility.
+.PP
+Any member of a \fBSUDS\fR structure can have the value \fBNODATA\fR
+which means no value has been defined for this member.  For a number,
+\fBNODATA\fR is distinctly different from zero, since zero could be a
+reasonable observed value.  The numeric value of \fBNODATA\fR is
+different for different data types, but is typically near, but not
+exactly at a limit for the data type (see \fBvariable_info(3)\fR and
+\fBsuds.h\fR).
+.TL
+SUDS FILE FORMAT AND ORGANIZATION
+.PP
+A SUDS file or stream consists of pairs of SUDS structures.  The first
+structure in each pair is always a \fBstructure_tag\fR, a special,
+short structure that serves to identify the type of structure
+immediately following, so that SUDS files are not dependent upon any
+particular ordering scheme.  Some structures, such as \fBwaveform\fR,
+are usually followed by a variable amount of data (in the case of\fB
+waveform\fR, the variable length data are the samples that make up the
+waveform.)  If the second structure in the pair is of a type that is
+followed by variable length data, it will have members that describe the
+number of data points or data structures that follow and their type.
+.PP
+All numeric data in SUDS are in binary form.  To keep SUDS data files
+machine-independent, all SUDS data are in XDR format.  XDR stands for
+eXternal Data Representation.  XDR specifies a standard for alignment
+and byte order, and a convention for representing ASCII data in
+strings.  All floating-point members of structures in SUDS and XDR are in
+IEEE format.  Converting the XDR format files to a particular machine's
+internal binary format is done by the \fBSUDS\fR library subroutines
+when reading or writing a stream.  Because certain restrictions are
+applied to how \fBSUDS\fR structures are defined, these structures can
+be read and written directly, with no conversion required on machines
+based on the 680X0 or SPARC processors.  The \fBSUDS\fR manual compiler
+enforces all of these restrictions.
+.TL
+COMMENTS
+.PP
+Every structure can have a comment of arbitrary length associated with
+it that describes any or all members (See \fBcomment(4)\fR).
+.TL
+CODE LISTS
+.PP
+Code lists are used extensively in \fBSUDS\fR as a way to standardize
+commonly used ASCII information in a manner that is efficient for
+storage and that reduces the chance of operator errors on input.  A
+code list associates a letter or number with an ASCII string.  The
+letter or number is stored in the \fBSUDS\fR structure, but the
+subroutines \fBget_code(2)\fR and \fBlist_code\fR provide easy
+conversion from and to the ASCII string.  \fBSUDS\fR utility programs
+often list the string next to the code and many use a pop-up window
+to list the strings for choice on inoput.  For example, in the code list
+\fBinstrument_types\fR, the number 2 represents "sp wwssn" (A short period World
+Wide Standardized Seismograph Network seismometer) while the number 24
+represents an "SMA-1" accelerograph.  Code lists are contained in the
+file \fBsuds_cod.h\fR and are listed in Appendix I of this manual.
+.TL
+EXCHANGE FORMAT
+.PP
+\fBSUDS\fR structures can be passed between machines via any media
+writable on one machine and readable on the other.  The bit and byte
+organization is specified by \fBXDR\fR.  Thus structures can be
+streamed end to end on a tape, a disk, etc.  However, usually
+structures will be grouped in files and it is most efficient to use a
+format that retains the file name and grouping.  \fBWe strongly
+encourage that the format to be used for universal exchange is tar(1)
+or tape archive format used widely on UNIX based systems.\fR  A "tar
+tape" or file is a series of blocks usually 512 bytes long.  The tar
+representation of a file is a header block which describes the file,
+followed by zero or more blocks that give the contents of the file.  At
+the end of the tape are two blocks filled with binary zeros.  The
+blocks are grouped for physical I/O operations.  Each group of \fIn\fR
+blocks is written with a single system call.  The value of \fIn\fR is
+set by the \fBb\fR keyletter on the \fBtar (1)\fR command line (the
+default is 20 blocks).  The header block is written in ASCII with
+numbers in octal and is as follows:
+.RS
+.LP
+.ft B
+.nf
+#define \s-1TBLOCK\s0   512 
+#define \s-1NAMSIZ\s0   100 
+union hblock {
+	char dummy[\s-1TBLOCK\s0];
+	struct header {
+		char name[\s-1NAMSIZ\s0];       /* file name and path */
+		char mode[8];   /* file permissions */
+		char uid[8];    /* owner's user identification */
+		char gid[8];    /* owner's group identification */
+		char size[12];  /* size in bytes */
+		char mtime[12]; /* time of last modification */
+		char chksum[8]; /* check sum for error detection */
+		char linkflag;  /* flag if this is a link */
+		char linkname[\s-1NAMSIZ\s0];   /*symbolic link name */
+	} dbuf;
+};
+.ft R
+.fi
+.RE
+.LP
+See \fBtar(1)\fR and \fBtar(5)\fR in the \fBUNIX\fR manuals for a more
+detailed description.
+.TL
+PORTABLE PROGRAMMING
+.LP
+Writing code in SUDS that is truly portable among many different
+types of computers takes only a little extra care.  Not taking this
+care can cause others days of headaches.
+.LP
+INTEGER SIZE: The most common problem arises with the change in integer
+size between 16- and 32-bit machines.  On a 16-bit machine, an int is a
+short, which is 16 bits.  On a 32-bit machine, an int is a long, which
+is 32 bits.  Similarly an integer constant is assumed to be an int so
+that on a 16-bit machine 9 is a short but 9L is a long.  Thus you need
+to be careful to specify exactly what you want (int, short, or long and
+9 or 9L) especially in a call to a subroutine or a function and you
+must be sure the subroutine or function expects whatever you are
+calling with.  For example, calling a function that expects a long with
+a constant such as 9 will work on a 32-bit machine and fail on a 16-bit
+machine.  Calling it with 9L will work on both types of machines.
+Of course an integer value that overflows the storage space (e.g.
+a short greater than 32767) will fail.  System library routines,
+such as stncmp(), strncpy(), fread(), fwrite(), and others, typically 
+expect ints and will fail if given longs on a 16-bit machine.
+.LP
+PRINTF and SCANF FORMATS:  Similarly %ld and %d mean the same on a
+32-bit machine but will fail on a 16-bit machine if %d refers to a
+long or %ld to a short.  On almost any machine, %f in scanf will fail
+for a double, it must be %lf.
+.LP
+CASTING OF POINTERS:  All pointers should be explicitly cast if possible.
+Some compilers provide warnings, others require casting, others may
+let you hang yourself.  When a subroutine call passes a pointer to a
+function, such as \fBst_error\fR, if no function is passed, use
+\fBNULL\fR, not 0, since on some machines \fBNULL\fR is defined
+in \fBstdio.h\fR as \fB(CHAR *)0\fR.
+.LP
+FILE NAMES:  Unfortunately MSDOS limits file names to 8 letters (case
+independent) and a 3-letter suffix.  This makes file names rather
+cryptic.  Nevertheless, if portability to MSDOS machines is to be easy,
+it is best to keep filenames short.  Names of files with manual pages
+in section 3 and 5 of the manual are not shortened since they are in
+\fBtroff\fR format not useable in MSDOS and the full filenames are
+needed to work on UNIX with \fBman\fR.  Conversion from long names to
+short names is done by omitting the 5th through eighth characters and
+all characters after the 12th before the dot.  Suffixes are truncated
+to the first 3 characters.  The include file \fBsuds_man.h\fR contains
+a cross-reference table between long and short names for manual pages.
+The program \fBsudsman\fR knows how to located appropriate manual
+pages on different computers.
+.TL
+RELATIONSHIPS BETWEEN STRUCTURES
+.PP
+Structure members ending in \fB_id\fR are called keys that identify a
+particular instance of a structure (See \fBst_intro(4)\fR).  There are
+two kinds of keys, primary and foreign.  Primary keys usually have the
+same base name as the table they are in.  For example, the event table
+has a field called \fBevent_id\fR, which is merely a unique number
+assigned to each event in that table.  The solution table also has a
+field called \fBevent_id\fR that identifies for which event these data
+are a solution.  Since the event_id field in the solution table refers
+to a particular record in the event table, it is called a "foreign"
+key.  In the following diagrams of \fBSUDS\fR structures, all primary
+keys are marked with a capital \fBP\fR, and all foreign keys with a
+capital \fBF\fR.  The arrows in the diagram always point to a primary
+key, with the intention of conveying the idea that many foreign keys
+from the "tail" of the arrow all point to a single record at the "head"
+of the arrow, namely the one with a primary key.
+.bp
+.LP
+Event Processing Structures
+.bp
+.LP
+Access to Network Description
+.bp
+.LP
+Waveform Data Processing
+.bp
+.LP
+Miscellaneous Structures
+.bp
+.TL
+DEFINING NEW STRUCTURES AND MEMBERS
+.PP
+In June of 1994, we intend to establish \fBSUDS\fR version 3.0 as
+an international standard that will be fully supported in the future
+and will only vary by additions approved by an international standards committee.  Version 2.6, described in this manual, is intended to be
+the beta-test version of 3.0.  Any suggested changes should be sent
+to Peter Ward at the address listed inside the front cover.
+.PP
+While extensions to \fBSUDS\fR structures are technically easy to do,
+they must be done only when clearly required and they must be
+coordinated to maintain the standard.  Additions to code_lists are
+relatively easy and primarily need to be coordinated to assign unique
+codes.  Additions to structures need to be thought out and debated more
+carefully.  Individuals can use comment structures to store new members
+of interest while their request for new members or new structures are
+being debated.  This should be done in a standard manner so that a
+program can later transfer the values from the comment structure to new
+members.  Such use of comment structures should be avoided, however,
+except in extreme cases because they can easily become non-standard.
+.PP
+When code lists or structures are changed, all programs must currently
+be recompiled for the new definitions to take effect.  Hooks have been
+included in \fBSUDS\fR to allow dynamic update of the tables in future
+editions.
+.PP
+\fBSUDS\fR is designed so that additions to structures will always be
+upward compatible.  New members may be added to the end of existing
+structures.  When an older, shorter structure is read by \fBst_get\fR,
+the default values of the new members are added to the old structure,
+automatically updating it.  Of course values will need to be assigned
+to these new members before they can be used by programs that rely on
+them.
+.PP
+We all have the natural tendency to want to add members and structures
+that map directly from our existing data formats.  After all, these are
+the variables that we are most familiar with.  Many of these formats,
+however, were constrained by card sizes, printer widths, or tradition
+and may not map directly into the logical structure of \fBSUDS\fR.  Any
+person wishing to define a new structure, should consider whether an
+existing structure can possibly fit the need. When at all possible,
+existing structures should be used in order to minimize programming
+complexity. While many utility programs can work with any structure,
+most work-horse programs will only utilize a small set of structures.
+Thus, for example, if there were several structures that described
+earthquake phase readings, each phase-processing program would need to
+know about all of these structures or some of these programs would not
+know how to utilize some of these structures and the data would grow
+incompatible. THUS TRY TO USE EXISTING STRUCTURES WHENEVER POSSIBLE.
+Additions and modifications should not be taken lightly and should be
+viewed as a last resort.  Structures may contain members of little
+interest to you.  In some cases these additions may prove useful to you
+in the future, in other cases they may never be useful.  These
+"useless" members cause little storage and processing overhead in terms
+of percent of all of the data and do not complicate your programming.
+Thus they are typically a small price to pay to allow many different
+people to utilize the same structure for different but related
+purposes.
+.PP
+\fBSUDS\fR structures come in 4 basic types:
+.XP
+BASIC STRUCTURES contain most information about a logical entity that
+is time independent or varies very slowly with time.  Typically
+used in a one to many relationship.  These structures contain a
+primary key or LABEL.
+.XP
+ADENDA STRUCTURES contain additional information about a logical entity
+that is only neede in some cases.  For example the \fBsignif_event\fR
+structures contains information needed only for large earthquakes.
+The structures do not contain a primary key because their would only
+be one instance for a given foreign key and thus the foreign key acts
+as a primary key.
+.XP
+ASSOCIATIVE STRUCTURES associate two basic structures generally in
+a time-dependent manner.  Typically for a many-to-many relationship
+between structures.  The primary key for these structures is typically
+a composite of two foreign keys.
+.XP
+DATA STRUCTURES are used for data only following other structures.
+For example, an array of complex numbers is an array of structures
+of type complex.  Data structures do not have keys since they are
+associated directly with a main structure.
+.PP
+Structures are defined to specify all generally important information
+about a logical entity.  In defining a new structure, you need to step
+back from your immediate problem and think generally and broadly about
+the logical concept.  Look for commonality of different needs.  Some
+careful and perceptive thought in defining structures will probably
+save you problems in the future, and will most certainly save others
+significant effort.
+.TL
+REFERENCES
+.XP
+Banfill, Robert, 1992, \fBSUDS, Seismic Unified Data System, Version
+1.31,\fR Small Systems Support, Big Water, Utah, available from the
+IASPEI PC Working Group, send a request by FAX to 415/858-2599, 27
+pages.
+.XP
+Banfill, Robert, 1993, \fBPC-SUDS Utilities, A collection of programs
+for routine processing of seismic data stored in the Seismic Unified
+Data System for DOS (PC-SUDS),\fR Small Systems Support, Big Water,
+Utah, 84p.
+.XP
+Ward, Peter L., 1989, \fBSUDS: Seismic Unified Data System,\fR U.S.
+Geological Survey Open-File Report 89-188, 123 pages.
+.XP
+Ward, Peter L., 1992, \fBSUDS: The Seismic Unified Data System,\fR EOS,
+Trans.  Amer. Geophys. Un., V. 73, No. 35, p. 380.
+.LP
+.bp
+.ps -4
+.ce
+Comparing data formats in seismology
+
+.ps +4
+.bp
+.ps -4
+.ce
+Advantages of SUDS
+
+.ps +4
+.bp
+.ps -4
+.ce
+This page left blank intentionally.
+
+.ps +4

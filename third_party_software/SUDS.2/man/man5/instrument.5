@@ -1,0 +1,149 @@
+.so ../man_macros/suds_man_macros
+.TH INSTRUMENT 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+instrument \- instrument hardware settings, mainly PADS related
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netn_F;
+	STRING	network[4];
+	FIXED	len_st_nam_F;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	INT2	in_serial;
+	INT2	comps;
+	INT2	channel_num;
+	CODE1	sens_type;
+	CODE1	datatype;
+	INT4	void_samp;
+	FLOAT4	dig_con;
+	FLOAT4	aa_corner;
+	FLOAT4	aa_poles;
+	FLOAT4	nat_freq;
+	FLOAT4	damping;
+	FLOAT4	mot_con;
+	FLOAT4	gain;
+	FLOAT4	local_x;
+	FLOAT4	local_y;
+	FLOAT4	local_z;
+	ST_TIME	effective;
+	FLOAT4	pre_event;
+	INT2	trig_num;
+	PAD2	pad_X;
+	FIXED	len_study;
+	STRING	study[6];
+	INT2	sn_serial;
+} PCSUDS_INSTRUMENT;
+.sp 0.5
+#define PC_INSTRUMENT	31L
+.fi
+.ft R
+.SH DESCRIPTION
+Very commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netn_F\fI len net name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_st_nam_F\fI len stat name\fR
+.TP
+\fBst_name\fI station name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBin_serial\fI serial number\fR
+Instrument serial number.
+.TP
+\fBcomps\fI num components\fR
+Number of components recorded by instrument.
+.TP
+\fBchannel_num\fI channel number\fR
+Actual channel number on recorder.
+.TP
+\fBsens_type\fI sensor type\fR
+.BB
+codelist=sensor
+.EB
+.TP
+\fBdatatype\fI data type\fR
+.BB
+codelist=datatyp
+.EB
+.TP
+\fBvoid_samp\fI void value\fR
+Invalid or void sample value.
+.TP
+\fBdig_con\fI digital counts\fR
+Digitizing constant (counts / volt).
+.TP
+\fBaa_corner\fI alias corner\fR
+Anti-alias filter corner frequency (Hz).
+.TP
+\fBaa_poles\fI alias poles\fR
+Anti-alias filter poles.
+.TP
+\fBnat_freq\fI natural freq\fR
+Transducer natural frequency (Hz).
+.TP
+\fBdamping\fI damping\fR
+Transducer damping coefficient.
+.TP
+\fBmot_con\fI motor constant\fR
+Transducer motion constant (volts / GMU).
+.TP
+\fBgain\fI gain\fR
+Amplifier gain (dB).
+.TP
+\fBlocal_x\fI local X\fR
+Local coordinate X (meters).
+.TP
+\fBlocal_y\fI local Y\fR
+Local coordinate Y (meters).
+.TP
+\fBlocal_z\fI local Z\fR
+Local coordinate Z (meters).
+.TP
+\fBeffective\fI time effective\fR
+Time these setting took effect.
+.TP
+\fBpre_event\fI pre event time\fR
+Pre-event length (IST+pre_event=trigger time) in seconds.
+.TP
+\fBtrig_num\fI trigger number\fR
+Trigger number on instrument.
+.TP
+\fBpad_X\fI padding\fR
+.TP
+\fBlen_study\fI len study name\fR
+.TP
+\fBstudy\fI name of study\fR
+Study name, used to insure unique station name.
+.TP
+\fBsn_serial\fI serial number\fR
+Sensor serial number.
+.SH "SEE ALSO"
+.SH AUTHOR
+Robert Banfill, January 1991

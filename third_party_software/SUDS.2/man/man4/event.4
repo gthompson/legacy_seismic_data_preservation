@@ -1,0 +1,130 @@
+.so ../man_macros/suds_man_macros
+.TH EVENT 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+event \- information about processing of an event
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	event_id;
+	DOMAIN	event_dc; 
+	REFERS2	data_group_id;
+	DOMAIN	data_group_dc; 
+	FIXED	geo_name_len;
+	STRING	geographic_name[36];
+	FLOAT4	distance;
+	FLOAT4	azimuth;
+	CODE1	event_type;
+	CHAR	local_1_cd;
+	CHAR	local_2_cd;
+	CHAR	local_3_cd;
+	CHAR	local_4_cd;
+	CHAR	local_5_cd;
+	CHAR	local_6_cd;
+	CHAR	local_7_cd;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_EVENT;
+.sp 0.5
+#define EVENTS	112L
+.fi
+.ft R
+.SH DESCRIPTION
+The event table allows many events to be associated with one data
+group, and many solutions to be associated with each event. It also
+provides for seven processing or quality control status codes whose
+meaning may be defined locally by each institution.
+.BB
+permissions="siud_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBevent_id\fI event id\fR
+.so ../man_macros/event.descrip
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBevent_dc\fI event domain\fR
+Domain in which event_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBdata_group_id\fI data group id\fR
+.so ../man_macros/data_group.descrip
+.BB
+key=part_foreign(1,data_group.data_group_id), db_delete=restrict, db_must_exist=true, index_string=true
+.EB
+.TP
+\fBdata_group_dc\fI data group domain\fR
+Domain in which data_group_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,data_group.data_group_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBgeo_name_len\fI \fR
+The maximum space reserved for the earthquake name, i.e. 36. 
+Actual string can only contain 35 characters to allow for the NULL byte.
+.TP
+\fBgeographic_name\fI \fR
+Geographic name of a feature near this event, to which event can be
+referenced by distance and azimuth.  e.g. 10 km NE of San Francisco.
+.TP
+\fBdistance\fI \fR
+Distance in kilometers of event from geographic named location.
+.TP
+\fBazimuth\fI \fR
+Azimuth in degrees clockwise from north of event from geographic named 
+location.
+.TP
+\fBevent_type\fI type of event\fR
+A character designating the type of event.
+.BB
+codelist=event_types
+.EB
+.TP 
+\fBlocal_1_cd \fIlocal code 1\fR
+Locally defined code for processing status information.
+.TP 
+\fBlocal_2_cd \fIlocal code 2\fR
+Locally defined code for processing status information.
+.TP 
+\fBlocal_3_cd \fIlocal code 3\fR
+Locally defined code for processing status information.
+.TP 
+\fBlocal_4_cd \fIlocal code 4\fR
+Locally defined code for processing status information.
+.TP 
+\fBlocal_5_cd \fIlocal code 5\fR
+Locally defined code for processing status information.
+.TP 
+\fBlocal_6_cd \fIlocal code 6\fR
+Locally defined code for processing status information.
+.TP 
+\fBlocal_7_cd \fIlocal code 7\fR
+Locally defined code for processing status information.
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+

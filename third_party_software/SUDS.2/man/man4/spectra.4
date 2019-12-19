@@ -1,0 +1,162 @@
+.so ../man_macros/suds_man_macros
+.TH SPECTRA 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+spectra \- spectra of a waveform
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	spectra_id;
+	DOMAIN	spectra_dc;
+	REFERS2	waveform_id;
+	DOMAIN	waveform_dc;
+	CODE1	spectra_type;
+	CODE1	x_units;
+	CODE1	y_units;
+	CODE1	taper_type;
+	FLOAT4	low_taper_from;
+	FLOAT4	low_taper_to;
+	FLOAT4	high_taper_from;
+	FLOAT4	high_taper_to;
+	FLOAT4	damping;
+	FLOAT4	corner_freq;
+	FLOAT4	prec_dig_rate;
+	FLOAT4	spare;
+	AUTHOR	authority;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SPECTRA;
+.sp 0.5
+#define SPECTRAS	301L
+.fi
+.ft R
+.SH DESCRIPTION
+X and Y points along a spectral curve determined from a \fBwaveform\fR.
+.BB
+permissions="siud_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBspectra_id\fI spectra id\fR
+A number that uniquely refers, within this \fBspectra_dc\fR, to an
+instance of the \fBspectra\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBspectra_dc\fI spectra domain\fR
+Domain in which spectra_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBwaveform_id\fI waveform id\fR
+A number that uniquely refers, within this \fBwaveform_dc\fR, to an
+instance of the \fBwaveform\fR structure and waveform after the
+specified filtering has been applied.
+.BB
+key=part_foreign(1,waveform.waveform_id),
+db_delete=cascade, db_must_exist=true, index_string=true
+.EB
+.TP
+\fBwaveform_dc\fI waveform domain\fR
+Domain in which waveform_id is unique.
+.BB
+codelist=authorities
+key=part_foreign(1,waveform.waveform_dc), db_delete=cascade,
+db_must_exist=true
+.EB
+.TP
+\fBspectra_type\fI spectra type\fR
+.BB
+codelist=spectra_types
+.EB
+.TP
+\fBx_units\fI x units\fR
+Units on x-axis.  Typically seconds.
+.BB
+codelist=units_types
+.EB
+.TP
+\fBy_units\fI y units\fR
+Units on y-axis.
+.BB
+codelist=units_types
+.EB
+.TP
+\fBtaper_type\fI taper type\fR
+Type of taper used at the lower and upper bounds of the window defining
+the part of the waveform used to caluculate this spectra.
+.BB
+codelist=taper_types
+.EB
+.TP
+\fBlow_taper_from\fI low taper from\fR
+Lowest period of lower taper.
+.TP
+\fBlow_taper_to\fI low taper to\fR
+Highest period of lower taper.
+.TP
+\fBhigh_taper_from\fI high taper from\fR
+Lowest period of higher taper.
+.TP
+\fBhigh_taper_to\fI high taper to\fR
+Highest period of higher taper.
+.TP
+\fBdamping\fI damping used\fR
+Percent damping used.
+.TP
+\fBcorner_freq\fI corner frequency\fR
+.TP
+\fBprec_dig_rate\fI calculated samples/sec\fR
+Rate of digitization in samples per second used to calculate the spectra.
+This should be less than or equal to the \fBprec_dig_rate\fR given in the
+waveform structure used.
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBauthority\fI authority for spectra\fR
+Who calculated this spectra.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBdata_type\fI data storage type\fR
+.so ../man_macros/data_type.descrip
+The data may be of types such as FLOAT4, FLOAT8, etc. and will be in
+order of X-Y or period vs spectral-amplitude pairs.  Thus the
+data_length equals twice the number of points.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of samples\fR
+Number of samples of type \fBdata_type\fR in the spectra.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+

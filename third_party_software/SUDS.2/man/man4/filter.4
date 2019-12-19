@@ -1,0 +1,146 @@
+.so ../man_macros/suds_man_macros
+.TH FILTER 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+filter \- specifies filtering applied to waveforms
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	REFERS2	waveform_id;
+	DOMAIN	waveform_dc;
+	REFERS2	response_id;
+	DOMAIN	response_dc;
+	REFERS2	prev_wave_id;
+	DOMAIN	prev_wave_dc;
+	AUTHOR	authority;
+	INT2	position;
+	CODE1	decim_type;
+	CHAR	decim_points;
+	INT2	decim_interv;
+	INT2	decim_index;
+	INT4	spare;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_FILTER;
+.sp 0.5
+#define FILTERS	315L
+.fi
+.ft R
+.SH DESCRIPTION
+Associates a \fBwaveform\fR with the response of a filter that has been applied
+to a waveform. Any waveform that has been filtered should indicate so in its 
+\fBwaveform\fR structure using the \fBfilter_code\fR member. One \fBfilter\fR
+structure should exist for every filter that has been applied to a waveform.
+The intermediate waveforms resulting from several filtering operations may or 
+may not be saved. This structure is also used to specify decimation.
+.BB
+permissions="siud_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBwaveform_id\fI waveform id\fR
+A number that uniquely refers, within this \fBwaveform_dc\fR, to an
+instance of the \fBwaveform\fR structure and waveform after the
+specified filtering has been applied.
+.BB
+key=part_primary, key=part_foreign(1,waveform.waveform_id),
+db_delete=cascade, db_must_exist=true, index_string=true
+.EB
+.TP
+\fBwaveform_dc\fI waveform domain\fR
+Domain in which waveform_id is unique.
+.BB
+codelist=authorities, key=part_primary,
+key=part_foreign(1,waveform.waveform_dc), db_delete=cascade,
+db_must_exist=true
+.EB
+.TP
+\fBresponse_id\fI response id\fR
+A number that uniquely refers, within this \fBresponse_dc\fR, to an
+instance of the \fBresponse\fR structure that specifies the filter
+response.
+.BB
+key=part_primary, key=part_foreign(2,response.response_id),
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBresponse_dc\fI response domain\fR
+Domain in which response_id is unique.
+.BB
+codelist=authorities, key=part_primary,
+key=part_foreign(2,response.response_dc), db_delete=restrict,
+db_must_exist=true
+.EB
+.TP
+\fBprev_wave_id\fI previous waveform id\fR
+A number that uniquely refers, within this \fBwaveform_dc\fR, to an
+instance of the \fBwaveform\fR structure and waveform before the
+specified filtering has been applied.
+.BB
+key=part_foreign(3,waveform.waveform_id), db_delete=cascade,
+db_must_exist=true
+.EB
+.TP
+\fBprev_wave_dc\fI waveform domain\fR
+Domain in which prev_wave_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,waveform.waveform_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBauthority\fI authority for filter\fR
+Who designed this filter.
+.BB
+codelist=authorities
+.EB
+.TP 
+\fBposition\fI position in sequence\fR
+The position of this filter in a sequence of filters. The first filter applied
+is position 1, the second is position 2, etc.
+.TP
+\fBdecim_type\fI decimation type\fR
+Type of decimation done: s=simple, a=average, e=envelope
+.BB
+codelist=decimation_types
+.EB
+.TP
+\fBdecim_points\fI decimation res pts\fR
+Number of resulting points from \fBdecim_interv\fR.
+For simple decimation, this equals 1. For envelope decimation this equals 2.
+.BB
+default_value="\1" 
+.EB
+.TP 
+\fBdecim_interv\fI decimation interval\fR
+Number of original sample taken to produce result. If every tenth sample
+is taken in simple decimation where \fBdecim_points\fR is 1, the
+\fBdecim_interv\fI is 10. 
+.TP 
+\fBdecim_index\fI decimation index\fR
+Index of the first decimated sample in the waveform. If not equal to 0,
+then \fBdecim_index\fI-1 samples were discarded before the first sample.
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(4,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+

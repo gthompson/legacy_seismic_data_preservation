@@ -1,0 +1,96 @@
+.so ../man_macros/suds_man_macros
+.TH PC_EVENT 5 "2 March 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+pc_event \- general information about an event
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	CODE2	authority;
+	PAD2	pad_H;
+	INT4	number;
+	INT2	felt;
+	CHAR	mintensity;
+	CODE1	ev_type;
+	CODE1	tectonism;
+	CODE1	waterwave;
+	CODE1	mechanism;
+	CODE1	medium;
+	FLOAT4	size;
+	PAD4	pad_I;
+} PCSUDS_EVENT;
+.sp 0.5
+#define PC_EVENT	 	12L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  Information about an event.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBauthority\fI organization\fR
+Organization processing the data.
+.BB
+codelist=authority
+.EB
+.TP
+\fBpad_H\fI padding\fR
+.TP
+\fBnumber\fI event number\fR
+Unique event number assigned by organization.
+.BB
+index_string=true
+.EB
+.TP
+\fBfelt\fI number felt reps\fR
+Number of felt reports.
+.TP
+\fBmintensity\fI MM intensity\fR
+Maximum Modified Mercali Intensity.
+.BB
+allow_char="0-9abc"
+.EB
+.TP
+\fBev_type\fI event type\fR
+Type of event.
+.BB
+codelist=eventtyp
+.EB
+.TP
+\fBtectonism\fI tectonism\fR
+Observed tectonism: uplift, subsidence, etc.
+.BB
+codelist=tecton
+.EB
+.TP
+\fBwaterwave\fI waterwaves\fR
+Observed waterwaves: seiche, tsunami, etc.
+.BB
+codelist=waterwave
+.EB
+.TP
+\fBmechanism\fI mechanism type\fR
+Type of focal mechanism.
+.BB
+codelist=mechan
+.EB
+.TP
+\fBmedium\fI explosive medium\fR
+Medium containing explosion or event.
+.BB
+codelist=medium
+.EB
+.TP
+\fBsize\fI magnitude or lbs TNT\fR
+Magnitude or pounds TNT for explosions.
+.TP
+\fBpad_I\fI padding\fR
+.SH "SEE ALSO"

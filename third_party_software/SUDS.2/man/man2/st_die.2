@@ -1,0 +1,29 @@
+.so ../man_macros/suds_man_macros
+.TH ST_DIE 2  "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_die \- Close all opened SUDS_STREAMS gracefully when a program must terminate
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.LP
+.nf
+INT4 st_die();
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.LP
+.ft B
+.nf
+integer*4 st_die, value
+function st_die()
+.fi
+.ft R
+.SH DESCRIPTION
+\fBst_die\fR closes all opened SUDS streams, aborting any transactions
+in process. This routine should be called by the user supplied routine
+\fBdie\fR (See \fBst_error\fR).
+.SH DIAGNOSTICS
+Returns SUCCESSFUL or FAILED
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

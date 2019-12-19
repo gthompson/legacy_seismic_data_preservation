@@ -1,0 +1,54 @@
+.so ../man_macros/suds_man_macros
+.TH ST_END_TRANS 2  "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_end_trans, st_flush \- mark the end of a transaction
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.LP
+.ft B
+INT4 st_end_trans(SUDS_STREAM *output_stream);
+.br
+INT4 st_flush(SUDS_STREAM *output_stream);
+.ft R
+.SH FORTRAN_SYNOPSIS
+.LP
+.ft B
+integer*4 st_end_trans,st_flush
+.br
+function st_end_trans(output_stream)
+.br
+function st_flush(output_stream)
+.br
+	integer*4 output_stream
+.ft R
+.SH DESCRIPTION
+Any set of SUDS structures and accompanying data can be grouped into a
+\fItransaction\fR for entry into a database.  The database management
+system (DBMS) guarantees that either all members of a transaction are
+stored, or none of them are stored.  By this means, transactions can
+used to assure that data within a database remains logically
+consistent.
+.LP
+If \fIoutput_stream\fR is a database, \fBst_end_trans\fR causes the
+DBMS to definitively store the pending transaction's SUDS structures
+and associated data in \fIoutput_stream\fR.  All data passed by
+\fBst_put(2)\fR to \fIoutput_stream\fR after an
+\fBst_begin_trans(2)\fR call is only stored provisionally until the
+transaction is terminated normally by \fBst_end_trans\fR (or abnormally
+by \fBst_abort_trans(2)\fR).
+.LP
+If \fIoutput_stream\fR is a file, \fBst_end_trans\fR flushes any
+buffers.  \fBst_flush\fR simply calls \fBst_end_trans\fR and is
+included for logical compatability with the standard IO library.
+.SH "SEE ALSO"
+st_begin_trans(2), st_abort_trans(2), st_put(2)
+
+.SH DIAGNOSTICS
+Returns SUCCESSFUL or FAILED.  Errors are reported by st_error(2).
+.SH BUGS
+Transactions may not be nested because this feature is not supported
+by most database management systems.
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

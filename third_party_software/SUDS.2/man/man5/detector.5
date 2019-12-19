@@ -1,0 +1,67 @@
+.so ../man_macros/suds_man_macros
+.TH DETECTOR 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+detector \- information on detector program being used
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	CODE1	dalgorithm;
+	CODE1	event_type;
+	PAD2	pad_E;
+	FIXED	len_net_node;
+	STRING	net_node_id[10];
+	PAD2	pad_F;
+	FLOAT4	versionnum;
+	INT4	event_number;
+	INT4	spareL;
+} PCSUDS_DETECTOR;
+.sp 0.5
+#define PC_DETECTOR	28L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.  Information about the online dection program
+being used.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBdalgorithm\fI algorithm\fR
+Triggering algorithm: x=xdetect, m=mdetect.
+.BB
+codelist=algorith
+.EB
+.TP
+\fBevent_type\fI event type\fR
+.BB
+codelist=eventtyp
+.EB
+.TP
+\fBpad_E\fI padding\fR
+.TP
+\fBlen_net_node\fI length net_node\fR
+.TP
+\fBnet_node_id\fI network node id\fR
+Network node identification.
+.BB
+index_string=true
+.EB
+.TP
+\fBpad_F\fI padding\fR
+.TP
+\fBversionnum\fI version number\fR
+Software version number.
+.TP
+\fBevent_number\fI event number\fR
+Unique event number assigned locally.
+.TP
+\fBspareL\fI for future use\fR
+.SH "SEE ALSO"

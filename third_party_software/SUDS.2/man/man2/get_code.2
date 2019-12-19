@@ -1,0 +1,180 @@
+.so ../man_macros/suds_man_macros
+.TH GET_CODE 2 "4 May 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+get_code, list_code, list_authority\- get or list codes used in suds structures
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+INT4 get_code(CHAR *string, INT4 code_list_id);
+CHAR *list_code(INT4 code, INT4 code_list_id, INT4 abbrev, CHAR *buffer, 
+   INT4 max_length); 
+INT4 list_authority(CHAR *seed, CHAR *place, INT4 max_len);
+SUDS_CODE_LIST *get_code_list_ptr(INT4 type);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 get_code
+character*(*) listcode
+function get_code(string,list)
+function list_code(code,list,abbrev,buffer,max_length)
+	character*(*) list,buffer
+	integer*4 code,abbrev,max_length
+.fi
+.ft R
+.SH DESCRIPTION
+Many fields in suds structures contain a 
+.B CODE1, CODE2, or CODE4
+that represent a specific line of a list described in code_lists(5).
+.PP
+.I get_code
+returns the numeric code for a given string. The
+.I list
+is searched for a line beginning with all of the characters in
+.I string.
+If none is found, \fBNODATL\fR is returned. If more than one line is
+found that matches
+.I string,
+\fB0\fR is returned.  However, if there is a perfect match to one of
+the lines and the length of the line is at least as long as the length
+of
+.I string
+then the numeric code is returned for that line.
+.PP
+.I list_code
+returns a pointer to the 
+.I buffer
+that is filled with the string describing the
+.I code.
+If the code is not found, a string \fB"this code is undefined"\fR is
+returned.
+.PP
+.I code_list_id
+is a number assigned to a codelist specified in code_lists(6).  It is
+typically specified as \fBmember_info.code_list_id\fR but a define
+constant can also be used that is the name of the code_list in all
+capitol letters.
+.PP
+If \fBabbrev\fR is not equal to 0, then only the abbreviation or
+letters before the colon are returned. If the abbreviation has more
+letters than the value of \fBabbrev\fR, it is truncated. Thus if
+abbrev=6, the string returned will contain no more than 6 characters.
+.PP
+\fBcodelists(6)\fR are compiled into suds structures and stored in
+\fB<suds/codelist.dat>\fR.  They are loaded into memory when needed. 
+The one exception is the codelist \fBauthorities\fR
+which comes from the manual section \fBauthorities(6)\fR.  This list
+is large and changes often.  Thus the authorities codelist
+is sorted by code and by list and indexed and put in the file
+\fB<suds/domains.dat>\fR.  This file is then accessed by get_code and
+list_code as needed.
+.PP
+\fBget_code_list_ptr\fR returns a pointer to the \fBcode_list\fR
+structure for a code_list of a given number.  The \fBcode_data\fR
+structures can then be accessed directly with \fBpointer_to_data(2)\fR.
+.PP
+\fBlist_authority\fR gets a line from the \fB<suds/domains.dat>\fR file
+whose first letter begins with the first letter of 
+.I seed.
+The format of the line is the 
+.I number
+in spaces 0 through 11 and then the
+.I meaning
+(See \fBcode_list\fR(3)).  If
+.I seed
+begins with a number, \fBlist_authority\fR returns the first line begining
+with that number.  If
+.I seed
+is equal to \fBNULL\fR, \fBlist_authority\fR returns the next line.  
+\fBlist_authority\fR returns FAILED at the end of the list or if 
+.I seed 
+begins with a character that is neither a number nor a letter.  Upper and
+lower case letters in
+.I seed
+are treated the same.
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH EXAMPLE
+.nf
+INTV die(n) INTV n; {exit(n);}
+
+CHAR seed[]="l";
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   INT4 i;
+   CHAR line[256];
+   SUDS_CODE_LIST *cl;
+   SUDS_CODE_DATA *cd;
+
+.br
+   progname=argv[0];
+.eo
+   printf("Phase p is number %ld in pick_types\n",
+      get_code("p",PICK_TYPES));
+   printf("Phase s is number %ld in pick_types\n",
+      get_code("s",PICK_TYPES));
+   printf("Phase f is number %ld in pick_types\n",
+      get_code("f finis",PICK_TYPES));
+   printf("\nNumber 10000 in code_list authorities is \n%s\n",
+      list_code(10000L,AUTHORITIES,0L));
+   printf("\n%s\nin code_list authorities is number %ld\n",
+      list_code(10000L,authorities,0L),
+      get_code(list_code(10000L,AUTHORITIES,0L),authorities));
+   printf("\nAbbreviation for number 10000 is \"%s\"\n\n",
+      list_code(10000L,AUTHORITIES,6L));
+.ec
+   list_authority(seed,line,256L);
+   printf("%s\n",line);
+   list_authority(NULL,line,256L);
+   printf("%s\n",line);
+
+   cl=get_code_list_ptr(COMPONENTS);
+   cd=(SUDS_CODE_DATA *)pointer_to_data((GENPTR)cl);
+   for(i=0;i<cl->number_members;i++)
+.eo
+      printf("'%c' = %s\n",cd[i].number,cd[i].meaning);
+.ec
+
+   exit(0);
+}
+
+Produces the following output:
+
+Phase p is number 51 in pick_types
+Phase s is number 101 in pick_types
+Phase f is number 2 in pick_types
+
+Number 10000 in code_list authorities is 
+gsmen: US Geological Survey, Menlo Park, CA
+
+gsmen: US Geological Survey, Menlo Park, CA
+in code_list authorities is number 10000
+
+Abbreviation for number 10000 is "gsmen"
+
+80000       lanl: Los Alamos National Labs, Los Alamos, NM
+70000       lbl: Lawrence Berkeley Labs, U. C. Berkeley, CA
+
+'B' = beam
+'T' = time
+'X' = X triaxial (specify azimuth and dip)
+'Y' = Y triaxial (specify azimuth and dip)
+'Z' = Z triaxial (specify azimuth and dip)
+'d' = dilatometer
+'e' = east-west
+'h' = horizontal
+'n' = north-south
+'o' = other (specify azimuth and dip)
+'r' = radial (specify azimuth and dip)
+'s' = scalar calibrations
+'t' = transverse (specify azimuth and dip)
+'v' = vertical
+'x' = experimental
+.fi
+
+

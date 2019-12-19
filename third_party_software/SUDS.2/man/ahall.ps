@@ -1,0 +1,1364 @@
+%!
+%%BoundingBox: (atend)
+%%Pages: (atend)
+%%DocumentFonts: (atend)
+%%EndComments
+%
+% FrameMaker PostScript Prolog 2.0, for use with FrameMaker 2.0
+% Copyright (c) 1986,87,89 by Frame Technology, Inc.  All rights reserved.
+%
+% Known Problems:
+%	Due to bugs in Transcript, the 'PS-Adobe-' is omitted from line 1
+/FMversion (2.0) def 
+% Set up Color vs. Black-and-White
+	/FMPrintInColor systemdict /colorimage known def
+% Uncomment this line to force b&w on color printer
+%   /FMPrintInColor false def
+/FrameDict 190 dict def 
+systemdict /errordict known not {/errordict 10 dict def
+		errordict /rangecheck {stop} put} if
+% The readline in 23.0 doesn't recognize cr's as nl's on AppleTalk
+FrameDict /tmprangecheck errordict /rangecheck get put 
+errordict /rangecheck {FrameDict /bug true put} put 
+FrameDict /bug false put 
+mark 
+% Some PS machines read past the CR, so keep the following 3 lines together!
+currentfile 5 string readline
+00
+0000000000
+cleartomark 
+errordict /rangecheck FrameDict /tmprangecheck get put 
+FrameDict /bug get { 
+	/readline {
+		/gstring exch def
+		/gfile exch def
+		/gindex 0 def
+		{
+			gfile read pop 
+			dup 10 eq {exit} if 
+			dup 13 eq {exit} if 
+			gstring exch gindex exch put 
+			/gindex gindex 1 add def 
+		} loop
+		pop 
+		gstring 0 gindex getinterval true 
+		} def
+	} if
+/FMVERSION {
+	FMversion ne {
+		/Times-Roman findfont 18 scalefont setfont
+		100 100 moveto
+		(FrameMaker version does not match postscript_prolog!)
+		dup =
+		show showpage
+		} if
+	} def 
+/FMLOCAL {
+	FrameDict begin
+	0 def 
+	end 
+	} def 
+	/gstring FMLOCAL
+	/gfile FMLOCAL
+	/gindex FMLOCAL
+	/orgxfer FMLOCAL
+	/orgproc FMLOCAL
+	/organgle FMLOCAL
+	/orgfreq FMLOCAL
+	/yscale FMLOCAL
+	/xscale FMLOCAL
+	/manualfeed FMLOCAL
+	/paperheight FMLOCAL
+	/paperwidth FMLOCAL
+/FMDOCUMENT { 
+	array /FMfonts exch def 
+	/#copies exch def
+	FrameDict begin
+	0 ne dup {setmanualfeed} if
+	/manualfeed exch def
+	/paperheight exch def
+	/paperwidth exch def
+	setpapername
+	manualfeed {true} {papersize} ifelse 
+	{manualpapersize} {false} ifelse 
+	{desperatepapersize} if
+	/yscale exch def
+	/xscale exch def
+	currenttransfer cvlit /orgxfer exch def
+	currentscreen cvlit /orgproc exch def
+	/organgle exch def /orgfreq exch def
+	end 
+	} def 
+	/pagesave FMLOCAL
+	/orgmatrix FMLOCAL
+	/landscape FMLOCAL
+/FMBEGINPAGE { 
+	FrameDict begin 
+	/pagesave save def
+	3.86 setmiterlimit
+	/landscape exch 0 ne def
+	landscape { 
+		90 rotate 0 exch neg translate pop 
+		}
+		{pop pop}
+		ifelse
+	xscale yscale scale
+	/orgmatrix matrix def
+	gsave 
+	} def 
+/FMENDPAGE {
+	grestore 
+	pagesave restore
+	end 
+	showpage
+	} def 
+/FMDEFINEFONT { 
+	FrameDict begin
+	findfont 
+	ReEncode 
+	2 index exch 
+	definefont exch 
+	scalefont 
+	FMfonts 3 1 roll 
+	put
+	end 
+	} bind def
+/FMNORMALIZEGRAPHICS { 
+	newpath
+	0.0 0.0 moveto
+	1 setlinewidth
+	0 setlinecap
+	0 0 0 sethsbcolor
+	0 setgray 
+	} bind def
+	/fx FMLOCAL
+	/fy FMLOCAL
+	/fh FMLOCAL
+	/fw FMLOCAL
+	/llx FMLOCAL
+	/lly FMLOCAL
+	/urx FMLOCAL
+	/ury FMLOCAL
+/FMBEGINEPSF { 
+	end 
+	/FMEPSF save def 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	[/fy /fx /fh /fw /ury /urx /lly /llx] {exch def} forall 
+	fx fy translate 
+	rotate
+	fw urx llx sub div fh ury lly sub div scale 
+	llx neg lly neg translate 
+	} bind def
+/FMENDEPSF {
+	FMEPSF restore
+	FrameDict begin 
+	} bind def
+FrameDict begin 
+/setmanualfeed {
+%%BeginFeature *ManualFeed True
+	 statusdict /manualfeed true put
+%%EndFeature
+	} def
+/max {2 copy lt {exch} if pop} bind def
+/min {2 copy gt {exch} if pop} bind def
+/inch {72 mul} def
+/pagedimen { 
+	paperheight sub abs 16 lt exch 
+	paperwidth sub abs 16 lt and
+	{/papername exch def} {pop} ifelse
+	} def
+	/papersizedict FMLOCAL
+/setpapername { 
+	/papersizedict 14 dict def 
+	papersizedict begin
+	/papername /unknown def 
+		/Letter 8.5 inch 11.0 inch pagedimen
+		/LetterSmall 7.68 inch 10.16 inch pagedimen
+		/Tabloid 11.0 inch 17.0 inch pagedimen
+		/Ledger 17.0 inch 11.0 inch pagedimen
+		/Legal 8.5 inch 14.0 inch pagedimen
+		/Statement 5.5 inch 8.5 inch pagedimen
+		/Executive 7.5 inch 10.0 inch pagedimen
+		/A3 11.69 inch 16.5 inch pagedimen
+		/A4 8.26 inch 11.69 inch pagedimen
+		/A4Small 7.47 inch 10.85 inch pagedimen
+		/B4 10.125 inch 14.33 inch pagedimen
+		/B5 7.16 inch 10.125 inch pagedimen
+	end
+	} def
+/papersize {
+	papersizedict begin
+		/Letter {lettertray} def
+		/LetterSmall {lettertray lettersmall} def
+		/Tabloid {11x17tray} def
+		/Ledger {ledgertray} def
+		/Legal {legaltray} def
+		/Statement {statementtray} def
+		/Executive {executivetray} def
+		/A3 {a3tray} def
+		/A4 {a4tray} def
+		/A4Small {a4tray a4small} def
+		/B4 {b4tray} def
+		/B5 {b5tray} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	statusdict begin stopped end 
+	} def
+/manualpapersize {
+	papersizedict begin
+		/Letter {letter} def
+		/LetterSmall {lettersmall} def
+		/Tabloid {11x17} def
+		/Ledger {ledger} def
+		/Legal {legal} def
+		/Statement {statement} def
+		/Executive {executive} def
+		/A3 {a3} def
+		/A4 {a4} def
+		/A4Small {a4small} def
+		/B4 {b4} def
+		/B5 {b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	stopped 
+	} def
+/desperatepapersize {
+	statusdict /setpageparams known
+		{
+		paperwidth paperheight 0 1 
+		statusdict begin
+		{setpageparams} stopped pop 
+		end
+		} if
+	} def
+/savematrix {
+	orgmatrix currentmatrix pop
+	} bind def
+/restorematrix {
+	orgmatrix setmatrix
+	} bind def
+/dmatrix matrix def
+/dpi    72 0 dmatrix defaultmatrix dtransform
+    dup mul exch   dup mul add   sqrt def
+/freq dpi 18.75 div 8 div round dup 0 eq {pop 1} if 8 mul dpi exch div def
+/sangle 1 0 dmatrix defaultmatrix dtransform exch atan def
+/DiacriticEncoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /space /exclam /quotedbl
+/numbersign /dollar /percent /ampersand /quotesingle /parenleft
+/parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+/two /three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I /J /K
+/L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft /backslash
+/bracketright /asciicircum /underscore /grave /a /b /c /d /e /f /g /h
+/i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z /braceleft /bar
+/braceright /asciitilde /.notdef /Adieresis /Aring /Ccedilla /Eacute
+/Ntilde /Odieresis /Udieresis /aacute /agrave /acircumflex /adieresis
+/atilde /aring /ccedilla /eacute /egrave /ecircumflex /edieresis
+/iacute /igrave /icircumflex /idieresis /ntilde /oacute /ograve
+/ocircumflex /odieresis /otilde /uacute /ugrave /ucircumflex
+/udieresis /dagger /.notdef /cent /sterling /section /bullet
+/paragraph /germandbls /registered /copyright /trademark /acute
+/dieresis /.notdef /AE /Oslash /.notdef /.notdef /.notdef /.notdef
+/yen /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/ordfeminine /ordmasculine /.notdef /ae /oslash /questiondown
+/exclamdown /logicalnot /.notdef /florin /.notdef /.notdef
+/guillemotleft /guillemotright /ellipsis /.notdef /Agrave /Atilde
+/Otilde /OE /oe /endash /emdash /quotedblleft /quotedblright
+/quoteleft /quoteright /.notdef /.notdef /ydieresis /Ydieresis
+/fraction /currency /guilsinglleft /guilsinglright /fi /fl /daggerdbl
+/periodcentered /quotesinglbase /quotedblbase /perthousand
+/Acircumflex /Ecircumflex /Aacute /Edieresis /Egrave /Iacute
+/Icircumflex /Idieresis /Igrave /Oacute /Ocircumflex /.notdef /Ograve
+/Uacute /Ucircumflex /Ugrave /dotlessi /circumflex /tilde /macron
+/breve /dotaccent /ring /cedilla /hungarumlaut /ogonek /caron
+] def
+/ReEncode { 
+	dup 
+	length 
+	dict begin 
+	{
+	1 index /FID ne 
+		{def} 
+		{pop pop} ifelse 
+	} forall
+	Encoding StandardEncoding eq 
+	{
+		/Encoding DiacriticEncoding def
+	}if
+	currentdict 
+	end 
+	} bind def
+/graymode true def
+	/bwidth FMLOCAL
+	/bpside FMLOCAL
+	/bstring FMLOCAL
+	/onbits FMLOCAL
+	/offbits FMLOCAL
+	/xindex FMLOCAL
+	/yindex FMLOCAL
+	/x FMLOCAL
+	/y FMLOCAL
+/setpattern {
+	 /bwidth  exch def
+	 /bpside  exch def
+	 /bstring exch def
+	 /onbits 0 def  /offbits 0 def
+	 freq sangle landscape {90 add} if 
+		{/y exch def
+		 /x exch def
+		 /xindex x 1 add 2 div bpside mul cvi def
+		 /yindex y 1 add 2 div bpside mul cvi def
+		 bstring yindex bwidth mul xindex 8 idiv add get
+		 1 7 xindex 8 mod sub bitshift and 0 ne
+		 {/onbits  onbits  1 add def 1}
+		 {/offbits offbits 1 add def 0}
+		 ifelse
+		}
+		setscreen
+	 {} settransfer
+	 offbits offbits onbits add div FMsetgray
+	/graymode false def
+	} bind def
+/grayness {
+	FMsetgray
+	graymode not {
+		/graymode true def
+		orgxfer cvx settransfer
+		orgfreq organgle orgproc cvx setscreen
+		} if
+	} bind def
+	/HUE FMLOCAL
+	/SAT FMLOCAL
+	/BRIGHT FMLOCAL
+	/Colors FMLOCAL
+FMPrintInColor 
+	
+	{
+	/HUE 0 def
+	/SAT 0 def
+	/BRIGHT 0 def
+	% array of arrays Hue and Sat values for the separations [HUE BRIGHT]
+	/Colors   
+	[[0    0  ]    % black
+	 [0    0  ]    % white
+	 [0.00 1.0]    % red
+	 [0.37 1.0]    % green
+	 [0.60 1.0]    % blue
+	 [0.50 1.0]    % cyan
+	 [0.83 1.0]    % magenta
+	 [0.16 1.0]    % comment / yellow
+	 ] def
+      
+	/BEGINBITMAPCOLOR { 
+		BITMAPCOLOR} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPCOLORc} def
+	/K { 
+		Colors exch get dup
+		0 get /HUE exch store 
+		1 get /BRIGHT exch store
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} def
+	/FMsetgray { 
+		/SAT exch 1.0 exch sub store 
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} bind def
+	}
+	
+	{
+	/BEGINBITMAPCOLOR { 
+		BITMAPGRAY} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPGRAYc} def
+	/FMsetgray {setgray} bind def
+	/K { 
+		pop
+		} def
+	}
+ifelse
+/normalize {
+	transform round exch round exch itransform
+	} bind def
+/dnormalize {
+	dtransform round exch round exch idtransform
+	} bind def
+/lnormalize { 
+	0 dtransform exch cvi 2 idiv 2 mul 1 add exch idtransform pop
+	} bind def
+/H { 
+	lnormalize setlinewidth
+	} bind def
+/Z {
+	setlinecap
+	} bind def
+/X { 
+	fillprocs exch get exec
+	} bind def
+/V { 
+	gsave eofill grestore
+	} bind def
+/N { 
+	stroke
+	} bind def
+/M {newpath moveto} bind def
+/E {lineto} bind def
+/D {curveto} bind def
+/O {closepath} bind def
+	/n FMLOCAL
+/L { 
+ 	/n exch def
+	newpath
+	normalize
+	moveto 
+	2 1 n {pop normalize lineto} for
+	} bind def
+/Y { 
+	L 
+	closepath
+	} bind def
+	/x1 FMLOCAL
+	/x2 FMLOCAL
+	/y1 FMLOCAL
+	/y2 FMLOCAL
+	/rad FMLOCAL
+/R { 
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	x1 y1
+	x2 y1
+	x2 y2
+	x1 y2
+	4 Y 
+	} bind def
+/RR { 
+	/rad exch def
+	normalize
+	/y2 exch def
+	/x2 exch def
+	normalize
+	/y1 exch def
+	/x1 exch def
+	newpath
+	x1 y1 rad add moveto
+	x1 y2 x2 y2 rad arcto
+	x2 y2 x2 y1 rad arcto
+	x2 y1 x1 y1 rad arcto
+	x1 y1 x1 y2 rad arcto
+	closepath
+	16 {pop} repeat
+	} bind def
+/C { 
+	grestore
+	gsave
+	R 
+	clip
+	} bind def
+/U { 
+	grestore
+	gsave
+	} bind def
+/F { 
+	FMfonts exch get
+	setfont
+	} bind def
+/T { 
+	moveto show
+	} bind def
+/RF { 
+	rotate
+	0 ne {-1 1 scale} if
+	} bind def
+/TF { 
+	gsave
+	moveto 
+	RF
+	show
+	grestore
+	} bind def
+/P { 
+	moveto
+	0 32 3 2 roll widthshow
+	} bind def
+/PF { 
+	gsave
+	moveto 
+	RF
+	0 32 3 2 roll widthshow
+	grestore
+	} bind def
+/S { 
+	moveto
+	0 exch ashow
+	} bind def
+/SF { 
+	gsave
+	moveto
+	RF
+	0 exch ashow
+	grestore
+	} bind def
+/B { 
+	moveto
+	0 32 4 2 roll 0 exch awidthshow
+	} bind def
+/BF { 
+	gsave
+	moveto
+	RF
+	0 32 4 2 roll 0 exch awidthshow
+	grestore
+	} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/dx FMLOCAL
+	/dy FMLOCAL
+	/dl FMLOCAL
+	/t FMLOCAL
+	/t2 FMLOCAL
+	/Cos FMLOCAL
+	/Sin FMLOCAL
+	/r FMLOCAL
+/W { 
+	dnormalize
+	/dy exch def
+	/dx exch def
+	normalize
+	/y  exch def
+	/x  exch def
+	/dl dx dx mul dy dy mul add sqrt def
+	dl 0.0 gt {
+		/t currentlinewidth def
+		savematrix
+		/Cos dx dl div def
+		/Sin dy dl div def
+		/r [Cos Sin Sin neg Cos 0.0 0.0] def
+		/t2 t 2.5 mul 3.5 max def
+		newpath
+		x y translate
+		r concat
+		0.0 0.0 moveto
+		dl t 2.7 mul sub 0.0 rlineto
+		stroke
+		restorematrix
+		x dx add y dy add translate
+		r concat
+		t 0.67 mul setlinewidth
+		t 1.61 mul neg  0.0 translate
+		0.0 0.0 moveto
+		t2 1.7 mul neg  t2 2.0 div     moveto
+		0.0 0.0 lineto
+		t2 1.7 mul neg  t2 2.0 div neg lineto
+		stroke
+		t setlinewidth
+		restorematrix
+		} if
+	} bind def
+/G { 
+	gsave
+	newpath
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath fill
+	grestore
+	} bind def
+/A { 
+	gsave
+	savematrix
+	newpath
+	2 index 2 div add exch 3 index 2 div sub exch 
+	normalize 2 index 2 div sub exch 3 index 2 div add exch 
+	translate 
+	scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	restorematrix
+	stroke
+	grestore
+	} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/w FMLOCAL
+	/h FMLOCAL
+	/xx FMLOCAL
+	/yy FMLOCAL
+	/ww FMLOCAL
+	/hh FMLOCAL
+	/FMsaveobject FMLOCAL
+	/FMoptop FMLOCAL
+	/FMdicttop FMLOCAL
+/BEGINPRINTCODE { 
+	/FMdicttop countdictstack 1 add def 
+	/FMoptop count 4 sub def 
+	/FMsaveobject save def
+	userdict begin 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	3 index neg 3 index neg translate
+	} bind def
+/ENDPRINTCODE {
+	count -1 FMoptop {pop pop} for 
+	countdictstack -1 FMdicttop {pop end} for 
+	FMsaveobject restore 
+	} bind def
+/gn { 
+	0 
+	{	46 mul 
+		cf read pop 
+		32 sub 
+		dup 46 lt {exit} if 
+		46 sub add 
+		} loop
+	add 
+	} bind def
+	/str FMLOCAL
+/cfs { 
+	/str sl string def 
+	0 1 sl 1 sub {str exch val put} for 
+	str def 
+	} bind def
+/ic [ 
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0
+	{0 hx} {1 hx} {2 hx} {3 hx} {4 hx} {5 hx} {6 hx} {7 hx} {8 hx} {9 hx}
+	{10 hx} {11 hx} {12 hx} {13 hx} {14 hx} {15 hx} {16 hx} {17 hx} {18 hx}
+	{19 hx} {gn hx} {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}
+	{13} {14} {15} {16} {17} {18} {19} {gn} {0 wh} {1 wh} {2 wh} {3 wh}
+	{4 wh} {5 wh} {6 wh} {7 wh} {8 wh} {9 wh} {10 wh} {11 wh} {12 wh}
+	{13 wh} {14 wh} {gn wh} {0 bl} {1 bl} {2 bl} {3 bl} {4 bl} {5 bl} {6 bl}
+	{7 bl} {8 bl} {9 bl} {10 bl} {11 bl} {12 bl} {13 bl} {14 bl} {gn bl}
+	{0 fl} {1 fl} {2 fl} {3 fl} {4 fl} {5 fl} {6 fl} {7 fl} {8 fl} {9 fl}
+	{10 fl} {11 fl} {12 fl} {13 fl} {14 fl} {gn fl}
+	] def
+	/sl FMLOCAL
+	/val FMLOCAL
+	/ws FMLOCAL
+	/im FMLOCAL
+	/bs FMLOCAL
+	/cs FMLOCAL
+	/len FMLOCAL
+	/pos FMLOCAL
+/ms { 
+	/sl exch def 
+	/val 255 def 
+	/ws cfs 
+	/im cfs 
+	/val 0 def 
+	/bs cfs 
+	/cs cfs 
+	} bind def
+400 ms 
+/ip { 
+	is 
+	0 
+	cf cs readline pop 
+	{	ic exch get exec 
+		add 
+		} forall 
+	pop 
+	
+	} bind def
+/wh { 
+	/len exch def 
+	/pos exch def 
+	ws 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/bl { 
+	/len exch def 
+	/pos exch def 
+	bs 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/s1 1 string def
+/fl { 
+	/len exch def 
+	/pos exch def 
+	/val cf s1 readhexstring pop 0 get def
+	pos 1 pos len add 1 sub {im exch val put} for
+	pos len 
+	} bind def
+/hx { 
+	3 copy getinterval 
+	cf exch readhexstring pop pop 
+	} bind def
+	/h FMLOCAL
+	/w FMLOCAL
+	/d FMLOCAL
+	/lb FMLOCAL
+	/bitmapsave FMLOCAL
+	/is FMLOCAL
+	/cf FMLOCAL
+/wbytes { 
+	dup 
+	8 eq {pop} {1 eq {7 add 8 idiv} {3 add 4 idiv} ifelse} ifelse
+	} bind def
+/BEGINBITMAPBWc { 
+	1 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAPGRAYc { 
+	8 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAP2BITc { 
+	2 {} COMMONBITMAPc
+	} bind def
+/COMMONBITMAPc { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	r                    
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} image 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BEGINBITMAPBW { 
+	1 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAPGRAY { 
+	8 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAP2BIT { 
+	2 {} COMMONBITMAP
+	} bind def
+/COMMONBITMAP { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	r                    
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} image
+	bitmapsave restore 
+	grestore
+	} bind def
+	/proc1 FMLOCAL
+	/proc2 FMLOCAL
+	/newproc FMLOCAL
+/Fmcc {
+    /proc2 exch cvlit def
+    /proc1 exch cvlit def
+    /newproc proc1 length proc2 length add array def
+    newproc 0 proc1 putinterval
+    newproc proc1 length proc2 putinterval
+    newproc cvx
+} bind def
+/ngrayt 256 array def
+/nredt 256 array def
+/nbluet 256 array def
+/ngreent 256 array def
+	/gryt FMLOCAL
+	/blut FMLOCAL
+	/grnt FMLOCAL
+	/redt FMLOCAL
+	/indx FMLOCAL
+	/cynu FMLOCAL
+	/magu FMLOCAL
+	/yelu FMLOCAL
+	/k FMLOCAL
+	/u FMLOCAL
+/colorsetup {
+	currentcolortransfer
+	/gryt exch def
+	/blut exch def
+	/grnt exch def
+	/redt exch def
+	0 1 255 {
+		/indx exch def
+		/cynu 1 red indx get 255 div sub def
+		/magu 1 green indx get 255 div sub def
+		/yelu 1 blue indx get 255 div sub def
+		/k cynu magu min yelu min def
+		/u k currentundercolorremoval exec def
+		nredt indx 1 0 cynu u sub max sub redt exec put
+		ngreent indx 1 0 magu u sub max sub grnt exec put
+		nbluet indx 1 0 yelu u sub max sub blut exec put
+		ngrayt indx 1 k currentblackgeneration exec sub gryt exec put
+	} for
+	{255 mul cvi nredt exch get}
+	{255 mul cvi ngreent exch get}
+	{255 mul cvi nbluet exch get}
+	{255 mul cvi ngrayt exch get}
+	setcolortransfer
+	{pop 0} setundercolorremoval
+	{} setblackgeneration
+	} bind def
+	/tran FMLOCAL
+/fakecolorsetup {
+	/tran 256 string def
+	0 1 255 {/indx exch def 
+		tran indx
+		red indx get 77 mul
+		green indx get 151 mul
+		blue indx get 28 mul
+		add add 256 idiv put} for
+	currenttransfer
+	{255 mul cvi tran exch get 255.0 div}
+	exch Fmcc settransfer
+} bind def
+/BITMAPCOLOR { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	colorsetup
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} {is} {is} true 3 colorimage 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPCOLORc { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	colorsetup
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} {is} {is} true 3 colorimage
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPGRAY { 
+	8 {fakecolorsetup} COMMONBITMAP
+	} bind def
+/BITMAPGRAYc { 
+	8 {fakecolorsetup} COMMONBITMAPc
+	} bind def
+/ENDBITMAP {
+	} bind def
+end 
+%%EndProlog
+%%BeginSetup
+(2.0) FMVERSION
+1 1 612 792 0 1 2 FMDOCUMENT
+/fillprocs 32 array def
+fillprocs 0 { 0.000000 grayness } put
+fillprocs 1 { 0.100000 grayness } put
+fillprocs 2 { 0.300000 grayness } put
+fillprocs 3 { 0.500000 grayness } put
+fillprocs 4 { 0.700000 grayness } put
+fillprocs 5 { 0.900000 grayness } put
+fillprocs 6 { 0.970000 grayness } put
+fillprocs 7 { 1.000000 grayness } put
+fillprocs 8 {<0f1e3c78f0e1c387> 8 1 setpattern } put
+fillprocs 9 {<0f87c3e1f0783c1e> 8 1 setpattern } put
+fillprocs 10 {<cccccccccccccccc> 8 1 setpattern } put
+fillprocs 11 {<ffff0000ffff0000> 8 1 setpattern } put
+fillprocs 12 {<8142241818244281> 8 1 setpattern } put
+fillprocs 13 {<03060c183060c081> 8 1 setpattern } put
+fillprocs 14 {<8040201008040201> 8 1 setpattern } put
+fillprocs 15 {} put
+fillprocs 16 { 1.000000 grayness } put
+fillprocs 17 { 0.900000 grayness } put
+fillprocs 18 { 0.700000 grayness } put
+fillprocs 19 { 0.500000 grayness } put
+fillprocs 20 { 0.300000 grayness } put
+fillprocs 21 { 0.100000 grayness } put
+fillprocs 22 { 0.030000 grayness } put
+fillprocs 23 { 0.000000 grayness } put
+fillprocs 24 {<f0e1c3870f1e3c78> 8 1 setpattern } put
+fillprocs 25 {<f0783c1e0f87c3e1> 8 1 setpattern } put
+fillprocs 26 {<3333333333333333> 8 1 setpattern } put
+fillprocs 27 {<0000ffff0000ffff> 8 1 setpattern } put
+fillprocs 28 {<7ebddbe7e7dbbd7e> 8 1 setpattern } put
+fillprocs 29 {<fcf9f3e7cf9f3f7e> 8 1 setpattern } put
+fillprocs 30 {<7fbfdfeff7fbfdfe> 8 1 setpattern } put
+fillprocs 31 {} put
+%%EndSetup
+0 7 /Times-Roman FMDEFINEFONT
+1 16 /Helvetica FMDEFINEFONT
+%%Page: "1" 1
+%%BeginPaperSize: Letter
+%%EndPaperSize
+612 792 1 FMBEGINPAGE
+72 746 720 756 R
+7 X
+0 K
+V
+72 212.67 720 222.67 R
+V
+36 225 117 711 R
+V
+0 F
+0 X
+( SOLUTION) 36 706.33 T
+( event_id) 36 697.33 T
+(Fcx) 99 697.33 T
+( event_dc) 36 688.33 T
+( solution_id) 36 679.33 T
+(P) 99 679.33 T
+( solution_dc) 36 670.33 T
+( time_solution_done) 36 661.33 T
+( authority) 36 652.33 T
+( or) 36 643.33 T
+(gin_time) 43.44 643.33 T
+( origin_lat) 36 634.33 T
+( origin_long) 36 625.33 T
+( origin_depth) 36 616.33 T
+( origin_status) 36 607.33 T
+( depth_control) 36 598.33 T
+( time_control) 36 589.33 T
+( conver) 36 580.33 T
+(gence) 56.64 580.33 T
+( quality) 36 571.33 T
+( region_type) 36 562.33 T
+( spare_code) 36 553.33 T
+( hypo_program) 36 544.33 T
+( region) 36 535.33 T
+( contr_\336le_id) 36 526.33 T
+(Fr) 99 526.33 T
+( contr_\336le_dc) 36 517.33 T
+( vel_model_id) 36 508.33 T
+(Fr) 99 508.33 T
+( vel_model_dc) 36 499.33 T
+( hypo_prog_vers) 36 490.33 T
+( gap_of_stations) 36 481.33 T
+( rms_of_resids) 36 472.33 T
+( horiz_error) 36 463.33 T
+( depth_error) 36 454.33 T
+( depth_err_up) 36 445.33 T
+( depth_err_down) 36 436.33 T
+( dist_near_stat) 36 427.33 T
+( near_s_p_time) 36 418.33 T
+( p2s_vel_ratio) 36 409.33 T
+( num_stat_good) 36 400.33 T
+( num_p_rep_good) 36 391.33 T
+( num_p_used) 36 382.33 T
+( num_s_rep_good) 36 373.33 T
+( num_s_used) 36 364.33 T
+( num_resid_disc) 36 355.33 T
+( num_mag_rep) 36 346.33 T
+( num_mag_used) 36 337.33 T
+( amp_mag_type) 36 328.33 T
+( coda_mag_type) 36 319.33 T
+( pref_mag_type) 36 310.33 T
+( spare1_code) 36 301.33 T
+( amplitude_mag) 36 292.33 T
+( coda_mag) 36 283.33 T
+( preferred_mag) 36 274.33 T
+( pref_mag_auth) 36 265.33 T
+( rms_of_mag) 36 256.33 T
+( spare) 36 247.33 T
+( comment_id) 36 238.33 T
+(Fn) 99 238.33 T
+( comment_dc) 36 229.33 T
+36 225 117 711 R
+0.5 H
+2 Z
+N
+171 270 252 522 R
+7 X
+V
+0 X
+( PICK) 171 517.33 T
+( pick_id) 171 508.33 T
+(P) 234 508.33 T
+( pick_dc) 171 499.33 T
+( event_id) 171 490.33 T
+(Fcx) 234 490.33 T
+( event_dc) 171 481.33 T
+( waveform_id) 171 472.33 T
+(Fn) 234 472.33 T
+( waveform_dc) 171 463.33 T
+( signal_path_id) 171 454.33 T
+(Frx) 234 454.33 T
+( signal_path_dc) 171 445.33 T
+( len_signal_n) 171 436.33 T
+( signal_name[20]) 171 427.33 T
+( time) 171 418.33 T
+( observ_phase) 171 409.33 T
+( onset_type) 171 400.33 T
+( \336rst_motion) 171 391.33 T
+( signal_2_noise) 171 382.33 T
+( pick_method) 171 373.33 T
+( obs_time_qual) 171 364.33 T
+( obs_ampl_qual) 171 355.33 T
+( ampl_units) 171 346.33 T
+( gain_range) 171 337.33 T
+( amplitude) 171 328.33 T
+( period) 171 319.33 T
+( time_picked) 171 310.33 T
+( authority) 171 301.33 T
+( spare) 171 292.33 T
+( comment_id) 171 283.33 T
+(Fn) 234 283.33 T
+( comment_dc) 171 274.33 T
+171 270 252 522 R
+N
+171 531 252 711 R
+7 X
+V
+0 X
+( EVENT) 171 706.33 T
+( event_id) 171 697.33 T
+(P) 234 697.33 T
+( event_dc ) 171 688.33 T
+( data_group_id) 171 679.33 T
+(Frx) 234 679.33 T
+( data_group_dc ) 171 670.33 T
+( auto_sol_id) 171 661.33 T
+(Fn) 234 661.33 T
+( auto_sol_dc ) 171 652.33 T
+( cat_sol_id) 171 643.33 T
+(Fn) 234 643.33 T
+( cat_sol_dc ) 171 634.33 T
+( event_cd) 171 625.33 T
+( event_type) 171 616.33 T
+( local_1_cd) 171 607.33 T
+( local_2_cd) 171 598.33 T
+( local_3_cd) 171 589.33 T
+( local_4_cd) 171 580.33 T
+( local_5_cd) 171 571.33 T
+( local_6_cd) 171 562.33 T
+( local_7_cd) 171 553.33 T
+( comment_id) 171 544.33 T
+(Fn) 234 544.33 T
+( comment_dc) 171 535.33 T
+171 531 252 711 R
+N
+450 198 531 243 R
+7 X
+V
+0 X
+( COMMENT) 450 238.33 T
+( comment_id) 450 229.33 T
+(P) 513 229.33 T
+( comment_dc) 450 220.33 T
+( data_type) 450 211.33 T
+( data_length ) 450 202.33 T
+450 198 531 243 R
+N
+711 225 765 279 R
+7 X
+V
+0 X
+(  P = primary key) 711 274.33 T
+(  F = foreign key) 711 265.33 T
+(  c = cascade) 711 256.33 T
+(  n = nullify) 711 247.33 T
+(  r = restrict) 711 238.33 T
+(  x = not null) 711 229.33 T
+585 396 666 621 R
+7 X
+V
+0 X
+( RESPONSE ) 585 616.33 T
+( response_id) 585 607.33 T
+(P) 648 607.33 T
+( response_dc) 585 598.33 T
+( len_name_resp) 585 589.33 T
+( name_response[20]) 585 580.33 T
+( response) 585 571.33 T
+( input_units) 585 562.33 T
+( output_units) 585 553.33 T
+( spare_char) 585 544.33 T
+( maximum_gain ) 585 535.33 T
+( normalization) 585 526.33 T
+( frequency_max ) 585 517.33 T
+( inp_samp_rate) 585 508.33 T
+( decim_factor) 585 499.33 T
+( decim_of) 585 490.33 T
+(fset) 613.02 490.33 T
+( estim_delay) 585 481.33 T
+( used_delay) 585 472.33 T
+( from_time) 585 463.33 T
+( thru_time) 585 454.33 T
+( authority) 585 445.33 T
+( spare) 585 436.33 T
+( data_type) 585 427.33 T
+( data_length) 585 418.33 T
+( comment_id) 585 409.33 T
+(Fn) 648 409.33 T
+( comment_dc) 585 400.33 T
+585 396 666 621 R
+N
+450 342 531 639 R
+7 X
+V
+0 X
+( SIGNAL_P) 450 634.33 T
+(A) 484.1 634.33 T
+(TH) 488.37 634.33 T
+( signal_path_id) 450 625.33 T
+(P) 513 625.33 T
+( signal_path_dc) 450 616.33 T
+( total_resp_id) 450 607.33 T
+(Fn) 513 607.33 T
+( total_resp_dc) 450 598.33 T
+( len_signal_n) 450 589.33 T
+( signal_name[20]) 450 580.33 T
+( len_station_n) 450 571.33 T
+( station_name[8]) 450 562.33 T
+( component) 450 553.33 T
+( sensor) 450 544.33 T
+( seismometer) 450 535.33 T
+( path_type ) 450 526.33 T
+( gain_multiplier) 450 517.33 T
+( recorder_id) 450 508.33 T
+(Frx) 513 508.33 T
+( recorder_dc) 450 499.33 T
+( record_num_in ) 450 490.33 T
+( polarity) 450 481.33 T
+( amp_response) 450 472.33 T
+( satellite_hops) 450 463.33 T
+( spare) 450 454.33 T
+( time_delay) 450 445.33 T
+( seismic_delay) 450 436.33 T
+( sensor_id) 450 427.33 T
+(Fr) 513 427.33 T
+( sensor_dc) 450 418.33 T
+( sensor_azimuth) 450 409.33 T
+( sensor_dip) 450 400.33 T
+( from_time) 450 391.33 T
+( thru_time ) 450 382.33 T
+( station_id) 450 373.33 T
+(Frx) 513 373.33 T
+( station_dc) 450 364.33 T
+( comment_id) 450 355.33 T
+(Fn) 513 355.33 T
+( comment_dc) 450 346.33 T
+450 342 531 639 R
+N
+585 198 666 387 R
+7 X
+V
+0 X
+( ST) 585 382.33 T
+(A) 594.34 382.33 T
+(TION) 598.61 382.33 T
+( station_id) 585 373.33 T
+(P) 648 373.33 T
+( station_dc) 585 364.33 T
+( station_lat) 585 355.33 T
+( station_long) 585 346.33 T
+( len_station_n) 585 337.33 T
+( station_name[8] ) 585 328.33 T
+( station_elev) 585 319.33 T
+( station_azm) 585 310.33 T
+( station_dist) 585 301.33 T
+( site_precision) 585 292.33 T
+( enclosure) 585 283.33 T
+( site_cond) 585 274.33 T
+( spare_char) 585 265.33 T
+( spare) 585 256.33 T
+( rock_type) 585 247.33 T
+( len_site_d) 585 238.33 T
+( site_descrip[40]) 585 229.33 T
+( spare_a) 585 220.33 T
+( comment_id) 585 211.33 T
+(Fn) 648 211.33 T
+( comment_dc) 585 202.33 T
+585 198 666 387 R
+N
+693 522 774 621 R
+7 X
+V
+0 X
+( RESPONSE_PZ) 693 616.33 T
+( response_id) 693 607.33 T
+(Fcx) 756 607.33 T
+( response_dc) 693 598.33 T
+( pole_r) 693 589.33 T
+( pole_i) 693 580.33 T
+( pole_err_r) 693 571.33 T
+( pole_err_i) 693 562.33 T
+( zero_r) 693 553.33 T
+( zero_i) 693 544.33 T
+( zero_err_r) 693 535.33 T
+( zero_err_i) 693 526.33 T
+693 522 774 621 R
+N
+315 216 396 522 R
+7 X
+V
+0 X
+( W) 315 517.33 T
+(A) 322.57 517.33 T
+(VEFORM) 326.71 517.33 T
+( data_group_id) 315 508.33 T
+(Fc) 378 508.33 T
+( data_group_dc) 315 499.33 T
+( mux_data_id) 315 490.33 T
+(Fn) 378 490.33 T
+( mux_data_dc) 315 481.33 T
+( waveform_id) 315 472.33 T
+(P) 378 472.33 T
+( waveform_dc) 315 463.33 T
+( signal_path_id) 315 454.33 T
+(Frx) 378 454.33 T
+( signal_path_dc) 315 445.33 T
+( len_signal_n) 315 436.33 T
+( signal_name[20]) 315 427.33 T
+( begin_time) 315 418.33 T
+( nominal_time) 315 409.33 T
+( local_time) 315 400.33 T
+( resolution) 315 391.33 T
+( data_units) 315 382.33 T
+( digitized_by) 315 373.33 T
+( processing) 315 364.33 T
+( nom_dig_rate) 315 355.33 T
+( prec_dig_rate) 315 346.33 T
+( min_val_data) 315 337.33 T
+( max_val_data) 315 328.33 T
+( average_noise) 315 319.33 T
+( dc_removed) 315 310.33 T
+( num_pos_clip) 315 301.33 T
+( num_neg_clip) 315 292.33 T
+( time_source) 315 283.33 T
+( gain_ranged) 315 274.33 T
+( signal_type) 315 265.33 T
+( \336lter_code) 315 256.33 T
+( data_type) 315 247.33 T
+( data_length) 315 238.33 T
+( comment_id) 315 229.33 T
+(Fn) 378 229.33 T
+( comment_dc) 315 220.33 T
+315 216 396 522 R
+N
+315 198 396 216 R
+7 X
+V
+0 X
+(    SEISMIC DA) 315 211.33 T
+(T) 360.62 211.33 T
+(A) 364.33 211.33 T
+(     for one sensor ) 315 202.33 T
+315 198 396 216 R
+N
+315 567 396 693 R
+7 X
+V
+0 X
+( DA) 315 688.33 T
+(T) 326.06 688.33 T
+(A_GROUP) 329.77 688.33 T
+( data_group_id) 315 679.33 T
+(P) 378 679.33 T
+( data_group_dc) 315 670.33 T
+( media_type) 315 661.33 T
+( spare_char) 315 652.33 T
+( spare) 315 643.33 T
+( len_media_l) 315 634.33 T
+( media_label[16]) 315 625.33 T
+( len_media_p) 315 616.33 T
+( media_path[64]) 315 607.33 T
+( len_online_p) 315 598.33 T
+( online_path[64]) 315 589.33 T
+( comment_id) 315 580.33 T
+(Fn) 378 580.33 T
+( comment_dc) 315 571.33 T
+315 567 396 693 R
+N
+573.47 606.31 585 603 573.47 599.69 573.47 603 4 Y
+V
+531 603 574.47 603 2 L
+N
+677.53 599.69 666 603 677.53 606.31 677.53 603 4 Y
+V
+676.53 603 693 603 2 L
+N
+573.47 372.31 585 369 573.47 365.69 573.47 369 4 Y
+V
+531 369 574.47 369 2 L
+N
+159.46 696.31 171 693 159.46 689.69 159.46 693 4 Y
+V
+117 693 160.46 693 2 L
+N
+171 486 144 486 2 L
+N
+140.69 681.46 144 693 147.31 681.46 144 681.46 4 Y
+V
+144 486 144 682.46 2 L
+N
+303.46 678.31 315 675 303.46 671.69 303.46 675 4 Y
+V
+252 675 304.46 675 2 L
+N
+315 504 288 504 2 L
+N
+284.69 663.46 288 675 291.31 663.46 288 663.46 4 Y
+V
+288 504 288 664.46 2 L
+N
+438.46 624.31 450 621 438.46 617.69 438.46 621 4 Y
+V
+423 621 439.46 621 2 L
+N
+303.46 471.31 315 468 303.46 464.69 303.46 468 4 Y
+V
+252 468 304.46 468 2 L
+N
+396 450 423 450 2 L
+N
+423 450 423 621 2 L
+N
+144 711 675 729 R
+7 X
+V
+1 F
+0 X
+(   SUDS STRUCTURES CREA) 144 718.33 T
+(TED BY AH2ST FROM AH STRUCTURES) 363.16 718.33 T
+171 207 252 252 R
+7 X
+V
+0 F
+0 X
+( COMMENT) 171 247.33 T
+( comment_id) 171 238.33 T
+(P) 234 238.33 T
+( comment_dc) 171 229.33 T
+( data_type) 171 220.33 T
+( data_length ) 171 211.33 T
+171 207 252 252 R
+N
+159.46 237.31 171 234 159.46 230.69 159.46 234 4 Y
+V
+117 234 160.46 234 2 L
+N
+438.46 228.31 450 225 438.46 221.69 438.46 225 4 Y
+V
+396 225 439.46 225 2 L
+N
+252 450 315 450 2 L
+N
+FMENDPAGE
+%%EndPage: "1" 2
+%%Trailer
+%%BoundingBox: 0 0 612 792
+%%Pages: 1 1
+%%DocumentFonts: Times-Roman
+%%+ Helvetica

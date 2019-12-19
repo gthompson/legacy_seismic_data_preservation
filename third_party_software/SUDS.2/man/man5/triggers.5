@@ -1,0 +1,81 @@
+.so ../man_macros/suds_man_macros
+.TH TRIGGERS 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+triggers \- earthquake detector trigger statistics
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netn_K;
+	STRING	network[4];
+	FIXED	len_st_nam_K;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	INT2	sta;
+	INT2	lta;
+	INT2	abs_sta;
+	INT2	abs_lta;
+	INT2	trig_value;
+	INT2	num_triggers;
+	MS_TIME	trig_time;
+} PCSUDS_TRIGGERS;
+.sp 0.5
+#define PC_TRIGGERS	25L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netn_K\fI len net name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_st_nam_K\fI len stat name\fR
+.TP
+\fBst_name\fI station name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBsta\fI sta\fR
+Short term average.
+.TP
+\fBlta\fI long term average\fR
+Long term average; pre_lta for xdetect.
+.TP
+\fBabs_sta\fI abs sta\fR
+short term absolute average.
+.TP
+\fBabs_lta\fI abs lta\fR
+Long term absolute average.
+.TP
+\fBtrig_value\fI trigger level\fR
+Value of trigger level (eta).
+.TP
+\fBnum_triggers\fI num triggers\fR
+Number of times triggered during this event.
+.TP
+\fBtrig_time\fI trigger time\fR
+Time of first trigger.
+.SH "SEE ALSO"

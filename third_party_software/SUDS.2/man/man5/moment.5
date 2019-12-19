@@ -1,0 +1,67 @@
+.so ../man_macros/suds_man_macros
+.TH MOMENT 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+moment \- moment tensor information
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	CODE1	datatypes;
+	CODE1	constraints;
+	INT2	spareD;
+	FLOAT4	sc_moment;
+	FLOAT4	norm_ten0;
+	FLOAT4	norm_ten1;
+	FLOAT4	norm_ten2;
+	FLOAT4	norm_ten3;
+	FLOAT4	norm_ten4;
+	FLOAT4	norm_ten5;
+} PCSUDS_MOMENT;
+.sp 0.5
+#define PC_MOMENT	 	17L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBdatatypes\fI data types\fR
+Types of data used.
+.BB
+codelist=moment_dtype
+.EB
+.TP
+\fBconstraints\fI constraints\fR
+Ways solution is constrained.
+.BB
+codelist=moment_constr
+.EB
+.TP
+\fBspareD\fI for future use\fR
+.TP
+\fBsc_moment\fI scalar moment\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBnorm_ten0\fI tensor 0\fR
+.TP
+\fBnorm_ten1\fI tensor 1\fR
+.TP
+\fBnorm_ten2\fI tensor 2\fR
+.TP
+\fBnorm_ten3\fI tensor 3\fR
+.TP
+\fBnorm_ten4\fI tensor 4\fR
+.TP
+\fBnorm_ten5\fI tensor 5\fR
+.SH "SEE ALSO"

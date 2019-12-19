@@ -1,0 +1,225 @@
+.so ../man_macros/suds_man_macros
+.TH LSA_SETTING 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+lsa_setting \- settings of long-term, short-term average event detection program
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	lsa_setting_id;
+	DOMAIN	lsa_setting_dc;
+	CODE1	algorithm; 
+	CHAR	spare;
+	INT2	decimation;
+	INT2	num_intervals;
+	INT2	spare_a;
+	MS_TIME	start;
+	FLOAT4	before_secs;
+	FLOAT4	after_secs;
+	FLOAT4	begin_level;
+	FLOAT4	end_level;
+	FLOAT4	sweep; 
+	FLOAT4	aperture;
+	FLOAT4	constant_1;
+	FLOAT4	constant_2;
+	FLOAT4	constant_3;
+	FLOAT4	constant_4;
+	FLOAT4	constant_5;
+	FLOAT4	constant_6;
+	FLOAT4	constant_7;
+	AUTHOR	authority;
+	ST_TIME	from_time;
+	ST_TIME	thru_time;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_LSA_SETTING;
+.sp 0.5
+#define LSA_SETTINGS	126L
+.fi
+.ft R
+.SH DESCRIPTION
+Settings of the trigger for an event detection program.  The values at the
+time of a specific trigger are specified in \fBlsa_detection(4)\fR.
+The structure should not only contains settings for a trigger, but
+be able to provide input to setup the trigger.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBlsa_setting_id\fI signal path id\fR
+A number that uniquely refers, within this \fBlsa_setting_dc\fR, to an 
+instance of the \fBlsa_setting\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBlsa_setting_dc\fI signal path domain\fR
+Domain in which lsa_setting_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBalgorithm\fI detection algorithm\fR
+Type of detection or trigger algorithm used.
+.BB
+codelist=detector_types
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBdecimation\fI decimation\fR
+Number of samples to decimate.
+.TP
+\fBnum_intervals\fI number of intervals\fR
+For a time trigger, number of times a new trigger should start 
+\fBaperture\fR number of seconds after the previous trigger.
+.TP
+\fBspare_a\fI for future use\fR
+.TP
+\fBstart\fI start time\fR
+Time a time-trigger should start.
+.TP
+\fBbefore_secs\fI seconds before\fR
+Save data starting this many seconds before the onset of the trigger.
+.TP
+\fBafter_secs\fI seconds after\fR
+Save data ending this many seconds after the trigger shuts off.
+.TP
+\fBbegin_level\fI begin trigger\fR
+Level above which a signal must be in order to start a trigger.
+.TP
+\fBend_level\fI end trigger\fR
+Level below which a signal must be in order to end a trigger.
+.TP
+\fBsweep\fI sweep\fR
+Time in seconds over which a short-term average is calculated.
+.TP
+\fBaperture\fI aperture\fR
+Time in seconds during which triggers at different stations must occur to
+declare that an event has occurred.
+.TP
+\fBconstant_1\fI constant 1\fR
+Constant whose meaning depends on the algorithm.
+.TP
+\fBconstant_2\fI constant 2\fR
+Constant whose meaning depends on the algorithm.
+.TP
+\fBconstant_3\fI constant 3\fR
+Constant whose meaning depends on the algorithm.
+.TP
+\fBconstant_4\fI constant 4\fR
+Constant whose meaning depends on the algorithm.
+.TP
+\fBconstant_5\fI constant 5\fR
+Constant whose meaning depends on the algorithm.
+.TP
+\fBconstant_6\fI constant 6\fR
+Constant whose meaning depends on the algorithm.
+.TP
+\fBconstant_7\fI constant 7\fR
+Constant whose meaning depends on the algorithm.
+.TP
+\fBauthority\fI authority\fR
+Who set these values.
+.BB
+codelist=authorities, index_string=true
+.EB
+.TP
+\fBfrom_time\fI valid from time\fR
+Time these settings became valid.
+.TP
+\fBthru_time\fI valid thru time\fR
+Time these settings became no longer valid.
+.TP
+\fBdata_type\fI data type\fR
+.so ../man_macros/data_type.descrip
+Should be of type \fBLSA_SET_DATAS\fR only.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI data length\fR
+Total number of samples of \fBdata_type\fR following this structure.
+Number of samples per station = \fBdata_length\fR/\fBnumb_stations\fR.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SHORT-TERM/LONG-TERM AVERAGE TRIGGER"
+A common algorithm for triggering based on long-term and short-term
+averages is the following:
+.PP
+1) For each signal_path (s) of interest, sum each sample (sum[s]) and
+sum abs_sum[s]) the absolute value of each sample minus the long-term
+average (lta[s]) during \fB sweep\fR seconds.
+.PP
+2) Calculate \fBeta\fR which is the short-term absolute average minus
+the weighted long-term average minus the absolute value of the
+difference of the long-term and short-term averages (which corrects for
+DC offset).  Where \fBns_sweep\fR is the number of samples in a
+\fBsweep\fR, then
+.br
+\fBeta = abs_sum[s]/ns_sweep-(constant_1*abs_ltas[s])/constant_2 - abs(ltas[s]-(sum[s]/ns_sweep))\fR
+.PP
+3) If \fBeta\fR is > \fBbegin_level\fR, then set
+.br
+	\fBsta_trigger[s] = aperture/sweep\fR
+.PP
+4) Recalculate long-term averages
+.br
+	\fBltas[s] = ((sum[s]/ns_sweep)+constant_3*ltas[s])/constant_4\fR
+.br
+if \fBltas[s]\fR does not change, increment lta by 1 if (sta[s] >
+lta[s]) or -1 if (sta[s] < lta[s])
+.br
+	\fBabs_ltas[s]= ((abs_sum[s]/ns_sweep)+constant_3*abs_ltas[s])/constant_4\fR
+.br
+if \fBabs_ltas[s]\fR does not change, increment abs_lta by constant_5
+if (abs_sta[s] > abs_lta[s]) or -constant_5 if (abs_sta[s] >
+abs_lta[s])
+.PP
+5) Age trigger
+.br
+	\fBif(sta_trigger[s]>0) sta_trigger[s]--\fR
+.PP
+6) Scan each subnet, if \fBmin_channels\fR are triggered during \fBaperature\fR, then declare an event.
+.PP
+7) Process next sweep.
+.PP
+Typical values for a regional-network trigger are 
+\fBbefore_secs = 20.0, after_secs = 60.0, aperture = 20.0,
+sweep =  3.0, constant_1 = 2.0, constant_2 = 1.0,
+constant_3 = 7.0, constant_4 = 8.0, constant_5 = 1.0,
+begin_level = 5.0, decimation = 1\fR 
+.SH "TIME TRIGGER"
+Specify the time of the trigger in \fBstart\fR, the length in
+\fBbefore_secs\fR and \fBafter_secs\fR, the number of subsequent
+triggers in \fBnum_intervals\fR, to occur one after the other separated
+by \fBaperture\fR seconds.
+.SH "LEVEL TRIGGER"
+Specify \fBbegin_level\fR, \fBend_level\fR, \fBbefore_secs\fR, and
+\fBafter_secs\fR, which is the maximum number of seconds of data after the
+trigger allowed in a single trigger.
+.SH "CROSS TRIGGER"
+.SH "SEE ALSO"
+lsa_detection(4), lsa_set_data(4)

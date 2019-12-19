@@ -1,0 +1,115 @@
+0           none: not given
+1           temp: Temporary, for testing purposes
+2           suds: Internal to SUDS
+10000       gsmen: US Geological Survey, Menlo Park, CA
+10001       suds: testing of suds at the USGS, Menlo Park, CA
+10002       calnt: network porcessing group, USGS, Menlo Park, CA
+10005       5day: 5 day recorders US Geological Survey, Menlo Park, CA
+10006       geos: GEOS recorders US Geological Survey, Menlo Park, CA
+10007       cent: centipede recorders US Geological Survey, Menlo Park, CA
+10008       citgs: CIT stations maintained by USGS, Menlo Park, CA
+10009       lllgs: LLL stations maintained by USGS, Menlo Park, CA
+10010       dwrgs: LLL stations maintained by USGS, Menlo Park, CA
+10011       unrgs: UNR stations maintained by USGS, Menlo Park, CA
+10012       yel: Yellowstone Park, Wyoming, maintained by USGS, Menlo Park, CA
+10500       RTP: main rtp,USGS, Menlo Park
+10501       PRTP: prototype rtp, USGS, Menlo Park
+10502       MRTP: motorola rtp, USGS, Menlo Park
+10503       TUST1: CUSP Tustin A/D #1
+10504       TUST2: CUSP Tustin A/D #2
+10505       ECLIP: CUSP Eclipse digitizer
+10506       CVAX: CUSP-VAX/750 digitizer
+10507       HPARK: Haliburton digital, Parkfield
+10520       CITT1: Tustin #1, Pasadena
+10521       CITT2: Tustin #2, Pasadena
+10522       CITN3: 11/34 online, Pasadena
+10523       CITS3: 11/34 online, Pasadena
+10524       CITD1: Nova/Eclipse, Pasadena
+10525       CITF: VAX, Pasadena
+10526       CITH: hand timed in Pasadena
+11000       Daiss, Charles, USGS, Menlo Park, CA
+11001       Oppenheimer, Dave, USGS, Menlo Park, CA
+11002       Eaton, Jerry, USGS, Menlo Park, CA
+15000       gspas: US Geological Survey, Pasadena, CA
+15001       tergp: TERRAscope, US Geological Survey, Pasadena, CA
+20000       uofa: Geophysical Institute, University of Alaska, College, AK
+30000       uofw: Geophysics, University of Washington, WA
+40000       ldgo: Lamont Doherty Geological Observatory, Palisades, NY
+50000       iris: IRIS Consortium, Seattle Data Center, WA
+51000       gsn: Global Seismographic Network, USGS, Albuquerque, NM
+52000       asro: Abbreviated Seismic Research Observatories
+53000       passc: PASSCAL Program, IRIS
+60000       lll: Lawrence Livermore Labs, Livermore, CA
+70000       lbl: Lawrence Berkeley Labs, U. C. Berkeley, CA
+80000       lanl: Los Alamos National Labs, Los Alamos, NM
+90000       stl: St. Louis University, St. Louis, MO
+100000      ucsd: University of California, San Diego and SCRIPPS
+110000      ucb: University of California, Berkeley, CA
+120000      ucsb: University of California, Santa Barbara, CA
+130000      ucsc: University of California, Santa Cruz, CA
+140000      usc: University of Southern California, Los Angeles, CA
+150000      cit: California Institute of Technology, Pasadena, CA
+150001      terct: TERRAscope network, California Institute of Technology, Pasadena, CA
+160000      nnunr: Northern Nevada net, University of Nevada, Reno, NV
+160001      snunr: Southern Nevada net, University of Nevada, Reno, NV
+170000      utah: University of Utah, Salt Lake City, UT
+180000      msu: Memphis State University, Memphis, TN
+180000      msu: Memphis State University, Memphis, TN
+181010      sanju: PANDA experiment in SAN JUAN, Argentina
+181011      jujuy: PANDA experiment in JUJUY, Argentina
+181020      newma: PANDA experiment in NEW MADRID, TN
+181030      arken: PANDA experiment in AK
+181040      hawii: PANDA experiment in HAWII
+181050      palmn: PANDA experiment in PALMERSTON NORTH, New Zealand
+181051      taran: PANDA2 experiment in mountain TARAMAKI, New Zealand
+181060      taiwa: PANDA2 experiment in Taiwan
+187000      archj: ARCH Johnston, professor, director of research
+187001      jmch: Jer-Ming CHiu, professor
+187002      wych: Wai-Ying CHung, associate research professor
+187003      hjdo: H.James DOrman, executive director
+187004      mell: Michael ELLis, associate professor
+187005      Josep: JOSE Pujol, associate professor
+187006      paulr: PAUL Rydelek, assistant research professor
+187007      robsm: ROBert SMalley, assistant research professor
+187008      paulb: PAUL Bodin, assistant professor
+187009      eusc: EUgene SChweig, adjunct professor, USGS geologist
+187010      johng: JOHN Geomberg, adjunct professor, USGS geophysicist
+187011      scda: SCott DAvis, USGS guest researcher
+187500      jimbo: JIM BOllwerk, seismic networks engineer
+187501      stepb: STEPhen Brewer, ceri seismic networks director
+187502      cchiu: Christy CHIU, research associate II
+187503      michf: MICHael Frohme, director of computing
+188000      zrli: ZhaoRen LI, graduate research assistant
+188001      kcch: Kou-Cheng Chen, graduate research assistant
+189000      group: data processing GROUP in ceri
+190000      aftac: AFTAC Center for Seismic Studies, Alexandria, VA
+200000      uhhil: University of Hawaii, Hilo, HA
+210000      uhhon: University of Hawaii, Honolulu, HA
+220000      mit: Massachusetts Institute of Technology, Cambridge, MA
+230000      dtm: Department of Terrestrial Magnetism, Washington, DC
+240000      vpi: Virginia Polytechnic Institute, Blacksburg, VA
+250000      anu: Australian National University
+260000      gsgol: US Geological Survey, Golden, CO
+260001      nngsg: Northern Nevada network, US Geological Survey, Golden, CO
+260002      sngsg: Southern Nevada network, US Geological Survey, Golden, CO
+270000      bmr: Bureau of Mineral Resources
+280000      cands: Canadian Digital Seismic Network
+290000      cdsn: China Digital Seismic Network
+300000      cdmg: California Division Mines-Geology, Sacramento, CA
+310000      pge: Pacific Gas and Electric/Woodward-Clyde, CA
+315001      unoiv: Union Oil, Imperial Valley, CA
+315002      unoml: Union Oil, Medicine Lake
+320000      terra: Terra Corporation, Mendocino, CA
+330000      cadwr: California Division of Water Resources
+340000      gikar: Geophysical Institute, Karlsruhe, Germany
+350000      gfz: GeoForschungsZentrum, Potsdam, Germany
+360000      cnrir: CNR-IRS, Milan, Italy
+370000      gsc: Geological Survey of Canada, Ottawa, Canada
+380000      ind: industry
+385000      geot: Geotech, Garland, Texas
+390000      nano: Nanometrics, Kanata, Ontario, Canada
+395000      lenn: Lennartz Electronic, Tubingen, Germany
+400000      kine: Kinemetrics, Pasadena, CA
+405000      snl: Sandia National Laboratories, Albuquerque, NM
+410000      cices: CICESE, Ensenada, Mexico
+415000      nmt: New Mexico Inst Mining and Tech, Soccorro, NM

@@ -1,0 +1,142 @@
+.so ../man_macros/suds_man_macros
+.TH SOLUTION_ERR 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+solution_err \- error for an earthquake solution
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	REFERS2	solution_id;
+	DOMAIN	solution_dc;
+	FLOAT4	covar_xx;
+	FLOAT4	covar_yy;
+	FLOAT4	covar_zz;
+	FLOAT4	covar_tt;
+	FLOAT4	covar_xy;
+	FLOAT4	covar_xz;
+	FLOAT4	covar_yz;
+	FLOAT4	covar_tx;
+	FLOAT4	covar_ty;
+	FLOAT4	covar_tz;
+	FLOAT4	std_error;
+	FLOAT4	major_azimuth;
+	FLOAT4	major_dip;
+	FLOAT4	major_length;
+	FLOAT4	inter_azimuth;
+	FLOAT4	inter_dip;
+	FLOAT4	inter_length;
+	FLOAT4	minor_length;
+	FLOAT4	depth_error;
+	FLOAT4	time_error;
+	FLOAT4	confidence;
+	FLOAT4	spare;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SOLUTION_ERR;
+.sp 0.5
+#define SOLUTION_ERRS	115L
+.fi
+.ft R
+.SH DESCRIPTION
+Error of solution express as the covariance matrix.
+.BB
+permissions="siu_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBsolution_id\fI solution id\fR
+.so ../man_macros/solution.descrip
+.BB
+key=part_foreign(1,solution.solution_id), db_delete=cascade, db_must_exist=true, index_string=true
+.EB
+.TP
+\fBsolution_dc\fI solution domain\fR
+Domain in which solution_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,solution.solution_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBcovar_xx\fI covariance matrix 1\fR
+Covariance matrix. Element 1.
+.TP
+\fBcovar_yy\fI covariance matrix 2\fR
+Covariance matrix. Element 2.
+.TP
+\fBcovar_zz\fI covariance matrix 3\fR
+Covariance matrix. Element 3.
+.TP
+\fBcovar_tt\fI covariance matrix 4\fR
+Covariance matrix. Element 4.
+.TP
+\fBcovar_xy\fI covariance matrix 5\fR
+Covariance matrix. Element 5.
+.TP
+\fBcovar_xz\fI covariance matrix 6\fR
+Covariance matrix. Element 6.
+.TP
+\fBcovar_yz\fI covariance matrix 7\fR
+Covariance matrix. Element 7.
+.TP
+\fBcovar_tx\fI covariance matrix 8\fR
+Covariance matrix. Element 8.
+.TP
+\fBcovar_ty\fI covariance matrix 9\fR
+Covariance matrix. Element 9.
+.TP
+\fBcovar_tz\fI covariance matrix 10\fR
+Covariance matrix. Element 10.
+.TP
+\fBstd_error\fI standard error\fR
+.TP
+\fBmajor_azimuth\fI azimuth major axis\fR
+Azimuth of the semi-major axis of the error ellipse.
+.TP
+\fBmajor_dip\fI dip major axis\fR
+Dip of the semi-major axis of the error ellipse.
+.TP
+\fBmajor_length\fI length major axis\fR
+Length of the semi-major axis of the error ellipse in kilometers.
+.TP
+\fBinter_azimuth\fI azimuth inter axis\fR
+Azimuth of the intermediate axis of the error ellipse.
+.TP
+\fBinter_dip\fI dip inter axis\fR
+Dip of the intermediate axis of the error ellipse.
+.TP
+\fBinter_length\fI length inter axis\fR
+Length of the intermediate axis of the error ellipse in kilometers.
+.TP
+\fBminor_length\fI length minor axis\fR
+Length of the semi-minor axis of the error ellipse in kilometers.
+.TP
+\fBdepth_error\fI depth error\fR
+.TP
+\fBtime_error\fI origin time error\fR
+.TP
+\fBconfidence\fI confidence\fR
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+

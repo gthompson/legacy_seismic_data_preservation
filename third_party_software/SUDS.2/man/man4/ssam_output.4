@@ -1,0 +1,85 @@
+.so ../man_macros/suds_man_macros
+.TH SSAM_OUTPUT 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+ssam_output \- data from Seismic Spectral Amplitude Monitor
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	REFERS2	ssam_setup_id;
+	DOMAIN	ssam_setup_dc;
+	INT4	num_band_chan; 
+	INT4	spare;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SSAM_OUTPUT;
+.sp 0.5
+#define SSAM_OUTPUTS	311L
+.fi
+.ft R
+.SH DESCRIPTION
+Data header from the SSAM (Seismic Spectral Amplitude Monitor).  Typically
+followed by data of type \fBFLOAT4\fR which is the average absolute spectral 
+amplitude within each frequency passband described in the 
+\fBssam_band_data\fR following an \fbssam_setup\fR structure.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBssam_setup_id\fI ssam setup id\fR
+A number that uniquely refers, within this \fBssam_setup_dc\fR, to an instance of 
+the \fBssam_setup\fR structure.
+.BB
+key=part_foreign(1,ssam_setup.ssam_setup_id), db_delete=cascade, db_must_exist=true, index_string=true
+.EB
+.TP
+\fBssam_setup_dc\fI ssam setup domain\fR
+Domain in which ssam_setup_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,ssam_setup.ssam_setup_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP 
+\fBnum_band_chan\fI num bandpass channels\fR
+Number of FLOAT4 data points following this header structure. Each data point
+is the average absolute spectral amplitude within each frequency passband 
+specified by a \fBssam_setup\fR. 
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBdata_type\fI data type\fR
+Type of data that follows this structure.  Typically of type \fBFLOAT4\fR.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of points\fR
+Number of structures of type \fBdata_type\fR that follow
+this structure.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+ssam_band_data(4), ssam_setup(4)
+

@@ -1,0 +1,132 @@
+.so ../man_macros/suds_man_macros
+.TH VEL_MODEL 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+vel_model \- information about a horizontally flat-layered crustal velocity model
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	vel_model_id;
+	DOMAIN	vel_model_dc;
+	LATIT	A_latitude;
+	LONGIT	A_longitude; 
+	LATIT	B_latitude;
+	LONGIT	B_longitude; 
+	CODE1	model_type; 
+	CHAR	spare_char;
+	INT2	spare;
+	FIXED	len_model_n;
+	STRING	model_name[16]; 
+	ST_TIME	from_time;
+	AUTHOR	authority;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_VEL_MODEL;
+.sp 0.5
+#define VEL_MODELS	118L
+.fi
+.ft R
+.SH DESCRIPTION
+Description of a horizontally flat-layered crustal velocity model. If
+this model is based on a profile, then the profile extends from point A
+to point B.  If this model applies to a rectangular area, points A and
+B are opposite corners of the rectangle (see \fBmodel_type\fR).  This
+structure must be followed by a number of \fBvel_layer_data\fR
+structures in increasing order of depth and with all layers specified.
+.BB
+permissions="siu_si_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBvel_model_id\fI velocity model id\fR
+A number that uniquely refers, within this \fBvel_model_dc\fR, to an instance of 
+the \fBvel_model\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBvel_model_dc\fI velocity model domain\fR
+Domain in which vel_model_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBA_latitude\fI latitude point A\fR
+Latitude of point A, south is negative.
+.TP 
+\fBA_longitude\fI longitude point A\fR
+Longitude of point A, west is negative.
+.TP 
+\fBB_latitude\fI latitude point B\fR
+Latitude of point B, south is negative.
+.TP 
+\fBB_longitude\fI longitude point B\fR
+Longitude of point B, west is negative.
+.TP
+\fBmodel_type\fI model type\fR
+p=profile between points A and B, a=rectangular area with opposite corners at A 
+and B.
+.BB
+codelist=model_types
+.EB
+.TP
+\fBspare_char\fI for future use\fR
+.TP
+\fBspare\fI for future use\fR
+.TP 
+\fBlen_model_n \fIlength model name\fR
+The maximum space reserved for the model name, i.e. 16. 
+Actual string can only contain 15 characters to allow for the NULL byte.
+.TP 
+\fBmodel_name\fI model name\fR
+Name of this model.
+.BB
+index_string=true
+.EB
+.TP
+\fBfrom_time\fI from time\fR
+Time this model was created.
+.TP
+\fBauthority\fI model authority\fR
+Who determined this crustal structure.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBdata_type\fI data type\fR
+Type of structure that follows this structure. Normally VEL_LAYER_DATAS.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of points\fR
+Number of structures of type \fBvel_layer_data\fR that follow
+this structure.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+vel_layer_data(4)

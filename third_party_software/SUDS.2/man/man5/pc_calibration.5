@@ -1,0 +1,96 @@
+.so ../man_macros/suds_man_macros
+.TH PC_CALIBRATION 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+pc_calibration \- calibration information for a station component
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netn_A;
+	STRING	network[4];
+	FIXED	len_st_nam_A;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	FLOAT4	maxgain;
+	FLOAT4	normaliz;
+	ST_TIME	begint;
+	ST_TIME	endt;
+	PAD4	pad_G;
+	CODE4	data_type;
+	INT4	data_length;
+} PCSUDS_CALIBRATION;
+.sp 0.5
+#define PC_CALIBRATION	9L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  Calibration information about a
+seismometer.  Initially designed to be compatible with the calibration
+information contained within the \fBAH\fR format developed at
+Lamont-Doherty Earth observatory.  The PC-SUDS version contains the
+poles and zeros in an array of fixed length within the structure called
+\fBSUDS_CALIBR cal[NOCALPTS]\fR where \fBNOCALPTS\fR is 30.  This is
+not the way it is done in SUDS.  Thus the IO library puts these data in
+\fBcalib\fR(5) structures following this structure and and the
+\fBstructure_properties\fR(2) routines return the correct type and
+length.  The number of \fBcalib\fR structures is almost always less
+than 30, with the remainder being filled with zeros or NODATA.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netn_A\fI len network name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_st_nam_A\fI len station name\fR
+.TP
+\fBst_name\fI station name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBmaxgain\fI maximum gain\fR
+Maximum gain of the calibration curve.
+.TP
+\fBnormaliz\fI normalization factor\fR
+Factor to multiply standard calib by to make peak at given frequency=1.
+.TP
+\fBbegint\fI time effective\fR
+Time this calibration becomes effective.
+.TP
+\fBendt\fI end time effective\fR
+Time this calibration is no longer effective.
+.TP
+\fBpad_G\fI padding\fR
+.TP
+\fBdata_type\fI data storage type\fR
+.so ../man_macros/data_type.descrip
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of samples\fR
+Number of samples of type \fBdata_type\fR in the waveform.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.SH "SEE ALSO"

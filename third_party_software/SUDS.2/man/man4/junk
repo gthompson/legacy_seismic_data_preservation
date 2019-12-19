@@ -1,0 +1,297 @@
+TEMPLATE.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+TEMPLATE.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+beam_data.4:number of these structures.  The beam azimuth and dip (a function of
+beam_data.4:key=part_foreign(1,signal_path.signal_path_id)
+beam_data.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc)
+calibration.4:key=part_foreign(1,waveform.waveform_id), db_delete=restrict, 
+calibration.4:codelist=authorities, key=part_foreign(1,waveform.waveform_dc), 
+calibration.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+calibration.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+clock_rate.4:key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict,
+clock_rate.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc),
+clock_rate.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+clock_rate.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+comment.4:Any \fBsuds\fR structure may have a comment structure (\fBcomment(5)\fR)
+comment.4:\fBmake_comment(3)\fR.
+comment.4:string passed to any of the \fBmake_comment(3)\fR routines, they will
+comment.4:by other means, they may confuse the \fBmake_comment(3)\fR routines. 
+comment.4:\fBmake_comment(3)\fR
+coordinate_sys.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+coordinate_sys.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+data_group.4:collection is archived, and (if applicable) it's disk location
+data_group.4:key=part_foreign(1,source.source_id), db_delete=nullify
+data_group.4:codelist=authorities, key=part_foreign(1,source.source_dc)
+data_group.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+data_group.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+event.4:key=part_foreign(1,data_group.data_group_id), db_delete=restrict, db_must_exist=true, index_string=true
+event.4:codelist=authorities, key=part_foreign(1,data_group.data_group_dc), 
+event.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+event.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+filter.4:key=part_primary, key=part_foreign(1,waveform.waveform_id),
+filter.4:key=part_foreign(1,waveform.waveform_dc), db_delete=cascade,
+filter.4:key=part_primary, key=part_foreign(2,response.response_id),
+filter.4:key=part_foreign(2,response.response_dc), db_delete=restrict,
+filter.4:key=part_foreign(3,waveform.waveform_id), db_delete=cascade,
+filter.4:codelist=authorities, key=part_foreign(3,waveform.waveform_dc), 
+filter.4:key=part_foreign(4,comment.comment_id), db_delete=nullify
+filter.4:codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+focal_mech.4:key=part_foreign(1,solution.solution_id), db_delete=nullify,
+focal_mech.4:codelist=authorities, key=part_foreign(1,solution.solution_dc), db_delete=nullify
+focal_mech.4:key=part_foreign(2,vel_model.vel_model_id), db_delete=cascade, 
+focal_mech.4:codelist=authorities, key=part_foreign(2,vel_model.vel_model_dc), 
+focal_mech.4:key=part_foreign(3,comment.comment_id), db_delete=nullify
+focal_mech.4:codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+lsa_detection.4:values used to define the lsa_detection are specified in \fBlsa_setting(5)\fR.
+lsa_detection.4:key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict, 
+lsa_detection.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc), 
+lsa_detection.4:A number that uniquely identifies a particular \fBlsa_setting(5)\fR structure.
+lsa_detection.4:key=part_foreign(2,lsa_setting.lsa_setting_id), db_delete=restrict, 
+lsa_detection.4:codelist=authorities, key=part_foreign(2,lsa_setting.lsa_setting_dc), 
+lsa_detection.4:key=part_foreign(3,comment.comment_id), db_delete=nullify
+lsa_detection.4:codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+lsa_detection.4:lsa_setting(5)
+lsa_set_data.4:key=part_foreign(1,signal_path.signal_path_id)
+lsa_set_data.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc)
+lsa_set_data.4:lsa_setting(5), lsa_detection(5)
+lsa_setting.4:time of a specific trigger are specified in \fBlsa_detection(5)\fR.
+lsa_setting.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+lsa_setting.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+lsa_setting.4:1) For each signal_path (s) of interest, sum each sample (sum[s]) and
+lsa_setting.4:average (lta[s]) during \fB sweep\fR seconds.
+lsa_setting.4:difference of the long-term and short-term averages (which corrects for
+lsa_setting.4:\fBeta = abs_sum[s]/ns_sweep-(constant_1*abs_ltas[s])/constant_2 - abs(ltas[s]-(sum[s]/ns_sweep))\fR
+lsa_setting.4:	\fBltas[s] = ((sum[s]/ns_sweep)+constant_3*ltas[s])/constant_4\fR
+lsa_setting.4:if \fBltas[s]\fR does not change, increment lta by 1 if (sta[s] >
+lsa_setting.4:lta[s]) or -1 if (sta[s] < lta[s])
+lsa_setting.4:	\fBabs_ltas[s]= ((abs_sum[s]/ns_sweep)+constant_3*abs_ltas[s])/constant_4\fR
+lsa_setting.4:if (abs_sta[s] > abs_lta[s]) or -constant_5 if (abs_sta[s] >
+lsa_setting.4:	\fBif(sta_trigger[s]>0) sta_trigger[s]--\fR
+lsa_setting.4:lsa_detection(5), lsa_set_data(5)
+magnitude.4:key=part_foreign(1,solution.solution_id), db_delete=cascade, 
+magnitude.4:codelist=authorities, key=part_foreign(1,solution.solution_dc), 
+magnitude.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+magnitude.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+map_element.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+map_element.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+mux_waveform.4:than \fBNODATL\fR, then the \fBSUDS\fR input routine \fBst_get(3)\fR
+mux_waveform.4:\fBsignal_path_ids\fR.  Use \fBst_put_mux(3)\fR to write the rest of
+mux_waveform.4:in the \fBst_get(3)\fR and \fBst_put(3)\fR subroutines.
+mux_waveform.4:key=part_foreign(1,recorder.recorder_id), db_delete=restrict, db_must_exist=true, index_string=true
+mux_waveform.4:codelist=authorities, key=part_foreign(1,recorder.recorder_dc), 
+mux_waveform.4:key=part_foreign(2,clock_rate.clock_rate_id), db_delete=restrict
+mux_waveform.4:codelist=authorities, key=part_foreign(2,clock_rate.clock_rate_dc), 
+mux_waveform.4:key=part_foreign(3,comment.comment_id), db_delete=nullify
+mux_waveform.4:codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+mux_waveform.4:key=foreign(signal_path.signal_path_id), db_delete=restrict, db_must_exist=true
+pick.4:key=part_foreign(1,event.event_id), db_delete=cascade, db_must_exist=true
+pick.4:codelist=authorities, key=part_foreign(1,event.event_dc), 
+pick.4:key=part_foreign(2,waveform.waveform_id), db_delete=nullify,
+pick.4:codelist=authorities, key=part_foreign(2,waveform.waveform_dc), db_delete=nullify
+pick.4:key=part_foreign(3,comment.comment_id), db_delete=nullify
+pick.4:codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+pick_residual.4:picks with solutions (accomplished by the foriegn key pair
+pick_residual.4:key=part_primary, key=part_foreign(1,pick.pick_id), db_delete=cascade,
+pick_residual.4:codelist=authorities, key=part_primary, key=part_foreign(1,pick.pick_dc), 
+pick_residual.4:key=part_primary, key=part_foreign(2,solution.solution_id), db_delete=cascade, 
+pick_residual.4:codelist=authorities, key=part_primary, key=part_foreign(2,solution.solution_dc), 
+pick_residual.4:key=part_foreign(3,vel_model.vel_model_id), db_delete=cascade, 
+pick_residual.4:codelist=authorities, key=part_foreign(3,vel_model.vel_model_dc), 
+pick_residual.4:key=part_foreign(4,comment.comment_id), db_delete=nullify
+pick_residual.4:codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+polarity.4:key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict, 
+polarity.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc), 
+polarity.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+polarity.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+processing.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+processing.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+recorder.4:Information about a signal recorder (data acquisition hardware 
+recorder.4:\fBdescr_trace\fR(3S) to calculate the number of clipped data points.
+recorder.4:such as INT2 (variable_info(5)).
+recorder.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+recorder.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+recorder_ass.4:key=part_primary, key=part_foreign(1,signal_path.signal_path_id), 
+recorder_ass.4:codelist=authorities, key=part_primary, key=part_foreign(1,signal_path.signal_path_dc), 
+recorder_ass.4:key=part_primary, key=part_foreign(2,recorder.recorder_id), 
+recorder_ass.4:key=part_foreign(2,recorder.recorder_dc), 
+recorder_ass.4:key=part_foreign(3, site.site_id), db_delete=restrict, db_must_exist=true
+recorder_ass.4:codelist=authorities, key=part_foreign(3,site.site_dc), 
+recorder_ass.4:Number of the physical channel ("pin number") on which this signal is
+recorder_ass.4:key=part_foreign(4,comment.comment_id), db_delete=nullify
+recorder_ass.4:codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+resp_cfs_data.4:and slopes (db per decade).  A number of these structures 
+resp_cfs_data.4:(\fBresponse.data_length\fR) follow structure \fBresponse\fR as data.
+resp_cfs_data.4:\fBdb_per_decade\fI slope (db/decade)\fR
+resp_cfs_data.4:Slope of the line after (higher frequency) the corner in db/decade.
+resp_cfs_data.4:response(5), resp_fap_data(5), resp_fir_data(5),
+resp_cfs_data.4:resp_pz_data(5), resp_sen_data(5)
+resp_fap_data.4:(\fBresponse.data_length\fR) follow structure \fBresponse\fR as data.
+resp_fap_data.4:response(5), resp_cfs_data(5), resp_fir_data(5),
+resp_fap_data.4:resp_pz_data(5), resp_sen_data(5)
+resp_fir_data.4:coefficients. A number of these structures (\fBresponse.data_length\fR) 
+resp_fir_data.4:response(5), resp_cfs_data(5), resp_fap_data(5), 
+resp_fir_data.4:resp_pz_data(5), resp_sen_data(5)
+resp_pz_data.4:A number of these structures (\fBresponse.data_length\fR) 
+resp_pz_data.4:response(5), resp_cfs_data(5), resp_fap_data(5), resp_fir_data(5),
+resp_pz_data.4:resp_sen_data(5)
+resp_sen_data.4:(\fBresponse.data_length\fR) follow structure \fBresponse\fR as data.
+resp_sen_data.4:response(5), resp_cfs_data(5), resp_fap_data(5), resp_fir_data(5),
+resp_sen_data.4:resp_pz_data(5)
+response.4:a number of structures (\fBdata_length\fR) specifying a response curve
+response.4:of corner frequency and slope (\fBresp_cfs_data\fR), frequency,
+response.4:amplitude, and phase (\fBresp_fap_data\fR), a finite impulse response
+response.4:(\fBresp_fir_data\fR), complex poles and zeros (\fBresp_pz_data\fR), a
+response.4:calibration (\fBresp_sen_data\fR), or sensitivity/gain
+response.4:(\fBresp_sen_data\fR).  This structure can also be followed by a series
+response.4:For finite impulse response (FIR) filters, this is the sample rate of the 
+response.4:For finite impulse response (FIR) filters, this is the amount by which the input
+response.4:For finite impulse response (FIR) filters, this is which sample is chosen when decimation is used. Count from zero to any number less that the \fBdecim_factor\fR.
+response.4:For finite impulse response (FIR) filters, this is the estimated time
+response.4:For finite impulse response (FIR) filters, this is the time
+response.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+response.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+response.4:resp_cfs_data(5), resp_fap_data(5), resp_fir_data(5),
+response.4:resp_pz_data(5), resp_sen_data(5)
+seismo_ass.4:key=part_primary, key=part_foreign(1,signal_path.signal_path_id), 
+seismo_ass.4:codelist=authorities, key=part_primary, key=part_foreign(1,signal_path.signal_path_dc), 
+seismo_ass.4:key=part_primary, key=part_foreign(2,seismometer.seismometer_id), 
+seismo_ass.4:key=part_foreign(2,seismometer.seismometer_dc), 
+seismo_ass.4:key=part_foreign(3, site.site_id), db_delete=restrict, db_must_exist=true
+seismo_ass.4:codelist=authorities, key=part_foreign(3,site.site_dc), 
+seismo_ass.4:key=part_foreign(4,comment.comment_id), db_delete=nullify
+seismo_ass.4:codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+seismometer.4:used to record both bookkeeping information (model, serial_number) and
+seismometer.4:key=part_foreign(1,response.response_id), db_delete=nullify
+seismometer.4:codelist=authorities, key=part_foreign(1,response.response_dc),
+seismometer.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+seismometer.4:codelist=authorities, key=part_foreign(2,comment.comment_dc),
+service.4:key=part_foreign(1, signal_path.signal_path_id), db_delete=restrict,
+service.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc),
+service.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+service.4:codelist=authorities, key=part_foreign(2,comment.comment_dc),
+sig_cmp_data.4:key=part_foreign(2,sig_path_cmp.sig_path_cmp_id)
+sig_cmp_data.4:codelist=authorities, key=part_foreign(2,sig_path_cmp.sig_path_cmp_dc)
+sig_cmp_data.4:sig_path_cmp(5)
+sig_path_ass.4:key=part_primary, key=part_foreign(1,signal_path.signal_path_id), 
+sig_path_ass.4:codelist=authorities, key=part_primary, key=part_foreign(1,signal_path.signal_path_dc), 
+sig_path_ass.4:key=part_primary, key=part_foreign(2,sig_path_cmp.sig_path_cmp_id), 
+sig_path_ass.4:key=part_foreign(2,sig_path_cmp.sig_path_cmp_dc), 
+sig_path_ass.4:key=part_foreign(3, site.site_id), db_delete=restrict, db_must_exist=true
+sig_path_ass.4:codelist=authorities, key=part_foreign(3,site.site_dc), 
+sig_path_ass.4:Number of the physical channel ("pin number") on which this signal is
+sig_path_ass.4:key=part_foreign(4,comment.comment_id), db_delete=nullify
+sig_path_ass.4:codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+sig_path_cmp.4:key=part_foreign(1,response.response_id), db_delete=nullify
+sig_path_cmp.4:codelist=authorities, key=part_foreign(1,response.response_dc), db_delete=nullify
+sig_path_cmp.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+sig_path_cmp.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+sig_path_cmp.4:sig_path_data(5)
+sig_path_data.4:key=part_foreign(1,signal_path.signal_path_id)
+sig_path_data.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc)
+signal_path.4:\fBcomponent_type\fR (vertical, NS, EW), the \fBsensor_type\fR, the
+signal_path.4:number of \fBbeam_data\fR structures.  The beam azimuth and dip (a
+signal_path.4:key=part_foreign(1, site.site_id), db_delete=restrict, db_must_exist=true
+signal_path.4:codelist=authorities, key=part_foreign(1,site.site_dc), 
+signal_path.4:Sensor component: v=vertical, e=east-west, n=north-south, o=other (specified by
+signal_path.4:Number of structures of type \fBdata_type\fR (beam(5)) that follow this structure.
+signal_path.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+signal_path.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+signal_path.4:make_signal_name(3)
+signif_event.4:key=part_foreign(1,event.event_id), db_delete=cascade, db_must_exist=true,
+signif_event.4:codelist=authorities, key=part_foreign(1,event.event_dc), 
+signif_event.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+signif_event.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+site.4:key=part_foreign(1,coordinate_sys.coordinate_id), db_delete=nullify
+site.4:codelist=authorities, key=part_foreign(1,coordinate_sys.coordinate_dc), db_delete=nullify
+site.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+site.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+solution.4:key=part_foreign(1,event.event_id), db_delete=cascade, db_must_exist=true,
+solution.4:codelist=authorities, key=part_foreign(1,event.event_dc), 
+solution.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+solution.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+solution_err.4:key=part_foreign(1,solution.solution_id), db_delete=cascade, db_must_exist=true, index_string=true
+solution_err.4:codelist=authorities, key=part_foreign(1,solution.solution_dc), 
+solution_err.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+solution_err.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+source.4:key=part_foreign(1, site.site_id), db_delete=restrict, db_must_exist=true
+source.4:codelist=authorities, key=part_foreign(1,site.site_dc), 
+source.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+source.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+spectra.4:key=part_foreign(1,waveform.waveform_id),
+spectra.4:key=part_foreign(1,waveform.waveform_dc), db_delete=cascade,
+spectra.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+spectra.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+ssam_band_data.4:Passband for the SSAM (Seismic Spectral Amplitude Monitor). A number of
+ssam_band_data.4:ssam_data(5), ssam_setup(5)
+ssam_output.4:Data header from the SSAM (Seismic Spectral Amplitude Monitor).
+ssam_output.4:key=part_foreign(1,ssam_setup.ssam_setup_id), db_delete=cascade, db_must_exist=true, index_string=true
+ssam_output.4:codelist=authorities, key=part_foreign(1,ssam_setup.ssam_setup_dc), 
+ssam_output.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+ssam_output.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+ssam_output.4:ssam_band_data(5), ssam_setup(5)
+ssam_setup.4:Setup parameters for the SSAM (Seismic Spectral Amplitude Monitor).
+ssam_setup.4:fourier transform (fft) is then applied to a series of samples
+ssam_setup.4:(\fBsamp_per_fft\fR).  The average absolute spectral amplitude within
+ssam_setup.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+ssam_setup.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+ssam_setup.4:ssam_data(5), ssam_band_data(5)
+st_intro.4:The \fBS\fReismic \fBU\fRnified \fBD\fRata \fBS\fRystem (\fBSUDS\fR) is
+st_intro.4:computer program (\fBcomp_man(1)\fR) and compiled into four files
+st_intro.4:\fBvariable_info(3)\fR. Many variable types are similar to computer
+st_intro.4:Greenwich Mean Time. This is the same as \fBUNIX\fR time (see
+st_intro.4:\fBtime(3V)\fR) and is an \fBINT4\fR.
+st_intro.4:Data Representation (\fBXDR\fR) used to store \fBSUDS\fR structures in
+st_intro.4:character (CODE1), a 16-bit integer (CODE2), or a 32-bit integer
+st_intro.4:(CODE4) depending on how many different codes are likely to be needed
+st_intro.4:\fBcode_list(4)\fR structure and are described in detail in \fBAppendix
+st_intro.4:I: code_lists(6)\fR.  Codes should be accessed only through the
+st_intro.4:subroutines described in \fBfind_code(2)\fR because some
+st_intro.4:	20000, "UOA: Seismology Lab, University of Atlantis (base number)",
+st_intro.4:using the subroutine \fBfind_label(2)\fR.
+st_intro.4:types are defined in \fBvariable_info(3)\fR and include \fBNODATS\fR,
+st_intro.4:data using the defines given in \fBvariable_info(3)\fR.
+st_intro.4:in \fBXDR\fR (eXternal Data Representation)
+st_intro.4:(determined by) the primary key, not by anything else.
+st_intro.4:starting point. The original files are in standard \fBtroff(1)\fR
+st_intro.4:name of subroutine to be used to check input to this member (see
+st_intro.4:\fBcheck_input(2)\fR).
+st_intro.4:\fBcode_lists(6)\fR.
+st_intro.4:The default value is the define \fBED_COL\fR in \fBvariable_info(3)\fR.
+st_intro.4:default value is (2 * member_number) + 1. When a structure contains to
+st_intro.4:\fBvariable_info(3)\fR.
+st_intro.4:This member is used to create an ASCII string used in \fBst_index(2)\fR
+st_intro.4:\fBstdescr(1)\fR, etc.
+st_intro.4:.IP "\fBkey=part_foreign(composite_key_#,table_name.member_name)\fR"
+st_intro.4:key=part_primary, key=part_foreign(1,table_name.member_name)
+st_intro.4:or table(s), insert (i) a member or table, update (u) a member or
+st_intro.4:table, and delete (d) a member or table for the manager, analyst,
+st_intro.4:\fBmember_info(3)\fR. The permissions are encoded in the member_infole in
+st_intro.4:significant 4 bits (bits 15 to 12) refer to the manager and the least
+st_intro.4:future categories of permissions. In each 4-bit block, bit0(lsb)=d,
+st_intro.4:See \fBwaveform(4)\fR.
+st_intro.4:st_intro(1), st_intro(2)
+user_vars.4:key=part_foreign(1,waveform.waveform_id), 
+user_vars.4:codelist=authorities, key=part_foreign(1,waveform.waveform_dc), 
+user_vars.4:key=part_foreign(2,comment.comment_id), db_delete=nullify
+user_vars.4:codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+vel_layer_data.4:(\fBvel_model.data_length\fR) of these structures follow 
+vel_layer_data.4:vel_model(5)
+vel_model.4:B are opposite corners of the rectangle (see \fBmodel_type\fR).  This
+vel_model.4:key=part_foreign(1,comment.comment_id), db_delete=nullify
+vel_model.4:codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+vel_model.4:vel_layer_data(5)
+waveform.4:sizeof(data_type) times \fBdata_length\fR.
+waveform.4:key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict,
+waveform.4:codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc),
+waveform.4:key=part_foreign(2,mux_waveform.mux_waveform_id), db_delete=nullify
+waveform.4:codelist=authorities, key=part_foreign(2,mux_waveform.mux_waveform_dc),
+waveform.4:key=part_foreign(3,data_group.data_group_id), db_delete=cascade
+waveform.4:codelist=authorities, key=part_foreign(3,data_group.data_group_dc),
+waveform.4:key=part_foreign(4,calibration.calibration_id), db_delete=nullify
+waveform.4:codelist=authorities, key=part_foreign(4,calibration.calibration_dc)
+waveform.4:Smallest data value in the waveform (datatype s,l,f only).
+waveform.4:Largest data value in the waveform (datatype s,l,f only).
+waveform.4:(datatype s,l,f only).
+waveform.4:key=part_foreign(5,processing.processing_id), db_delete=nullify
+waveform.4:codelist=authorities, key=part_foreign(5,processing.processing_dc),
+waveform.4:key=part_foreign(6,comment.comment_id), db_delete=nullify
+waveform.4:codelist=authorities, key=part_foreign(6,comment.comment_dc),

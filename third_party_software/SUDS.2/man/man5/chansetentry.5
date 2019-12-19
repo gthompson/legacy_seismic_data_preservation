@@ -1,0 +1,60 @@
+.so ../man_macros/suds_man_macros
+.TH CHANSETENTRY 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+chansetentry \- associate station/components into sets
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	INT4	inst_num;
+	INT2	stream_num;
+	INT2	chan_num;
+	FIXED	len_netn_C;
+	STRING	network[4];
+	FIXED	len_st_n_C;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	PAD4	pad_U;
+} PCSUDS_CHANSETENTRY;
+.sp 0.5
+#define PC_CHANSETENTRY		33L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.  \fBData only\fR following the CHANSET structure.
+.SH MEMBERS
+.TP
+\fBinst_num\fI serial number\fR
+Instrument serial number.
+.TP
+\fBstream_num\fI stream number\fR
+Stream of instrument.
+.TP
+\fBchan_num\fI channel number\fR
+Channel of stream.
+.TP
+\fBlen_netn_C\fI len network name\fR
+.TP
+\fBnetwork\fI network\fR
+.TP
+\fBlen_st_n_C\fI len station name\fR
+.TP
+\fBst_name\fI station name\fR
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBpad_U\fI padding\fR
+.SH "SEE ALSO"
+chansetentry(pc)
+.SH AUTHOR
+Robert Banfill, August 23, 1993.

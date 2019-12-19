@@ -1,0 +1,53 @@
+.so ../man_macros/suds_man_macros
+.TH CODE_DATA 3 "17 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+code_data \- list relating number or letter codes to ASCII strings
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	INT4	number;
+	CHRPTR	meaning;
+} SUDS_CODE_DATA;
+.sp 0.5
+.fi
+#define CODE_DATAS	214L
+.ft R
+.SH DESCRIPTION
+A list that follows a \fBcode_list\fR structure and relates number or
+letter codes to ASCII strings. Any member of a SUDS structure of type
+\fBCODE1, CODE2, \fRor\fB CODE4\fR is a number or letter that
+references a codelist.
+.PP
+Codelists are used in SUDS to save space and to enforce standardization
+of ASCII strings for ease of searching. They allow ASCII strings of
+arbitrary length to be used, thus promoting clarity. In utility
+programs such as \fBst2asc\fR or \fBstedit\fR, the ASCII string can be
+printed next to the code number for clarity.
+.PP
+The SUDS library subroutines \fBasc2field\fR and \fBfield2asc\fR
+provide a simple means to convert ASCII strings to codes and codes to
+ASCII strings.
+.BB
+data_only=RESPONSES
+.EB
+.SH MEMBERS
+.TP
+\fBnumber\fI number\fR
+Number of the code.
+.TP 
+\fBmeaning\fI ASCII string\fR
+Pointer to the ASCII string corresponding to the code.
+.SH EXAMPLE
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+SUDS_CODE_DATA misc[] = {
+	123,	"Acme M-4 geophone",
+	'p',	"P or primary wave",
+   };
+.fi
+.ft R
+.SH "SEE ALSO"
+asc2member(2), member2asc(2), code_lists(6)

@@ -1,0 +1,165 @@
+.so ../man_macros/suds_man_macros
+.TH COORDINATE_SYS 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+coordinate_sys \- information to define a local coordinate system
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	coordinate_id;
+	DOMAIN	coordinate_dc;
+	FIXED	len_grid_name;
+	STRING	grid_name[20];
+	FLOAT4	a_trans_coeff;
+	FLOAT4	b_trans_coeff;
+	FLOAT4	c_trans_coeff;
+	FLOAT4	d_trans_coeff;
+	FLOAT4	e_trans_coeff;
+	FLOAT4	f_trans_coeff;
+	CODE1	map_projection;
+	CODE1	horizontal_ref;
+	CODE1	spheroid;
+	CODE1	prime_merid;
+	FLOAT4	central_merid;
+	FLOAT4	scale_factor;
+	FLOAT4	northing;
+	FLOAT4	easting;
+	FLOAT4	semi_major;
+	FLOAT4	flattening;
+	FLOAT4	primary_merid;
+	FLOAT8	origin_lat;
+	FLOAT8	origin_long;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_COORDINATE_SYS;
+.sp 0.5
+#define COORDINATE_SYSS	326L
+.fi
+.ft R
+.SH DESCRIPTION
+The absolute location and orientation of a local coordinate system is
+specified in terms of the complete geodetic coordinates, the map
+projection transformation to rectangular coordinates, and the affine
+transformation to the local coordinates.  Since the earth's shape is
+too irregular to describe locations conveniently and mathematically,
+common practice is to assume the earth is a spheroid with a specific
+semi_major axis and flattening. Then a map projection is used to
+transform this spheroid onto a planar coordinate system. Finally an
+affine transformation is used to apply a linear translation in X and Y,
+a clockwise rotation, and a scale change.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBcoordinate_id\fI coordinate id\fR
+A number that uniquely refers, within this \fBcoordinate_dc\fR, to
+an instance of the \fBcoordinate_sys\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBcoordinate_dc\fI coordinate domain\fR
+Domain in which coordinate_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBlen_grid_name\fR \fIlength signal name\fR
+The maximum space reserved for the grid name, i.e. 20. 
+Actual string can only contain 19 characters to allow for the NULL byte.
+.TP 
+\fBgrid_name\fI grid name\fR
+Name assigned to this particular local grid.
+.BB
+index_string=true
+.EB
+.TP 
+\fBa_trans_coeff \fI affine coefficient a\fR
+a = scale_change times the cosine of the angle of rotation.
+.TP 
+\fBb_trans_coeff \fI affine coefficient b\fR
+b = minus scale_change times the sine of the angle of rotation.
+.TP 
+\fBc_trans_coeff \fI affine coefficient c\fR
+c = map_projection easting minus bin_grid_X.
+.TP 
+\fBd_trans_coeff \fI affine coefficient d\fR
+d = scale_change times the sine of the angle of rotation.
+.TP 
+\fBe_trans_coeff \fI affine coefficient e\fR
+e = scale_change times cosine of the angle of rotation.
+.TP 
+\fBf_trans_coeff \fI affine coefficient f\fR
+f = map_projection northing minus bin_grid_Y.
+.TP
+\fBmap_projection\fI map projection\fR
+Map projection used.
+.BB
+codelist=map_projections
+.EB
+.TP
+\fBhorizontal_ref\fI name of horiz. datum\fR
+Name of the horizontal reference surface used.
+.BB
+codelist=horiz_datums
+.EB
+.TP
+\fBspheroid\fI name of spheroid\fR
+Spheroid to which coordinates are referenced.
+.BB
+codelist=spheroids
+.EB
+.TP
+\fBprime_merid\fI prime meridian\fR
+Name of a meridian from which longitudes are reckoned. Normally the meridian through Greenwich, England, is defined as the prime meridian.
+.BB
+codelist=prime_meridians
+.EB
+.TP
+\fBcentral_merid\fI central meridian\fR
+Central meridian for this map projection.
+.TP
+\fBscale_factor\fI projection scale factor\fR
+Scale factor for this map projection.
+.TP
+\fBnorthing\fI projection northing\fR
+Northing of origin for this projection.
+.TP
+\fBeasting\fIprojection easting\fR
+Easting of origin for this projection.
+.TP
+\fBsemi_major\fI semi major axis\fR
+Semi-major axis of this spheroid.
+.TP
+\fBflattening\fI flattening of spheroid\fR
+Flattening of this spheroid.
+.TP
+\fBprimary_merid\fI primary meridian\fR
+Primary meridian of this spheroid.
+.TP
+\fBorigin_lat\fI projection origin lat\fR
+Latitude of the origin of this projection.
+.TP
+\fBorigin_long\fI projection origin long\fR
+Longitude of the origin of this projection.
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+.SH BUGS

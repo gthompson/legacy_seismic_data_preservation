@@ -1,0 +1,288 @@
+.so ../man_macros/suds_man_macros
+.TH VARIABLE_INFO 3 "27 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+variable_info \- system information about a variable used in SUDS structures
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	name_len;
+	STRING	variable_name[8];
+	FIXED	define_len;
+	STRING	define_name[4];
+	INT2	define_num;
+	INT2	xdr_num_bytes;
+	FIXED	c_type_len;
+	STRING	c_type[20];
+	FIXED	default_len;
+	STRING	default_values[24];
+	FIXED	min_len;
+	STRING	min_value[24];
+	FIXED	max_len;
+	STRING	max_value[24];
+	FIXED	format_len;
+	STRING	print_format[16];
+	FIXED	allowed_len;
+	STRING	allowed_chars[24];
+	INT2	field_width;
+	INT2	num_bytes;
+} SUDS_VARIABLE_INFO;
+.sp 0.5
+.fi
+#define VARIABLE_INFOS	200L
+.ft R
+.SH DESCRIPTION
+This structure explains the properties of a particular variable type used 
+by \fBSUDS\fR utility programs. The program \fBcompile_man(1)\fR puts a copy of
+the \fBvariables\fR table, which explains the properties of all variable types,
+in the file \fBsuds_var.h\fR.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBname_len\fR \fIname length\fR
+The maximum space reserved for the variable name, i.e. 8. 
+Actual string can only contain 7 characters to allow for the NULL byte.
+.TP
+\fBvariable_name\fI variable name\fR
+Name as a C define for this variable: INT4, FLOAT8, FIXED, etc.
+.BB
+index_string=true
+.EB
+.TP 
+\fBdefine_len\fR \fIdefine length\fR
+The maximum space reserved for the define name, i.e. 4. 
+Actual string can only contain 3 characters to allow for the NULL byte.
+.TP
+\fBdefine_name\fI define name\fR
+The 3 letter name defined as an integer for this variable: IN4, FL8,
+FIX, etc.  The \fBsuds.h\fR file will contain statements such as
+.br
+.ti 1.5i
+\fB# define CHR 1\fR
+.br
+so that the 3-letter string can be used in C-programs for tests of member type,
+for example
+.br
+.ti 1.5i
+\fBif(member_info[i].member_type==CHR)\fR
+.TP
+\fBdefine_num\fI define number\fR
+Number given for the 3 letter define for this variable type. Programmers should 
+not use these numbers in their code since they may change.
+.TP
+\fBxdr_num_bytes\fI number of xdr bytes\fR
+Length of this variable in bytes in XDR (eXternal Data Representation).
+.TP 
+\fBc_type_len\fR \fIc type length\fR
+The maximum space reserved for the c_type, i.e. 16. 
+Actual string can only contain 15 characters to allow for the NULL byte.
+.TP
+\fBc_type\fI C type\fR
+Type for this member in the C language.
+.TP 
+\fBdefault_len\fR \fIdefault length\fR
+The maximum space reserved for the default_values, i.e. 24. 
+Actual string can only contain 23 characters to allow for the NULL byte.
+.TP 
+\fBdefault_values\fI default value\fR
+String containing the default value or undefined value for this member.
+.TP 
+\fBmin_len\fR \fIminimum length\fR
+The maximum space reserved for the min_value, i.e. 24. 
+Actual string can only contain 23 characters to allow for the NULL byte.
+.TP 
+\fBmin_value\fI minimum value\fR
+String containing the minimum value for this member.
+.TP 
+\fBmax_len\fR \fImaximum length\fR
+The maximum space reserved for the max_value, i.e. 24. 
+Actual string can only contain 23 characters to allow for the NULL byte.
+.TP 
+\fBmax_value\fI maximum value\fR
+String containing the maximum value for this member.
+.TP 
+\fBformat_len\fR \fIformat length\fR
+The maximum space reserved for the format, i.e. 16. 
+Actual string can only contain 15 characters to allow for the NULL byte.
+.TP 
+\fBprint_format\fI print format\fR
+String containing the format to use when printing this member.
+.TP 
+\fBallowed_len\fR \fIallowed length\fR
+The maximum space reserved for the allowed-chars, i.e. 24. 
+Actual string can only contain 23 characters to allow for the NULL byte.
+.TP 
+\fBallowed_chars\fI allowable characters\fR
+String containing a list of allowable characters during input.
+.TP
+\fBfield_width\fI field width\fR
+Number of spaces needed to give ASCII representation of this variable
+type.
+.TP
+\fBnum_bytes\fI number of bytes\fR
+Length of this variable in bytes of memory.
+.SH "Special typedefs
+.TP
+In addition to the \fBtypedefs\fR declared in the following table,
+several are provided in \fBsuds.h\fR for use in programming but may not
+be used within structures.  They are \fBINTV\fR for \fBint\fR, which
+may vary in size on different machines, \fBUINTV\fR for \fBunsigned
+int\fR, \fBUINT4\fR for an \fBunsigned long\fR, and \fBSIZE_T\fR of a
+\fBsize_t\fR which is the size of integer returned by the function
+\fBsizeof()\fR.
+.SH "INITIAL VALUES"
+.TP
+Testing whether a variable is equal to NODATF is tricky on different
+machines because of round-off errors.  Use \fBisNODATF(3)\fR or
+\fBisNODATD(3)\fR to test equality with NODATF. 
+.nf
+.ta 0.7i 1.5i 3.0i 4.0i
+#define SUDS_VERSION	2.6
+#define NODATS	(-32760)	/* NODATA short */
+#define NODATL	(-2147483640L)	/* NODATA long */
+#define NODATF	(-1.7e+36)	/* NODATA float */
+#define NODATSPC	(-32767)	/* NODATA short or long PC_SUDS */
+#define NODATFPC	(-32767.0)	/* NODATA float or double PC_SUDS */
+#define MINTIME	(-2147472000L)	/* minimum NODATA time */
+#define MAXTIME	(2147472000L)	/* maximum NODATA time */
+#define NOCHAR	'_'	/* NODATA char */
+#define NOSTRG	""	/* NO STRING */
+#define NOPTR	0L	/* NO POINTER */
+#define NOLIST	(LIST)0L	/* NODATA lists */
+#define ED_COL	25	/* Default column to start field in the editor */
+#define PCSUDS_MAX	100
+.sp 0.5
+#define SNCHAR	"_"	/* NOCHAR string */
+#define SNDATS	"-32760"	/* NODATA string short */
+#define SMDATS	"32760"	/* NODATA string short */
+#define SNDATL	"-2147483640"	/* NODATA string long */
+#define SMDATL	"2147483640"	/* NODATA string long */
+#define SNDATF	"-1.7e+36"	/* NODATA string float */
+#define SMDATF	"1.7e+36"	/* NODATA string float */
+#define SMNTIME	"-2147472000"	/* MINIMUM value string notime */
+#define SMXTIME	"2147472000"	/* MAXIMUM value string notime */
+#define SNLIST	"\0"	/* NODATA string lists */
+#define SNPTR	"\0"	/* NODATA string pointer */
+.sp 0.5
+#define MAX_NAME_LEN  24	/* max characters in struct.member name */
+#define MAX_MEMBERS 100L	/* max number of members in a structure */
+#define MAX_STRUCT_LEN 256L	/* max bytes in a structure */
+.sp 0.5
+typedef struct {
+	FLOAT4	cr;
+	FLOAT4	ci;
+} COMPLEX;
+.sp 0.5
+#define COMPLEXS	207L
+.sp 0.5
+typedef struct {
+	FLOAT8	dr;
+	FLOAT8	di;
+} D_COMPLEX;
+.sp 0.5
+#define D_COMPLEXS	208L
+.sp 0.5
+typedef struct {
+	FLOAT4	fx;
+	FLOAT4	fy;
+} VECTOR;
+.sp 0.5
+#define VECTORS	209L
+.sp 0.5
+typedef struct {
+	FLOAT4	xx;
+	FLOAT4	yy;
+	FLOAT4	xy;
+} TENSOR;
+.sp 0.5
+#define TENSORS	210L
+.sp 0.5
+.ta 1.2i 1.75i 2.1i 2.8i 3.7i 4.6i 5.45i 6.0i
+\s-1
+.in 0
+SUDS_VARIABLE_INFO variables[] = {
+.in 2
+/*        Name	        Define	          N	C_type	        Default	        Minimum	         Maximum	Format	        Allowed */
+49,168,8,"CHAR",	4,"CHR",	-1,1,	20,"char",	48,SNCHAR,	48," ",	48,"~",
+	16,"%c",	24," ~~",1,sizeof(char),
+49,168,8,"STRING",	4,"STR",	-2,1,	20,"char",	48,NOSTRG,	48,NOSTRG,	48,NOSTRG,
+	16,"%s",	24," ~~",0,	sizeof(char),
+49,168,8,"INT2",	4,"IN2",	-3,2,	20,"short",	48,SNDATS,	48,SNDATS,	48,SMDATS,
+	16,"%d",	24,"0~9-",6,	sizeof(short),
+49,168,8,"INT4",	4,"IN4",	-4,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"0~9-",11,	sizeof(long),
+49,168,8,"FIXED",	4,"FIX",	-5,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"",11,	sizeof(long),
+49,168,8,"CODE1",	4,"CD1",	-6,1,	20,"char",	48,SNCHAR,	48,"0", 	48,"z",
+	16,"%c",	24," ~~",1,	sizeof(char),
+49,168,8,"CODE2",	4,"CD2",	-7,2,	20,"short",	48,SNDATS,	48,SNDATS,	48,SMDATS,
+	16,"%d",	24,"0~9-",6,	sizeof(short),
+49,168,8,"CODE4",	4,"CD4",	-8,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"0~9-",11,	sizeof(long),
+49,168,8,"LABEL",	4,"LAB",	-9,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"0~9-",11,	sizeof(long),
+49,168,8,"REFERS2",	4,"REF",	-10,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"0~9-",11,	sizeof(long),
+49,168,8,"DOMAIN",	4,"DOM",	-11,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"0~9-",11,	sizeof(long),
+49,168,8,"AUTHOR",	4,"ATH",	-12,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"0~9-",11,	sizeof(long),
+49,168,8,"FLOAT4",	4,"FL4",	-13,4,	20,"float",	48,SNDATF,	48,SNDATF,	48,SMDATF,
+	16,"%f",	24,"0~9.-",14,	sizeof(float),
+49,168,8,"FLOAT8",	4,"FL8",	-14,8,	20,"double",	48,SNDATF,	48,SNDATF,	48,SMDATF,
+	16,"%lf",	24,"0~9.-",20,	sizeof(double),
+49,168,8,"ST_TIME",	4,"STT",	-15,4,	20,"long",	48,SMNTIME,	48,SMNTIME,	48,SMXTIME,
+	16,"%ld",	24,"0~9.-",11,	sizeof(long),
+49,168,8,"MS_TIME",	4,"MST",	-16,8,	20,"double",	48,SMNTIME,	48,SMNTIME,	48,SMXTIME,
+	16,"%lf",	24,"0~9.-",20,	sizeof(double),
+49,168,8,"LONGIT",	4,"LON",	-17,8,	20,"double",	48,SNDATF,	48,"-180.",	48,"+180.",
+	16,"%lf",	24,"0~9.-",20,	sizeof(double),
+49,168,8,"LATIT",	4,"LAT",	-18,8,	20,"double",	48,SNDATF,	48,"-90.",	48,"+90.",
+	16,"%lf",	24,"0~9.-",20,	sizeof(double),
+49,168,8,"LIST",	4,"LST",	-19,4,	20,"SUDS_CODE_LIST *",48,SNLIST,48,SNLIST,	48,SNLIST,
+	16,"%lx",	24,"",11,	sizeof(char *),
+/* 12 bit data, 4 lsb BCD time code */
+49,168,8,"INT2TM",	4,"I2T",	-20,2,	20,"short",	48,SNDATS,	48,SNDATS,	48,SMDATS,
+	16,"%d:%x",	24,"0~9",6,	sizeof(short),
+49,168,8,"CODESTR",	4,"CDS",	-21,1,	20,"char",	48,NOSTRG,	48,NOSTRG,	48,NOSTRG,
+	16,"%s",	24," ~~",1,	sizeof(char),
+49,168,8,"GENPTR",	4,"GNP",	-22,4,	20,"char *",	48,SNPTR,	48,SNPTR,	48,SNPTR,
+	16,"%lx",	24,"0~9",11,	sizeof(char *),
+49,168,8,"CHRPTR",	4,"CHP",	-23,4,	20,"char *",	48,SNPTR,	48,SNPTR,	48,SNPTR,
+	16,"%lx",	24,"0~9",11,	sizeof(char *),
+49,168,8,"MEMPTR",	4,"MEM",	-24,4,	20,"SUDS_MEMBER_INFO *",	48,SNPTR,	48,SNPTR,	48,SNPTR,
+	16,"%lx",	24,"",11,	sizeof(char *),
+49,168,8,"UINT4",	4,"UI4",	-25,4,	20,"unsigned long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"0x%u",	24,"",11,	sizeof(unsigned long),
+49,168,8,"UINT2",	4,"UI2",	-26,2,	20,"unsigned short",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"0x%u",	24,"",6,	sizeof(unsigned short),
+49,168,8,"UCHAR",	4,"UCH",	-27,1,	20,"unsigned char",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"0x%u",	24,"",3,	sizeof(unsigned char),
+49,168,8,"YESNO",	4,"YNO",	-28,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"",11,	sizeof(long),
+49,168,8,"IDXPTR",	4,"IDX",	-29,4,	20,"SUDS_FILE_INDEX *",	48,SNPTR,	48,SNPTR,	48,SNPTR,
+	16,"%lx",	24,"",11,	sizeof(char *),
+/* 24-bit integer data stored in 32-bit integers */
+49,168,8,"INT3",	4,"IN3",	-30,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"0~9-",11,	sizeof(long),
+49,168,8,"PAD1",	4,"PD1",	-31,1,	20,"char",	48,SNCHAR,	48," ",	48,"~",
+	16,"%c",	24,"",1,sizeof(char),
+49,168,8,"PAD2",	4,"PD2",	-32,2,	20,"short",	48,SNDATS,	48,SNDATS,	48,SMDATS,
+	16,"%d",	24,"",6,	sizeof(short),
+49,168,8,"PAD4",	4,"PD4",	-33,4,	20,"long",	48,SNDATL,	48,SNDATL,	48,SMDATL,
+	16,"%ld",	24,"",11,	sizeof(long),
+.in 0
+};
+\s+1
+.fi
+.SH "SEE ALSO"
+st_intro(4)
+.SH BUGS

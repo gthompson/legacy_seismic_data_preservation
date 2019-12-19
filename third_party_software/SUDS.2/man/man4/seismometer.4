@@ -1,0 +1,181 @@
+.so ../man_macros/suds_man_macros
+.TH SEISMOMETER 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+seismometer \- information about a seismometer
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	seismometer_id;
+	DOMAIN	seismometer_dc;
+	REFERS2	response_id;
+	DOMAIN	response_dc;
+	CODE4	model;
+	FIXED	len_serial_n;
+	STRING	serial_number[12];
+	FLOAT4	free_frequency;
+	FLOAT4	motor_const;
+	FLOAT4	eff_mo_const;
+	FLOAT4	mass;
+	CODE1	seis_type;
+	CHAR	pad_type;
+	CODE1	component_type;
+	CHAR	spare;
+	INT2	r_coil;
+	INT2	r_crit_damp;
+	FLOAT4	eff_damping;
+	INT2	r_lpad;
+	INT2	r_tpad;
+	INT2	r_shunt;
+	INT2	r_cal_coil;
+	FLOAT4	cal_mo_const;
+	AUTHOR	authority;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SEISMOMETER;
+.sp 0.5
+.fi
+#define SEISMOMETERS	313L
+.ft R
+.SH DESCRIPTION
+Information about a seismometer. This structure is
+used to record both bookkeeping information (model, serial_number) and
+some of the information necessary to calculate a transfer function for
+the seismometer itself, according to how the instrument is set up.
+.BB
+permissions="s_s_siu_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBseismometer_id\fI seismometer id\fR
+A number that uniquely refers, within this \fBseismometer_dc\fR, to an
+instance of the \fBseismometer\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBseismometer_dc\fI seismometer domain\fR Domain in which
+seismometer_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBresponse_id\fI response id\fR
+A number that uniquely identifies, within this \fBresponse_dc\fR, to an
+instance of  the \fBresponse\fR structure.
+.BB
+key=part_foreign(1,response.response_id), db_delete=nullify
+.EB
+.TP
+\fBresponse_dc\fI response domain\fR
+Domain in which response_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,response.response_dc),
+db_delete=nullify
+.EB
+.TP
+\fBmodel\fI model code\fR
+Number that is unique in the world
+designating the model of this piece of equipment.
+.BB
+codelist=equip_models
+.EB
+.TP
+\fBlen_serial_n\fI length serial number\fR
+The maximum space reserved for the serial number, i.e. 12. Actual
+string can only contain 11 characters.
+.TP
+\fBserial_number\fI serial number\fR
+Serial number of the piece of
+equipment. Should be unique in the world for this model.
+.BB
+index_string=true
+.EB
+.TP
+\fBfree_frequency\fI free frequency\fR
+The free-frequency in hertz or
+the inverse of the free period in seconds of this seismometer.
+.TP
+\fBmotor_const\fI motor constant\fR
+Motor constant of the seismometer coil and magnet. UNITS in MKS??
+.TP
+\fBeff_mo_const\fI effective motor const\fR
+Effective motor constant of the seismometer coil and magnet.
+UNITS in MKS??
+.TP
+\fBmass\fI seismometer mass\fR
+Mass of the moving element in kilograms.
+.TP
+\fBseis_type\fI seismometer type code\fR
+Type of seismometer.
+.BB
+codelist=sensor_types
+.EB
+.TP
+\fBpad_type\fI pad type\fR
+L or T resistor pad between seismometer and
+amplifier. A designates pad for 24 db attenuation.
+.TP
+\fBcomponent_type\fI component type code\fR
+Type of component.  Vertical, horizontal, or other.
+.BB
+codelist=components
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBr_coil\fI coil resistance\fR
+Resistance of the seismometer coil in Ohms.
+.TP
+\fBr_crit_damp\fI crit damp resistance\fR
+Critical damping resistance in Ohms.
+.TP
+\fBeff_damping\fI effective damping\fR
+Effective damping of the seismometer.
+.TP
+\fBr_lpad\fI L pad resistor\fR
+Resistance in Ohms of the damping
+resistor in series with the seismometer coil and the shunt resistor.
+.TP
+\fBr_tpad\fI T pad resistor\fR
+Resistance in Ohms of the damping
+resistor in series with the amplifier and the shunt resistor.
+.TP
+\fBr_shunt\fI shunt resistor\fR
+Resistance in Ohms of the shunt damping resistor.
+.TP
+\fBr_cal_coil\fI cal coil resistance\fR
+Resistance of the calibration coil in Ohms.
+.TP
+\fBcal_mo_const\fI cal motor constant\fR
+Calibration coil motor
+constant.
+.TP
+\fBauthority\fI authority\fR
+Who specified this information.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc),
+db_delete=nullify
+.EB
+.SH "SEE ALSO"

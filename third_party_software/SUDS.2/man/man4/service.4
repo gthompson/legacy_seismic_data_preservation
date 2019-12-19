@@ -1,0 +1,124 @@
+.so ../man_macros/suds_man_macros
+.TH SERVICE 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+service \- record of service to a signal_path
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	service_id;
+	DOMAIN	service_dc;
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	ST_TIME	from_time;
+	ST_TIME	thru_time;
+	CODE4	authority;
+	INT4	spare;
+	FIXED	len_reasons;
+	CODESTR	reasons[20];
+	FIXED	len_actions;
+	CODESTR	actions[20];
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SERVICE;
+.sp 0.5
+#define SERVICES	323L
+.fi
+.ft R
+.SH DESCRIPTION
+Description of a service or maintenance visit related to a
+signal_path.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBservice_id\fI service identifier\fR
+A number that uniquely refers, within this \fBservice_dc\fR, to an
+instance of the \fBservice\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBservice_dc\fI service domain\fR
+Domain in which service_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBsignal_path_id\fI signal path id\fR
+A number that uniquely refers,
+within this \fBsignal_path_dc\fR, to a \fBsignal_path\fR where the
+equipment that was serviced is physically located.  If, for example,
+the repair is to a radio relay, the signal_path name would be different
+from the signal_path given as part of \fBsignal_name\fR.
+.BB
+key=part_foreign(1, signal_path.signal_path_id), db_delete=restrict,
+db_must_exist=true, index_string=true
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc),
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBfrom_time\fI visit began\fR
+Time repair was started.
+.BB
+db_index=true
+.EB
+.TP
+\fBthru_time\fI visit ended\fR
+Time repair was completed.
+.TP
+\fBauthority\fI authority\fR
+.so ../man_macros/authority.descrip
+.BB
+codelist=authorities
+.EB
+.TP
+\fBspare\fI for future use \fR
+.TP
+\fBlen_reasons\fI length reasons\fR
+The maximum space reserved for the reasons, i.e. 20.  Actual string can
+only contain 19 characters to allow for the NULL byte.
+.TP
+\fBreasons\fI reasons for visit\fR
+A string of characters that refer to the codelist \fBequip_reasons\fR
+listing all of the reasons this service was made.
+.BB
+codelist=equip_reasons
+.EB
+.TP
+\fBlen_actions\fI length actions\fR
+The maximum space reserved for the actions, i.e. 20.  Actual string can
+only contain 19 characters to allow for the NULL byte.
+.TP
+\fBactions\fI actions taken\fR
+A string of characters that refer to the codelist \fBequip_actions\fR
+listing all of the actions taken during this service visit.
+.BB
+codelist=equip_actions
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc),
+db_delete=nullify
+.EB
+.SH "SEE ALSO"

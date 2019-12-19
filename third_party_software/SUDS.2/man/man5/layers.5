@@ -1,0 +1,60 @@
+.so ../man_macros/suds_man_macros
+.TH LAYERS 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+layers \- velocity layers
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FLOAT4	thickness;
+	FLOAT4	pveltop;
+	FLOAT4	pvelbase;
+	FLOAT4	sveltop;
+	FLOAT4	svelbase;
+	CODE2	function;
+	INT2	spareF;
+} PCSUDS_LAYERS;
+.sp 0.5
+#define PC_LAYERS	 	19L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  Thickness and P-wave and S-wave velocities
+for flat-layered velocity models.  A number of these structures must follow
+a \fBvelmodel\fR structure\fR.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBthickness\fI thickness\fR
+Thickness of layer in kilometers.
+.BB
+index_string=true
+.EB
+.TP
+\fBpveltop\fI P at top\fR
+P velocity at top of layer.
+.TP
+\fBpvelbase\fI P at base\fR
+P velocity at base of layer.
+.TP
+\fBsveltop\fI S at top\fR
+S velocity at top of layer.
+.TP
+\fBsvelbase\fI S at base\fR
+S velocity at base of layer.
+.TP
+\fBfunction\fI velocity function\fR
+.BB
+codelist=velfunc
+.EB
+.TP
+\fBspareF\fI for future use\fR
+.SH "SEE ALSO"

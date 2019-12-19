@@ -1,0 +1,140 @@
+.so ../man_macros/suds_man_macros
+.TH CALIBRATION 4 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+calibration \- information about a calibration signal
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	calibration_id;
+	DOMAIN	calibration_dc;
+	REFERS2	waveform_id;
+	DOMAIN	waveform_dc;
+	MS_TIME	begin_time;
+	MS_TIME	end_time;
+	FLOAT4	amplitude;
+	FLOAT4	frequency;
+	CODE1	event_type;
+	CODE1	ampl_units;
+	CODE1	amplitude_type;
+	CODE1	cause;
+	CODE1	first_motion;
+	CHAR	continuation;
+	INT2	number;
+	INT4	spare;
+	AUTHOR	authority;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_CALIBRATION;
+.sp 0.5
+#define CALIBRATIONS	320L
+.fi
+.ft R
+.SH DESCRIPTION
+When a \fBwaveform\fR contains the output of a calibration signal, this
+structure describes the calibration signal input to the seismometer.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBcalibration_id\fI calibration id\fR
+A number that uniquely identifies, within this \fBcalibration_dc\fR, an instance 
+of the \fBcalibration\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBcalibration_dc\fI calibration domain\fR
+Domain in which calibration_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBwaveform_id\fI waveform id\fR
+Unique identification number of a waveform input to a system to make this 
+calibration.
+.BB
+key=part_foreign(1,waveform.waveform_id), db_delete=restrict, 
+db_must_exist=true, index_string=true
+.EB
+.TP
+\fBwaveform_dc\fI waveform domain\fR
+Domain in which waveform_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,waveform.waveform_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP 
+\fBbegin_time\fR \fIBeginning time\fR
+GMT time of the beginning of the calibration including all clock corrections.
+.TP 
+\fBend_time\fR \fIending time\fR
+GMT time of the ending of the calibration including all clock corrections.
+.TP
+\fBamplitude\fI amplitude\fR
+Amplitude of calibration signal.
+.TP
+\fBfrequency\fI frequency\fR
+Frequency of the calibration signal in hertz.
+.TP
+\fBevent_type\fI type of calibration\fR
+.BB
+codelist=event_types
+.EB
+.TP
+\fBampl_units\fI units of amplitude\fR
+Units used for amplitude.
+.BB
+codelist=units_types
+.EB
+.TP
+\fBamplitude_type\fI type of amplitude\fR
+.BB
+codelist=amplitude_types
+.EB
+.TP
+\fBcause\fI cause\fR
+Manual or automatic.
+.BB
+codelist=causes
+.EB
+.TP
+\fBfirst_motion\fI first motion\fR
+U=up, D=down, +=probable up, -=probable down
+.BB
+codelist=first_motions
+.EB
+.TP
+\fBcontinuation\fI continuation\fR
+If this is a continuation of a previous calibration, set to c.
+.TP
+\fBnumber\fI number of calibrations\fR
+Number of applications of the calibration signal during this session.
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBauthority\fI authority\fR
+.so ../man_macros/authority.descrip
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

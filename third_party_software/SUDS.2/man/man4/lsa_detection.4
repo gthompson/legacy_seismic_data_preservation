@@ -1,0 +1,169 @@
+.so ../man_macros/suds_man_macros
+.TH LSA_DETECTION 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+lsa_detection \- a specific long-term, short-term average event detection
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	detection_id;
+	DOMAIN	detection_dc;
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	REFERS2	lsa_setting_id;
+	DOMAIN	lsa_setting_dc;
+	MS_TIME	lsa_onset_time; 
+	FLOAT4	amplitude;
+	FLOAT4	frequency;
+	FLOAT4	signal_2_noise;
+	FLOAT4	longterm_ave;
+	FLOAT4	shortterm_ave;
+	FLOAT4	other_ave;
+	FLOAT4	level;
+	INT2	local_1;
+	INT2	local_2;
+	INT2	local_3;
+	INT2	local_4;
+	INT2	local_5;
+	INT2	local_6;
+	CODE1	event_type;
+	CODE1	first_motion;
+	INT2	num_detections; 
+	AUTHOR	authority;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_LSA_DETECTION;
+.sp 0.5
+#define LSA_DETECTIONS	125L
+.fi
+.ft R
+.SH DESCRIPTION
+Values at the time of a specific lsa_detection in an event detection program using the long-term, short-term average technique.  The
+values used to define the lsa_detection are specified in \fBlsa_setting(5)\fR.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBdetection_id\fI detection id\fR
+.so ../man_macros/solution.descrip
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBdetection_dc\fI detection domain\fR
+Domain in which detection_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict, 
+db_must_exist=true, index_string=true
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP 
+\fBlsa_setting_id\fI lsa setting id\fR
+A number that uniquely identifies a particular \fBlsa_setting(5)\fR structure.
+.BB
+key=part_foreign(2,lsa_setting.lsa_setting_id), db_delete=restrict, 
+db_must_exist=true
+.EB
+.TP
+\fBlsa_setting_dc\fI lsa setting domain\fR
+Domain in which lsa_setting_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,lsa_setting.lsa_setting_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBlsa_onset_time\fI lsa onset time\fR
+Time the lsa_detection was issued.
+.TP
+\fBamplitude\fI amplitude\fR
+Amplitude of the triggering signal.
+.TP
+\fBfrequency\fI frequency\fR
+Frequency in hertz of the triggering signal.
+.TP
+\fBsignal_2_noise\fI signal to noise\fR
+Ratio of signal to noise.
+.TP
+\fBlongterm_ave\fI longterm average\fR
+Long term average at the time of triggering.
+.TP
+\fBshortterm_ave\fI shortterm average\fR
+Short term average at the time of triggering.
+.TP
+\fBother_ave\fI other average\fR
+Other average at the time of triggering, dependent on algorithm.
+.TP
+\fBlevel\fI level\fR
+Level at the time of the trigger.
+.TP
+\fBlocal_1\fI local const 1\fR
+Variable defined for this specific algorithm.
+.TP
+\fBlocal_2\fI local const 2\fR
+Variable defined for this specific algorithm.
+.TP
+\fBlocal_3\fI local const 3\fR
+Variable defined for this specific algorithm.
+.TP
+\fBlocal_4\fI local const 4\fR
+Variable defined for this specific algorithm.
+.TP
+\fBlocal_5\fI local const 5\fR
+Variable defined for this specific algorithm.
+.TP
+\fBlocal_6\fI local const 6\fR
+Variable defined for this specific algorithm.
+.TP
+\fBevent_type\fI event type\fR
+A character designating the type of event.
+.BB
+codelist=event_types
+.EB
+.TP
+\fBfirst_motion\fI first motion\fR
+U=up, D=down, +=probable up, -=probable down
+.BB
+codelist=first_motions
+.EB
+.TP
+\fBnum_detections\fI number of detections\fR
+Number of station_components that triggered.
+.TP
+\fBauthority\fI authority\fR
+Which machine made this trigger.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(3,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+lsa_setting(5)

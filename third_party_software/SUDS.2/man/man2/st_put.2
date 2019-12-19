@@ -1,0 +1,91 @@
+.so ../man_macros/suds_man_macros
+.TH ST_PUT 2 "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_put, st_put_mux \- put a suds structure on a stream
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <stdio.h>
+#include <suds/suds.h>
+INT4 st_put(GENPTR suds_struct_ptr, GENPTR data_ptr, SUDS_STREAM *output_stream);
+.sp 1
+INT4 st_put_mux(GENPTR data_ptr, INT4 data_type, INT4 data_len, SUDS_STREAM *suds_out_stream);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_put
+function st_put(record,data,output_stream)
+	integer*4 output_stream
+.fi
+.ft R
+.SH DESCRIPTION
+\fBst_put\fR writes the structure pointed to by \fBsuds_struct_ptr\fR 
+onto the \fBoutput_stream\fR.  
+.PP
+If \fBoutput_stream\fR is a file, \fBst_put\fR creates a 
+\fBstructure_tag(3)\fR and adds it to the file immediately ahead of the
+structure.  Part or all of the structure may be buffered until
+\fBst_flush(2)\fR or \fBst_close(2)\fR is called.
+.PP
+If \fBoutput_stream\fR is a database and a transaction is not in effect
+(i.e. \fBst_begin_trans(2)\fR has not been called), the structure is
+written directly to the database.  If a transaction is in effect, the
+structure will not be committed to the database until \fBst_end_trans\fR
+is called.
+.PP
+If this type of structure can be followed by data, then the data are
+written according to the structure members typically named
+\fBdata_length\fR and \fBdata_type\fR. These members must be specified
+in the manual as \fBsets_data_length=true\fR and
+\fBsets_data_type=true\fR.  The data are assumed to begin in memory at
+the first byte after the end of the structure, but \fBdata_ptr\fR may
+also point to an array located elsewhere in memory. If \fBdata_ptr\fR
+is not equal to the address of the first byte after the structure and
+is not equal to \fBNULL\fR, then the data are read from the specified
+address. The data are padded with null bytes to end on an 8-byte
+boundary. \fBstructure_tag.length_data\fR includes the pad characters
+but \fBdata_length\fR in the structure does not.
+.PP
+\fBst_put\fR returns the total number of bytes written in the structure
+plus the data following the structure.
+.PP
+A special problem occurs with online earthquake detectors that write 
+multiplexed data while an event is being detected.  Often buffering
+limitations require that the \fBMUX_DATA\fR structure be written 
+before an event has ended.  Thus \fBst_put_mux\fR is provided to
+write additional data after a \fBMUX_DATA\fR structure.  On reading
+these data later, \fBst_get\fR assumes the data extends to the end 
+of the file if \fBmux_waveform.length_data = NODATL\fR and 
+\fBmux_waveform.data_type != NODATL\fR.
+.SH "SEE ALSO"
+st_open(2), st_close(2), st_get(2), structure_properties(2)
+.SH DIAGNOSTICS
+Most errors cause \fBst_put\fR to call \fBdie\fR (See
+\fBst_error(2)\fR).  If \fBdie\fR does not call \fBexit\fR,
+\fBst_put\fR returns \fBFAILED\fR when an error has occurred, but may
+not continue properly, depending on the error.
+.SH EXAMPLE
+.LP
+.ft B
+	#include <stdio.h>
+.br
+	#include <suds/suds.h>
+.br
+.LP
+.ft B
+	SUDS_WAVEFORM *wv;
+.br
+.LP
+.ft B
+	INT2 wave[1000];
+.br
+	INT4 out_num
+.LP
+.ft B
+	out_num=st_put(wv,wave,stdout);
+.ft R
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

@@ -1,0 +1,46 @@
+.so ../man_macros/suds_man_macros
+.TH IS_SUDS_FILE 2 "28 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+is_suds_file \- determine if file is in SUDS format
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.br
+.sp 0.5
+.nf
+INT4 is_suds_file(CHAR *file_name);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 is_suds_file
+function is_suds_file(file_name)
+	character*(*) file_name;
+.fi
+.ft R
+.SH DESCRIPTION
+This function reads the first \fBstructure_tag(3)\fR, reads the
+structure length and data length, skips to the second
+\fBstructure_tag\fR and reads the first letter.  If the first letter of
+both \fBstructure_tags\fR is '\fBS\fR, then this is most likely a SUDS
+file.  The following values are returned.  All values less than or
+equal to 0 are not likely to be a SUDS or PC_SUDS file.
+.IP 2
+A PC_SUDS file.
+.IP 1
+A SUDS file.
+.IP 0
+Not a SUDS or PC_SUDS file.
+.IP -1
+Cannot open file.
+.IP -2
+Trouble reading file.
+.IP -3
+Unknown computer type for this data.
+.IP -4
+Unable to seek to second structure_tag.
+.IP -5
+Unknown byte order for this machine.
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

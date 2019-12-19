@@ -1,0 +1,32 @@
+.so ../man_macros/suds_man_macros
+.TH ST_PEEK 2 "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_peek \- return structure type of next structure to be read by st_get
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+INT4 st_peek(SUDS_STREAM *stream);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_peek
+function st_peek(stream)
+	integer*4 stream, number_of_structure,index
+.fi
+.ft R
+.SH DESCRIPTION
+.B st_peek
+returns the structure_type member of the next structure to be read by
+.B st_get.
+.PP
+Returns EOF for no structure waiting to be read.  Returns FAILED and
+prints error message if stream is NULL or not opened for reading.
+.PP
+Works for reading data from a file, database, stdio, etc.
+.SH "SEE ALSO" 
+st_get(2), st_index(2),stream(3)
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

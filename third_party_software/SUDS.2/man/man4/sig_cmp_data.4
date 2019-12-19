@@ -1,0 +1,59 @@
+.so ../man_macros/suds_man_macros
+.TH SIG_CMP_DATA 4 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+sig_cmp_data \- the wiring of one sig_path_cmp to another
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	REFERS2	connected_id;
+	DOMAIN	connected_dc;
+	INT2	pin_plus;
+	INT2	pin_minus;
+	INT2	pin_ground;
+	CHAR	in_or_out;
+	CHAR	spare_char;
+} SUDS_SIG_CMP_DATA;
+.sp 0.5
+#define SIG_CMP_DATAS	302L
+.fi
+.ft R
+.SH DESCRIPTION
+Describes wiring one piece of equipment to another. The
+\fBsig_path_cmp\fR structure may be followed by
+\fBsig_path_cmp.data_length\fR structures of type \fBsig_cmp_data\fR.
+.BB
+data_only=SIG_PATH_CMPS
+.EB
+.SH MEMBERS
+.TP
+\fBconnected_id\fI connected equipment id\fR
+A number that uniquely identifies, within this domain, an instance of
+the \fBsig_path_cmp\fR structure for the piece of equipment connected
+to this piece of equipment.
+.BB
+key=part_foreign(2,sig_path_cmp.sig_path_cmp_id)
+.EB
+.TP
+\fBconnected_dc\fI uniqueness domain\fR
+Domain in which connected_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,sig_path_cmp.sig_path_cmp_dc)
+.EB
+.TP
+\fBpin_plus\fI plus pin number\fR
+Number of the pin connected to the plus signal.
+.TP
+\fBpin_minus\fI minus pin number\fR
+Number of the pin connected to the minus signal.
+.TP
+\fBpin_ground\fI ground pin number\fR
+Number of the pin connected to ground.
+.TP
+\fBin_or_out\fI direction\fR
+Direction of this connection: i=input, o=output.
+.TP
+\fBspare_char\fI for future use\fR
+.SH "SEE ALSO"
+sig_path_cmp(4)

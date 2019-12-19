@@ -1,0 +1,124 @@
+.so ../man_macros/suds_man_macros
+.TH DESCRIPTRACE 5 "28 June 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+descriptrace \- descriptive information about a seismic trace
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netn_D;
+	STRING	network[4];
+	FIXED	len_st_nam_D;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	PAD4	pad_D;
+	MS_TIME	begintime;
+	INT2	localtime;
+	CODE1	datatype;
+	CODE1	descriptor;
+	INT2	digi_by;
+	INT2	processed;
+	INT4	data_length;
+	FLOAT4	rate;
+	FLOAT4	mindata;
+	FLOAT4	maxdata;
+	FLOAT4	avenoise;
+	INT4	numclip;
+	MS_TIME	time_correct;
+	FLOAT4	rate_correct;
+	PAD4	pad_V;
+} PCSUDS_DESCRIPTRACE;
+.sp 0.5
+#define PC_DESCRIPTRACE	7L
+.fi
+.ft R
+.SH DESCRIPTION
+Very commonly used in PC-SUDS.  Description of the properties of a
+seismic trace or waveform that follows this structure in the form
+of \fBdatatype\fR and the length of \fBlength\fR.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netn_D\fI len network name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_st_nam_D\fI len station name\fR
+.TP
+\fBst_name\fI station name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBpad_D\fI padding\fR
+.TP
+\fBbegintime\fI initial sample time\fR
+Time of first data sample.
+.TP
+\fBlocaltime\fI local time diff\fR
+Minutes to add to GMT to get local time.
+.TP
+\fBdatatype\fI data type\fR
+.BB
+sets_data_type=true, codelist=datatyp
+.EB
+.TP
+\fBdescriptor\fI data descriptor\fR
+.BB
+codelist=descript
+.EB
+.TP
+\fBdigi_by\fI digitized by\fR
+Agency code who digitized record.
+.TP
+\fBprocessed\fI processed by\fR
+Processing done on this waveform.
+.BB
+codelist=stat_proc
+.EB
+.TP
+\fBdata_length\fI number of samples\fR
+Number of samples in trace.
+.BB
+sets_data_length=true
+.EB
+.TP
+\fBrate\fI samples per second\fR
+.TP
+\fBmindata\fI minimum data value\fR
+.TP
+\fBmaxdata\fI maximum data value\fR
+.TP
+\fBavenoise\fI average noise\fR
+Average value of first 200 samples.
+.TP
+\fBnumclip\fI num clipped samples\fR
+Number of clipped datapoints.
+.TP
+\fBtime_correct\fI time correction\fR
+Time correction to be added to begintime.
+.TP
+\fBrate_correct\fI rate correction\fR
+Rate correction to be added to rate.
+.TP
+\fBpad_V\fI padding\fR
+.SH "SEE ALSO"

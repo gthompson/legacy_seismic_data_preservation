@@ -1,0 +1,10 @@
+Used to determine the proper ordering of component structures such as
+\fBseismometer, sig_path_cmp, recorder\fR associated with the same
+\fBsignal_path_id\fR. The sensor should be number 0, the on-site
+calibrator 10, the amp/vco 20, the computer atod 1000, the analog tape
+recorder 900, and the discriminator 950.  Other components such as
+transmitters, receivers, antennas, summing amplifiers should be
+numbered in between or after these numbers as appropriate.  Where
+multiple signal_paths go through the same component, the
+\fBpos_in_path\fR may not be identical for the same piece of hardware
+in different signal_paths.

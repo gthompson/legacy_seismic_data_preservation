@@ -1,0 +1,59 @@
+.so ../man_macros/suds_man_macros
+.TH BEAM_DATA 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+beam_data \- component of a beam of waveforms
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	FLOAT4	delay;
+	FLOAT4	weight;
+} SUDS_BEAM_DATA;
+.sp 0.5
+#define BEAM_DATAS	318L
+.fi
+.ft R
+.SH DESCRIPTION
+When a \fBwaveform\fR is formed by the addition of several waveforms, a
+separate \fBsignal_path\fR structure should be created with at least
+\fBcomponent\fR and \fBpath_type\fR members reset and followed by a
+number of these structures.  The beam azimuth and dip (a function of
+slowness) should be put in the \fBsensor_azimuth\fR and
+\fBsensor_dip\fR members. This method also applies to specifying radial
+and transverse components formed by summing signals from two horizontal
+sensors.
+.PP
+There is no way to restrict deletion of a \fBsignal_path\fR from a
+database simply because it exists in data following a \fBsignal_path or
+\fBmux_waveform\fR structure.  Thus it is conceivable to have
+\fBsignal_path_ids\fR that are orphans pointing nowhere.  Generally
+\fBsignal_path structures\fR should not be deleted from a database.
+.BB
+data_only=SIGNAL_PATHS
+.EB
+.SH MEMBERS
+.TP 
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_foreign(1,signal_path.signal_path_id)
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc)
+.EB
+.TP
+\fBdelay\fI time delay\fR
+Time in seconds added to this signal_path waveform before summing to find array.
+.BB
+index_string=true
+.EB
+.TP
+\fBweight\fI weight\fR
+Value this signal_path waveform was multiplied by before summing.
+.SH "SEE ALSO"

@@ -1,0 +1,80 @@
+	How to compile SUDS on a Macintosh Comuter	      8/27/93
+
+SUDS for the Macintosh can be distributed either on DOS formatted
+diskettes written on a SUN SPARC station using "make mac.floppy" in the
+Makefile in this directory or as Macintosch diskettes with the Think C
+project manager file made on a Macintosh Computer.
+
+FROM A MAC FORMATED DISK
+
+Drag and drop folders to "Development" on the Macintosh HD and Click on
+suds_project.pi.
+
+FROM DOS FORMATTED DISKETTES
+
+The diskette contains a PC file system but with files in Macintosh
+format.  In Macintosh format, each line is terminated by a carriage
+return (\r), while in MSDOS format, each line is terminated with a
+carriage return followed by a linefeed (\n).
+
+1) Install THINK C on the Macintosh according to the instructions.
+
+2) In the Development Folder create a folder called "Suds Project
+Folder".  In this folder create folders "include", "libsuds", and
+"cmd".
+
+3) Use the Apple File Exchange Program to load the contents of the
+diskette onto the Macintosh.  If this utility is not loaded on your
+system, it may be on the System 7 Tidbits Diskette.  Click on Apple
+File Exchange.  Insert the diskette.  On the "MS-DOS to Mac" banner
+item, select "Default translation".  In left window bring up the Suds
+Project Folder, then the "include" folder.  In the right window bring
+up the "include" folder.  Press Translate.  Do the same for the
+"libsuds" and "cmd" folders.  Eject the diskette and close Apple File
+Exchange.
+
+4) Select the "include" directory.  Change all file names to be
+prefaced by "suds/".  Click once on the "include" folder.  Under the
+"File" banner option choose "Make Alias", relabel "SUDS include alias"
+and place in the "Aliases" folder of the THINK C" folder.
+
+5) Click on the THINK Project Manager.  Change the THINK C folder to
+Development.  Double click on the SUDS project folder.  Press New.
+Type under Name new project: "suds_project.pi" where pi is option p.
+Press "Create".
+
+6) Set the Project Manager Options:  The following changes assume that
+the "Factory Settings" button in in effect.  Under "Edit" select
+"Options" and "THINK Project Manager".  In "Preferences" click to
+"Project Window".  Set "Show CODE size", " Show DATA size", "Show JUMP
+size", and "Show segment numbers".  Press "OK".  Under "Edit" select
+"Options" and "THINK C".  Under "Language Settings" select "#define
+__STDC__", "enums are always ints" and "Check pointer types".  Select
+"Language Extensions" and "THINK C".  Turn off "Strict Prototype
+Enforcement".  Press "OK".  Under "Compiler Settings"  turn on "8-byte
+doubles". Leave other settings as they are.  Press "OK".
+
+7) Set Project type: Under "Project" select "Set Project Type".  Type
+"SUDS" in Creator box.  Set "Far CODE" and "Far DATA".  Set Partition
+(K) to 1024.
+
+8) Under "Source" banner item select "Add Files".  Select "THINK C",
+"Standard Libraries", "ANSI-A4".  Press "Add" and "Done".
+
+9) Under "Source" banner item select "Add Files".  Select "libsuds",
+press "Add All" and then "Done".
+
+10) You must segment the project into segments of less than 32 K.
+Follow the THINK C instructions.
+
+11) Under the "Project" banner item, select "Bring Up to Date".  When
+you select "Run" on the same menu, the test_io program will be run.
+
+12) Nearly every .c file has a test routine if "DEBUG" is defined.  You
+can compile these and run them as you wish, but remove test_io.c from
+the project.
+
+13) The SUDS commands are in the cmd folder.
+
+
+

@@ -1,0 +1,70 @@
+. \" To add a manual page to the printed manual and to have it compiled
+. \" add the file name in alphabetical order in this file.
+. \" If the page should not be compiled, add a line to comp_man/man_script
+. \" Run this file as ptroff -rD1 -rC1 -man MAN3
+. \" .rs is required to skip to top of next page
+.rs
+.so Title.2
+.rs
+.so st_intro.2
+.rs
+.so asc2member.2
+.rs
+.so calc_pathname.2
+.rs
+.so copy_struct.2
+.rs
+.so descr_trace.2
+.rs
+.so get_code.2
+.rs
+.so get_label.2
+.rs
+.so isnear.2
+.rs
+.so is_suds_file.2
+.rs
+.so make_comment.2
+.rs
+.so make_sig_name.2
+.rs
+.so set_label.2
+.rs
+.so st_abort_trans.2
+.rs
+.so st_begin_trans.2
+.rs
+.so st_close.2
+.rs
+.so st_command.2
+.rs
+.so st_delete.2
+.rs
+.so st_die.2
+.rs
+.so st_end_trans.2
+.rs
+.so st_error.2
+.rs
+.so st_free.2
+.rs
+.so st_get.2
+.rs
+.so st_index.2
+.rs
+.so st_init.2
+.rs
+.so st_open.2
+.rs
+.so st_peek.2
+.rs
+.so st_put.2
+.rs
+.so st_time.2
+.rs
+.so st_unget.2
+.rs
+.so structure_properties.2
+.rs
+. \" Last line of MAN2 preceeded by .rs for manual compiler
+

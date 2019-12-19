@@ -1,0 +1,149 @@
+.so ../man_macros/suds_man_macros
+.TH EQUIPMENT 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+equipment \- equipment making up a station/component
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_t_netw;
+	STRING	t_network[4];
+	FIXED	len_st_nam;
+	STRING	t_st_name[5];
+	CODE1	t_component;
+	CODE2	t_inst_type;
+	FIXED	len_p_netw;
+	STRING	p_network[4];
+	FIXED	len_p_st_nam;
+	STRING	p_st_name[5];
+	CODE1	p_component;
+	CODE2	p_inst_type;
+	FIXED	len_n_netw;
+	STRING	n_network[4];
+	FIXED	len_n_st_nam;
+	STRING	n_st_name[5];
+	CODE1	n_component;
+	CODE2	n_inst_type;
+	FIXED	len_serial;
+	STRING	serial[8];
+	CODE2	model;
+	INT2	knob1;
+	INT2	knob2;
+	CODE2	reason;
+	FLOAT4	frequency;
+	ST_TIME	effective;
+} PCSUDS_EQUIPMENT;
+.sp 0.5
+#define PC_EQUIPMENT	4L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  Information about a piece of equipment and
+what it is connected to.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_t_netw\fI len network name\fR
+.TP
+\fBt_network\fI network name\fR
+Network name for this station component.
+.TP
+\fBlen_st_nam\fI len station name\fR
+.TP
+\fBt_st_name\fI station name\fR
+Station name for this station component.
+.BB
+index_string=true
+.EB
+.TP
+\fBt_component\fI component\fR
+Component for this station component.
+.BB
+codelist=comps
+.EB
+.TP
+\fBt_inst_type\fI instrument type\fR
+Instrument type for this station component.
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBlen_p_netw\fI len network name\fR
+.TP
+\fBp_network\fI network name\fR
+Network name for the previous station component.
+.TP
+\fBlen_p_st_nam\fI len station name\fR
+.TP
+\fBp_st_name\fI station name\fR
+Station name for the previous station component.
+.TP
+\fBp_component\fI component\fR
+Component for the previous station component.
+.BB
+codelist=comps
+.EB
+.TP
+\fBp_inst_type\fI instrument type\fR
+Instrument type for the previous station component.
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBlen_n_netw\fI len network name\fR
+.TP
+\fBn_network\fI network name\fR
+Network name for the next station component.
+.TP
+\fBlen_n_st_nam\fI len station name\fR
+.TP
+\fBn_st_name\fI station name\fR
+Station name for the next station component.
+.TP
+\fBn_component\fI component\fR
+Component for the next station component.
+.BB
+codelist=comps
+.EB
+.TP
+\fBn_inst_type\fI instrument type\fR
+Instrument type for the next station component.
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBlen_serial\fI len serial\fR
+.TP
+\fBserial\fI serial number\fR
+.TP
+\fBmodel\fI equipment model\fR
+.BB
+codelist=equip_model
+.EB
+.TP
+\fBknob1\fI knob 1 setting\fR
+Knob setting or series resistor value of Lpad.
+.TP
+\fBknob2\fI knob 2 setting\fR
+Knob setting or shunt resistor value of Lpad.
+.TP
+\fBreason\fI repair reason\fR
+Reason change was made.
+.BB
+codelist=equip_reason
+.EB
+.TP
+\fBfrequency\fI frequency\fR
+Sensor corner frequency, vco frequency, transmitter frequency, etc.
+.TP
+\fBeffective\fI date effective\fR
+Date/time these values became effective.
+.SH "SEE ALSO"

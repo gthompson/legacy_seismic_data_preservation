@@ -1,0 +1,63 @@
+.TH ST_INTRO 3 "10 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+st_intro \- introduction to SUDS system structures
+.SH OVERVIEW
+The \fBS\fReismic \fBU\fRnified \fBD\fRata \fBS\fRystem (\fBSUDS\fR) is
+based on organizing data into \fIstructures or groups that provide all
+of the important information about a logical entity\fR such as an
+earthquake hypocentral solution, a seismic waveform, a phase pick, or
+the frequency response of a component or system. These structures or
+groups of data can then be accessed and utilized efficiently and stored
+in a machine-independent manner, in any order, on any type of storage
+device.
+.PP
+A structure consists of an ordered list of members. Multiple instances
+of a structure can be thought of as a table where there is one column
+for each member and one row for each instance of the structure. Some
+members of some structures refer to specific instances of other
+structures, providing a way to relate, for example, specific phase
+picks to a specific earthquake solution, a specific waveform to a
+specific recorder, etc. Thus \fBSUDS\fR, besides being a data format,
+is a model or plan for a relational database system.
+.PP
+Chapter 3 of the manual provides a description of structures
+used for system tasks.  These include the central tables
+\fBvariable_info.3, structure_info.3, member_info.3\fR and
+a structure \fBstream.3\fR defined whenever a \fBSUDS\fR file is opened.
+.LP
+See the introduction to chapter 4 for a detailed discussion of
+variable types, etc.
+.SH "LIST OF STRUCTURES"
+Structures currently defined by the \fBSUDS\fR standard are as
+follows:
+.br
+.nf
+.na
+.ta 1.1i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.so struct_names.3
+.fi
+.ad
+.SH "PROPERTIES OF THE STRUCTURES"
+.nf
+.na
+.ta 1.5i 2.3i 3.1i 3.9i 4.7i
+.so struct_sizes.3
+.fi
+.ad
+.SH "SEE ALSO"
+\fI4. External Data Representation: Sun Technical Notes and 5. External
+Data Representation Standard: Protocol Specification\fR in \fBNetwork
+Programming Guide\fR
+.LP
+st_intro(1), st_intro(2), st_intro(4)
+.SH FILES
+.LP
+/usr/include/suds/suds.h
+.LP
+/usr/include/suds/suds_mem.h
+.LP
+/usr/include/suds/suds_str.h
+.LP
+/usr/include/suds/suds_var.h
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

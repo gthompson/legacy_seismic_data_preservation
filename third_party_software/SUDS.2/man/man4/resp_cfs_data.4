@@ -1,0 +1,35 @@
+.so ../man_macros/suds_man_macros
+.TH RESP_CFS_DATA 4 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+resp_cfs_data \- response values for corner frequency and slope
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FLOAT4	corner_freq;
+	FLOAT4	db_per_decade;
+} SUDS_RESP_CFS_DATA;
+.sp 0.5
+#define RESP_CFS_DATAS	305L
+.fi
+.ft R
+.SH DESCRIPTION
+Response information when specified as a sequence of corner frequencies
+and slopes (db per decade).  A number of these structures 
+(\fBresponse.data_length\fR) follow structure \fBresponse\fR as data.
+.BB
+data_only=RESPONSES
+.EB
+.SH MEMBERS
+.TP
+\fBcorner_freq\fI corner frequency\fR
+Corner frequency point on the amplitude versus frequency curve in hertz.
+.TP
+\fBdb_per_decade\fI slope (db/decade)\fR
+Slope of the line after (higher frequency) the corner in db/decade.
+.SH "SEE ALSO"
+response(4), resp_fap_data(4), resp_fir_data(4),
+resp_pz_data(4), resp_sen_data(4)
+
+

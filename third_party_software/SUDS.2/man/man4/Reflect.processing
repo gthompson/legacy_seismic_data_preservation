@@ -1,0 +1,45 @@
+Field parameters, single station
+	alias_filter	frequency slope
+	band_reject	frequency slope frequency slope
+	high_cut	frequency slope
+	low_cut		frequency slope
+	notch		frequency
+	polarity
+	vertical stacking
+	gain_type (agc, fixed, gain ranged, etc)
+	gain_setting
+	sensor_type
+	recorder_type
+
+Processing single trace
+	source_static
+	receiver_static
+	band_reject	frequency slope frequency slope
+	high_cut	frequency slope
+	low_cut		frequency slope
+	notch		frequency
+	mute
+	begin_taper
+	end_taper
+	amplitude_recovery
+	weighting
+
+Ordering for display
+	common_source
+	common_receiver or continuous profile
+	common_depth_point
+	common_offset in marine this is common receiver
+
+Multiple trace stacking
+	vertical_stack (add without offset)
+	cdp or horizontal_stack
+	common_offset_stack
+
+Gathers
+	as recorded
+	single_fold continuous
+	cdp or horizontal_stack (correct for normal moveout and statics)
+	common_range_gather (same offset, but nearby reflection points)
+
+Statics = differences from weathering and elevation
+Normal moveout = differences in arrival time as function of distance

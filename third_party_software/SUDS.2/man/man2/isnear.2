@@ -1,0 +1,77 @@
+.so ../man_macros/suds_man_macros
+.TH ISNEAR 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+isnearf, isneard \- test if a floating point variable is equal to NODATF
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.br
+.sp 0.5
+.nf
+YESNO isnearf(FLOAT4 x, FLOAT4 y); 
+YESNO isneard(FLOAT8 u, FLOAT8 v);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 isnearf,isneard
+function isnearf(x,y)
+	real*4 x,y;
+function isneard(u,v)
+	real*8 u,v;
+.fi
+.ft R
+.SH DESCRIPTION
+Use these functions to test whether one floating-point variable is
+nearly equal to another floating-point variable.  Due to roundoff
+errors, a simple if(x==NODATF) may not work.  Furthermore while floats
+are passed as doubles on many machines, this is not a portable
+assumption.  These routines check to see if the first variable is
+within \(+diff of the second variable where diff=second variable times
+10 to the minus 7.  They return \fBTRUE\fR or \fBFALSE\fR.
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH EXAMPLE
+.nf
+INTV die(n) INTV n; {exit(n);}
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   FLOAT4 x;
+   FLOAT8 y;
+
+   progname=argv[0];
+.eo
+   printf("\n\t\t\t\t\t1 means TRUE\n");
+   printf("\t\t\t\t\t0 means FALSE\n");
+   x=NODATF;
+   printf(" %e is near %e\t%d\n",x,NODATF,isnearf(x,NODATF));
+   y=NODATF;
+   printf(" %e is near %e\t%d\n",y,NODATF,isneard(y,NODATF));
+   x=MINTIME;
+   printf("\n %e is near %e \t%d\n",x,(FLOAT8)MINTIME,isnearf(x,(FLOAT8)MINTIME));
+   y=MAXTIME;
+   printf("  %le is near  %le \t%d\n",y,(FLOAT8)MAXTIME,isneard(y,(FLOAT8)MAXTIME));
+   x=NODATF;
+   printf("\n %e ",x);
+   if(x==NODATF)printf("is equal to");
+   if(x!=NODATF)printf("is not equal to");
+   printf(" %e\n",(FLOAT4)NODATF);
+.ec
+   return(0);
+}
+
+Produces the following output:
+                                        1 means TRUE
+                                        0 means FALSE
+ -1.700000e+36 is near -1.700000e+36    1
+ -1.700000e+36 is near -1.700000e+36    1
+
+ -2.147472e+09 is near -2.147472e+09    1
+  2.147472e+09 is near  2.147472e+09    1
+
+ -1.700000e+36 is not equal to -1.700000e+36
+.fi

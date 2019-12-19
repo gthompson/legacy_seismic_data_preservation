@@ -1,0 +1,35 @@
+. \" To add a manual page to the printed manual and to have it compiled
+. \" add the file name in alphabetical order in this file.
+. \" If the page should not be compiled, add a line to comp_man/man_script
+. \" Run this file as ptroff -rD1 -rC1 -man MAN5
+. \" .rs is required to skip to top of next page due to a bug in the man macros
+.rs
+.so Title.3
+.rs
+.so st_intro.3
+.rs
+.so code_data.3
+.rs
+.so code_list.3
+.rs
+.so comment.3
+.rs
+.so gui_default.3
+.rs
+.so domain_def.3
+.rs
+.so file_index.3
+.rs
+.so member_info.3
+.rs
+.so stream.3
+.rs
+.so structure_info.3
+.rs
+.so structure_tag.3
+.rs
+.so terminator.3
+.rs
+.so variable_info.3
+.rs
+. \" Last line of MAN3 preceeded by .rs for manual compiler

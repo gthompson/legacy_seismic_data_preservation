@@ -1,0 +1,237 @@
+.so ../man_macros/suds_man_macros
+.TH MAKE_COMMENT 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+make_comment, add_comment, replace_comment, get_comment \- write and read suds comments
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.br
+SUDS_COMMENT *make_comment(CHAR *suds_structure_ptr, CHAR *member_name,
+.br
+	CHAR *comment, DOMAIN domain);
+.br
+INT4 add_comment(SUDS_COMMENT **comment_ptr_adr, CHAR *member_name,
+.br
+	CHAR *comment); 
+.br
+INT4 replace_comment(SUDS_COMMENT **comment_ptr_adr, CHAR *member_name,
+.br
+	CHAR *comment);
+.br
+INT4 get_comment(SUDS_COMMENT *comment_ptr, CHAR *member_name, CHAR *comment,
+.br
+	INT4 max_chars);
+.ft R
+.SH C_SYNOPSIS
+.ft B
+.nf
+integer*4 make_comment,add_comment, replace_comment, get_comment
+function make_comment(suds_structure,member_name,comment,domain)
+function add_comment(comment_ptr_adr,member_name,comment)
+function replace_comment(comment_ptr_adr,member_name,comment)
+function get_comment(comment_ptr,member_name,comment,max_chars)
+	integer*4 domain, max_chars
+	character*(*) member_name, comment
+.fi
+.ft R
+.SH DESCRIPTION
+Any \fBsuds\fR structure may have a comment structure
+(\fBcomment(5)\fR) associated with it that contains an ASCII string of
+any length up to 65535 bytes describing the structure or one or more
+members of the structure.  Only one comment is available per instance
+of a structure.  The same comment may refer to many instances of one
+type of structure.  Comments may contain sub-comments that refer to
+specific members of the structure.  Each must be prefaced with
+\fB{name}\fR where \fBname\fR is the name of the member.  If a
+sub-comment refers to the whole structure then the preface is
+\fB{}\fR.  Thus a comment about a \fBpick\fR structure might be as
+follows:
+.br
+.ad l
+"{}analyst is feeling sick today{signal_2_noise}waveform very irregular, possible telemetry
+spikes{onset_type}quite 
+debatable{gain_range}unable to tell if gain ranged"
+.ad
+.PP
+These subroutines make it easy to create, modify and access comment
+structures.
+.PP
+\fBmake_comment\fR creates a \fBcomment\fR structure followed by data
+with the preface \fB{member_name}\fR and the character string
+\fBcomment\fR.  \fBmake_comment\fR returns a pointer to this structure
+with data following.  \fBcomment_id\fR and \fBcomment_dc\fR are set in
+the \fBsuds_structure_ptr\fR to a unique number and to \fBdomain\fR
+respectively.  \fBtype\fR specifies the type or define number of the
+structure.  Returns \fBNULL\fR if the member_name is not recognized.
+.PP
+\fBadd_comment\fR catenates a preface and comment string to an existing
+comment structure. \fBNote that the address of the comment_ptr_address
+is passed.\fR  If the \fBmember_name\fR already exists as a preface in
+the comment, the comment string is catenated to that substring without
+a new preface.  The return value is the number of characters in the
+total comment string.  0 means there was no appropriate substring.
+\fBFAILED\fR means the \fBmember_name\fR was not recognized.
+.PP
+\fBreplace_comment\fR replaces the comment following a preface with the
+new comment string or, if the preface does not already occur, adds the
+new preface and comment string to the comment.  The return value is the
+number of characters in the total comment string.  \fBFAILED\fR means
+the \fBmember_name\fR was not recognized.
+.PP
+\fBget_comment\fR fills the string \fBcomment\fR with the substring for
+a specific \fBmember_name\fR. If the substring is longer than
+\fBmax_chars\fR, it is truncated to \fBmax_chars\fR.  The return value
+is the number of characters in the substring.  0 means there was no
+appropriate substring.  \fBFAILED\fR means the \fBmember_name\fR was
+not recognized.  The special member_name \fB"all"\fR will fill the
+string \fBcomment\fR with the complete comment string. A number for a
+member_name will return the appropriate substring. Thus "1" fills the
+comment string with the second substring, counting from 0, including
+preface in the comment data string.
+.PP
+A comment may contain any ASCII characters except \fB{\fR or \fB}\fR
+which are reserved for labeling. If either of these characters are
+included in a comment string passed to any of these routines, they will
+be converted to a \fB[\fR or \fB]\fR respectively. If they are put in a
+comment by other means, they may confuse these routines.  Comments that
+refer to more than one structure member should be created using
+\fBmake_comment\fR and several calls to \fBadd_comment\fR.
+.PP
+\fBadd_comment\fR and \fBreplace_comment\fR create a duplicate comment
+structure but with a different \fBdata_length\fR, make the necessary
+changes, delete the old \fBcomment\fR structure and return the new
+pointer. Thus be sure to pass the address of a pointer to a
+\fBcomment\fR structure.
+.SH "SEE ALSO"
+comment(5)
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH EXAMPLE
+.nf
+CHAR test[]="{pick_id}not really good pick{observ_phase}may not really be p{time_picked}it was a bad day";
+
+#define MAXCHARS 256L
+
+INTV die(n) INTV n; {exit(n);}
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   SUDS_COMMENT *co,*com;
+   SUDS_PICK *pic;
+   INT4 i,begin,end,len,domain;
+   CHAR comment[MAXCHARS];
+
+   progname=argv[0];
+   domain=10000;
+
+   len=strlen(test)+1;
+   if(len%8>0)len=(len/8 +1)*8;
+   i=st_create(COMMENTS,(GENPTR *)&co,len);
+   co->comment_id=0;
+   co->comment_dc=domain;
+   co->data_type=CHR;
+   co->data_length=strlen(test);
+   co->struct_number=PICKS;
+   strncpy((CHAR *)pointer_to_data((CHAR *)co),test,(INTV)len);
+.eo
+   printf("Initial comment is   (%s)\n",pointer_to_data((CHAR *)co));
+   printf("Gets parts of a comment\n");
+   printf("%3ld %14s = (%s))\n",
+      get_comment(co,"all",comment,MAXCHARS),"all",comment);
+   printf("%3ld %14s = (%s)\n",
+      get_comment(co,"pick_id",comment,MAXCHARS),"pick_id",comment);
+   printf("%3ld %14s = (%s)\n",
+      get_comment(co,"observ_phase",comment,MAXCHARS),"observ_phase",comment);
+.ec
+
+
+
+
+.eo
+   printf("%3ld %14s = (%s)\n",
+      get_comment(co,"time_picked",comment,MAXCHARS),"time_picked",comment);
+   printf("\nNow make a new comment\n");
+   st_create(PICKS,(GENPTR *)&pic,0L);
+   com=make_comment((GENPTR)pic,"pick_id","not really good pick",domain);
+   printf("%3ld (%s)\n",get_comment(com,"all",comment,MAXCHARS),comment);
+   printf("comment structure made with data_length=%ld\n",com->data_length);
+   printf("pick.comment_id = %ld pick.comment_dc = %ld\n",
+      pic->comment_id,pic->comment_dc);
+   printf("comment.comment_id = %ld comment.comment_dc = %ld\n",
+      com->comment_id,com->comment_dc);
+   
+   printf("\nNow add a comment\n");
+   i=add_comment(&com,"observ_phase","really this is junk");
+   printf("i=%3ld %3ld %3ld\n\tall = (%s)\n",
+      i,get_comment(com,"all",comment,MAXCHARS),
+      com->data_length,comment);
+   i=add_comment(&com,"pick_id","but certainly interesting");
+   printf("i=%3ld %3ld %3ld\n\tall = (%s)\n",
+      i,get_comment(com,"all",comment,MAXCHARS),
+      com->data_length,comment);
+   i=add_comment(&com,"authority","analyst is sick");
+   printf("i=%3ld %3ld %3ld\n\tall = (%s)\n",
+      i,get_comment(com,"all",comment,MAXCHARS),
+      com->data_length,comment);
+   printf("data_length=%ld\n",com->data_length);
+
+   printf("\nNow replace a comment\n");
+   replace_comment(&com,"pick_id","no, this is not thus");
+   printf("%3ld %3ld (%s)\n",get_comment(com,"all",comment,MAXCHARS),
+      com->data_length,comment);
+   printf("data_length=%ld\n",com->data_length);
+
+   printf("%3ld %3ld  0 = (%s)\n",get_comment(com,"0",comment,MAXCHARS),
+      com->data_length,comment);
+   printf("%3ld %3ld  1 = (%s)\n",get_comment(com,"1",comment,MAXCHARS),
+      com->data_length,comment);
+   printf("%3ld %3ld  2 = (%s)\n",get_comment(com,"2",comment,MAXCHARS),
+      com->data_length,comment);
+   printf("%3ld %3ld 11 = (%s)\n",get_comment(com,"11",comment,MAXCHARS),
+      com->data_length,comment);
+   printf("\nThe following ERROR is intentional:\n");
+   printf("%3ld %3ld \"\" = (%s)\n",get_comment(com,"",comment,MAXCHARS),
+      com->data_length,comment);
+.ec
+   return(0);
+}
+
+Produces the following output:
+
+Initial comment is   ({pick_id}not really good pick{observ_phase}may not really be p{time_picked}it was a bad day)
+Gets parts of a comment
+ 91            all = ({pick_id}not really good pick{observ_phase}may not really be p{time_picked}it was a bad day)
+ 20        pick_id = (not really good pick)
+ 19   observ_phase = (may not really be p)
+ 16    time_picked = (it was a bad day)
+
+Now make a new comment
+ 29 ({pick_id}not really good pick)
+comment structure made with data_length=32
+pick.comment_id = 4 pick.comment_dc = 10000
+comment.comment_id = 4 comment.comment_dc = 10000
+
+Now add a comment
+i= 62  62  64
+        all = ({pick_id}not really good pick{observ_phase}really this is junk)
+i= 88  88  96
+        all = ({pick_id}not really good pick but certainly interesting{observ_phase}really this is junk)
+i=114 114 120
+        all = ({pick_id}not really good pick but certainly interesting{observ_phase}really this is junk{authority}analyst is sick)
+data_length=120
+
+Now replace a comment
+ 88  96 ({pick_id}no, this is not thus{observ_phase}really this is junk{authority}analyst is sick)
+data_length=96
+ 29  96  0 = ({pick_id}no, this is not thus)
+ 33  96  1 = ({observ_phase}really this is junk)
+ 26  96  2 = ({authority}analyst is sick)
+  0  96 11 = ()
+
+The following ERROR is intentional:
+ERROR in sun4/make_com:
+get_member_info: member () in structure type 21 (pick) unknown
+  0  96 () = ()
+.fi

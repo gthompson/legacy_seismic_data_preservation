@@ -1,0 +1,7 @@
+A number representing an institution or authority operating a network,
+calculating a solution, make an instrument calibration, etc. The authority is
+specified as a number that refers to an ASCII string in the authority codelist.
+Each institution has a base number such as 10000, 20000, etc.  The institution
+may assign the 9999 numbers above their base number to individual people or
+groups. The individual number might be set to agree with the user number in
+/etc/passwd on UNIX systems.

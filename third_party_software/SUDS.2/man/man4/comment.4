@@ -1,0 +1,94 @@
+.so ../man_macros/suds_man_macros
+.TH COMMENT 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+comment \- comment about structure contents
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	comment_id;
+	DOMAIN	comment_dc;
+	CODE4	data_type;
+	INT4	data_length; 
+	INT4	struct_number;
+	INT4	spare;
+} SUDS_COMMENT;
+.sp 0.5
+#define COMMENTS	120L
+.fi
+.ft R
+.SH DESCRIPTION
+Any \fBsuds\fR structure may have a comment structure
+associated with it that contains an ASCII string of any length up to 65536
+bytes describing the structure or one or more members of the structure.  Only
+one comment is available per instance of a structure.  The same comment may
+refer to many instances of one type of structure.  Comments must refer to a
+specific member of the structure and thus must be prefaced with \fB{name}\fR
+where \fBname\fR is the name of the member.  Thus a comment about a \fBpick\fR
+structure might be "{signal_2_noise} waveform very irregular, possible
+telemetry spikes {onset_type} quite debatable {gain_range} unable to tell if
+gain ranged".
+.LP
+Comments should be written and accessed through the subroutines described in
+\fBmake_comment(2)\fR.
+.PP
+A comment may contain any ASCII characters except \fB{\fR or \fB}\fR which
+are reserved for labeling. If either of these characters are included in a comment
+string passed to any of the \fBmake_comment(2)\fR routines, they will
+be converted to a \fB[\fR or \fB]\fR respectively. If they are put in a comment
+by other means, they may confuse the \fBmake_comment(2)\fR routines. 
+.PP
+There is no required format for the contents of comments. Thus it is
+recommended that they only be used for free-form descriptions and NOT
+as a place to encode important information to be read by a computer
+program.
+.BB
+permissions="siud_siu_siu_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBcomment_id\fI comment id\fR
+A number that uniquely identifies, within this \fBdomain\fR, an instance of 
+the \fBcomment\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBcomment_dc\fI uniqueness domain\fR
+Domain in which comment_id is unique.
+.BB
+key=part_primary, codelist=authorities
+.EB
+.TP
+\fBdata_type\fI data type\fR
+Type of data following this structure. Must be defined as type CHR.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of points\fR
+Number of chars that follow this structure.  Comments are padded by the subroutines
+and by the input/output library to always have a length in storage evenly
+divisable by 8.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBstruct_number\fI structure number\fR
+Number of the structure type this comment is associated with.
+.TP
+\fBspare\fI for future use\fR
+.SH "SEE ALSO"
+\fBmake_comment(2)\fR
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+

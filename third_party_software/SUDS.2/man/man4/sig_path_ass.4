@@ -1,0 +1,143 @@
+.so ../man_macros/suds_man_macros
+.TH SIG_PATH_ASS 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+sig_path_ass \- associates signal path components with signal paths
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	REFERS2	sig_path_cmp_id;
+	DOMAIN	sig_path_cmp_dc;
+	REFERS2	site_id;
+	DOMAIN	site_dc;
+	INT4	spare;
+	AUTHOR	authority;
+	INT2	pos_in_path;
+	INT2	channel_number;
+	FLOAT4	frequency;
+	FLOAT4	gain;
+	FLOAT4	attenuation;
+	ST_TIME	from_time; 
+	ST_TIME	thru_time; 
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SIG_PATH_ASS;
+.sp 0.5
+.fi
+#define SIG_PATH_ASSS	316L
+.ft R
+.SH DESCRIPTION
+The \fBsig_path_ass\fR structure associates \fBsignal_paths\fR with
+components. For each \fBsignal_path\fR, there typically exist several
+\fBsig_path_ass\fR structures, each with the same \fBsignal_path_id\fR
+but with different \fBsig_path_ass_ids\fR. This is an associative 
+table that implements a many-to-many relationship: a \fBsignal_path\fR
+has many components and a component can be part of many \fBsignal_paths\fR.
+.BB
+permissions="s_s_siu_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_primary, key=part_foreign(1,signal_path.signal_path_id), 
+db_delete=restrict, db_must_exist=true, index_string=true
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_primary, key=part_foreign(1,signal_path.signal_path_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBsig_path_cmp_id\fI sig path component id\fR
+A number that uniquely refers, within this \fBcomponent_type\fR 
+and this \fBsig_path_cmp_dc\fR, to an instance of the \fBcomponent\fR 
+structure.
+.BB
+key=part_primary, key=part_foreign(2,sig_path_cmp.sig_path_cmp_id), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBsig_path_cmp_dc\fI component domain\fR
+Domain in which sig_path_cmp_id is unique.
+.BB
+codelist=authorities, key=part_primary, 
+key=part_foreign(2,sig_path_cmp.sig_path_cmp_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBsite_id\fI site id\fR
+A number that uniquely refers to an instance of 
+the \fBsite\fR structure.
+.BB
+key=part_foreign(3, site.site_id), db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBsite_dc\fI site site domain\fR
+Domain in which site_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,site.site_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBauthority\fI authority\fR
+Who set up this association.
+.BB
+codelist=authorities
+.EB
+.TP 
+\fBpos_in_path\fI position in path\fR
+.so ../man_macros/pos_in_path.descrip
+.TP
+\fBchannel_number\fI channel number\fR
+Number of the physical channel ("pin number") on which this signal is
+recorded.  This is not necessarily the same as the position in the
+sampling order, since some systems may sample input channels in
+non-sequential order.  On analog systems, this is the tape-head number.
+.TP
+\fBfrequency\fI frequency\fR
+Frequency associated with this particular \fBcomponent\fR and 
+\fBsignal_path\fR.
+.TP
+\fBgain\fI gain\fR
+Gain as a scalar quanitity associated with this particular
+\fBsig_path_cmp\fR and \fBsignal_path\fR.
+.TP
+\fBattenuation\fI attenuation\fR
+Attenuation associated with this particular \fBcomponent\fR and 
+\fBsignal_path\fR. Negative number means gain.
+.TP
+\fBfrom_time\fI valid from time\fR
+Time this association became valid.
+.TP
+\fBthru_time\fI valid thru time\fR
+Time this association became no longer valid.
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(4,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

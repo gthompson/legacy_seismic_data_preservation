@@ -1,0 +1,296 @@
+.so ../man_macros/suds_man_macros
+.TH SOLUTION 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+solution \- information about a particular solution of an event
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	solution_id;
+	DOMAIN	solution_dc;
+	REFERS2	event_id;
+	DOMAIN	event_dc;
+	ST_TIME	time_sol_done;
+	AUTHOR	authority;
+	MS_TIME	origin_time;
+	LATIT	origin_lat;
+	LONGIT	origin_long;
+	FLOAT4	origin_depth;
+	CODE1	solution_type;
+	CODE1	depth_control;
+	CODE1	time_control;
+	CODE1	epi_control;
+	CODE4	region;
+	CODE1	region_type;
+	CHAR	spare_a;
+	CODE1	quality;
+	CODE1	hypo_program;
+	INT2	hypo_prog_vers;
+	CODE1	convergence;
+	CODE1	pref_mag_type;
+	FLOAT4	pref_magnitude;
+	AUTHOR	pref_mag_auth;
+	INT4	spare;
+	FIXED	len_contr_n;
+	STRING	control_name[20];
+	INT2	num_iterations;
+	INT2	gap_of_stations;
+	FLOAT4	rms_of_resids;
+	FLOAT4	horiz_error;
+	FLOAT4	depth_error;
+	FLOAT4	depth_err_up;
+	FLOAT4	depth_err_down;
+	FLOAT4	dist_near_stat;
+	FLOAT4	near_s_p_time;
+	FLOAT4	p2s_vel_ratio;
+	INT2	num_stat_good;
+	INT2	num_p_rep_good;
+	INT2	num_p_used;
+	INT2	num_s_rep_good;
+	INT2	num_s_used;
+	INT2	num_resid_disc;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SOLUTION;
+.sp 0.5
+#define SOLUTIONS	114L
+.fi
+.ft R
+.SH DESCRIPTION
+Information about a particular solution for the hypocenter of an earthquake.
+.BB
+permissions="siud_siud_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBsolution_id\fI solution id\fR
+.so ../man_macros/solution.descrip
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBsolution_dc\fI solution domain\fR
+Domain in which solution_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBevent_id\fI event id\fR
+A number that uniquely refers, within this \fBevent_dc\fR, to an instance of 
+the \fBevent\fR structure.
+.BB
+key=part_foreign(1,event.event_id), db_delete=cascade, db_must_exist=true,
+index_string=true
+.EB
+.TP
+\fBevent_dc\fI event domain\fR
+Domain in which event_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,event.event_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBtime_sol_done\fI time solution done\fR
+Time solution done. 
+.TP
+\fBauthority\fI authority for solution\fR
+Who did this solution.
+.BB
+codelist=authorities
+.EB
+.TP 
+\fBorigin_time \fIorigin time\fR
+Origin time.
+.TP 
+\fBorigin_lat\fI origin latitude\fR
+Latitude, south is negative.
+.TP 
+\fBorigin_long\fI origin longitude\fR
+Longitude, west is negative.
+.TP 
+\fBorigin_depth\fI origin depth\fR
+Depth of hypocenter in kilometers below the ground surface.
+.TP
+\fBsolution_type\fI type of solution\fR
+Type of solution such as automatic, catalog or final, preliminary, etc.
+.BB
+codelist=solution_types
+.EB
+.TP
+\fBdepth_control\fI depth control\fR
+Whether depth was held fixed and by what criteria.
+.BB
+codelist=depth_controls
+.EB
+.TP
+\fBtime_control\fI time control code\fR
+Whether time was held fixed and by what criteria.
+.BB
+codelist=hypo_controls
+.EB
+.TP
+\fBepi_control\fI epicenter control\fR
+Whether the epicenter was held fixed and by what criteria.
+.BB
+codelist=hypo_controls
+.EB
+.TP
+\fBregion\fI region code\fR
+Code number of the region containing the earthquake.
+.BB
+codelist=regions
+.EB
+.TP
+\fBregion_type\fI type of region\fR
+Type of region code being used: k=Klein system in California,
+f=Flynn-Engdahl region in the world
+.BB
+codelist=region_types
+.EB
+.TP
+\fBspare_a\fI for future use\fR
+.TP
+\fBquality\fI quality of solution\fR
+An estimate of quality of the solution. 
+0 equals best, 4 equals worst,. or A equals best, D equals worst.  
+.BB
+codelist=solution_qualities
+.EB
+.TP
+\fBhypo_program\fI location program type\fR
+Type of location program used.
+.BB
+codelist=hypo_programs
+.EB
+.TP
+\fBhypo_prog_vers\fI hypo prog vers type\fR
+Version of hypocenter program. 10 means version 1.0
+.TP
+\fBconvergence\fI convergence type\fR
+Type of convergence in the solution.
+.BB
+codelist=convergences
+.EB
+.TP
+\fBpref_mag_type\fI pref magnitude type\fR
+Type of preferred magnitude.
+.BB
+codelist=magnitude_types
+.EB
+.TP 
+\fBpref_magnitude\fI preferred magnitude\fR
+Magnitude preferred for this solution.
+.TP
+\fBpref_mag_auth\fI authority of pref mag\fR
+Authority who determined preferred magnitude.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP 
+\fBlen_contr_n\fI len control name\fR
+Length of string for control file name, 20. True length may only be 19 to 
+allow for the NULL byte.
+.TP
+\fBcontrol_name\fI control file name\fR
+File name of control file for hypocenter program.
+.TP
+\fBnum_iterations\fI number of iterations\fR
+Number of iterations to calculate this solutions.  Gives some
+relative indication of rate of convergence.
+.TP
+\fBgap_of_stations\fI gap of stations\fR
+Maximum gap between azimuths to stations in degrees.
+.BB
+ed_col=62, ed_row=26
+.EB
+.TP
+\fBrms_of_resids\fI rms of residuals\fR
+Root mean square of the residuals.
+.TP
+\fBhoriz_error\fI horizontal error\fR
+Horizontal error in kilometers.
+.BB
+ed_col=62, ed_row=27
+.EB
+.TP
+\fBdepth_error\fI depth error\fR
+Depth error in kilometers.
+.TP
+\fBdepth_err_up\fI depth error up\fR
+Possible error in depth in the upward direction in kilometers.
+.BB
+ed_col=62, ed_row=28
+.EB
+.TP
+\fBdepth_err_down\fI depth error down\fR
+Possible error in depth in the downward direction in kilometers.
+.TP
+\fBdist_near_stat\fI distance nearest stat\fR
+Distance from epicenter to the nearest station in kilometers.
+.BB
+ed_col=62, ed_row=29
+.EB
+.TP
+\fBnear_s_p_time\fI nearest s-p time\fR
+Difference in seconds of s arrival time minus p arrival time for the
+nearest station.
+.TP
+\fBp2s_vel_ratio\fI p2s vel ratio\fR
+Ratio of P-wave velocity to S-wave velocity.
+.BB
+ed_col=62, ed_row=30
+.EB
+.TP
+\fBnum_stat_good\fI num stats reporting\fR
+Number of stations reporting good p or s phases.
+.TP
+\fBnum_p_rep_good\fI num good p reported\fR
+Number of stations reporting p phases.
+.BB
+ed_col=62, ed_row=31
+.EB
+.TP
+\fBnum_p_used\fI num p used\fR
+Number of p phases used in the solution.
+.TP
+\fBnum_s_rep_good\fI num good s reported\fR
+Number of stations reporting good s phases.
+.BB
+ed_col=62, ed_row=32
+.EB
+.TP
+\fBnum_s_used\fI num s used\fR
+Number of s phases used in the solution.
+.TP
+\fBnum_resid_disc\fI num residuals discarded\fR
+Number of residuals discarded from the solution by the program.
+.BB
+ed_col=62, ed_row=33
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+.SH BUGS
+.LP
+Error in lat, lon, time instead of horizontal error?

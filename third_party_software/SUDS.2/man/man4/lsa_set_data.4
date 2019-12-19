@@ -1,0 +1,55 @@
+.so ../man_macros/suds_man_macros
+.TH LSA_SET_DATA 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+lsa_set_data \- signal_paths and subnets for event and cross triggers
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	INT2	subnet;
+	INT2	min_channels;
+	INT4	spare;
+} SUDS_LSA_SET_DATA;
+.sp 0.5
+#define LSA_SET_DATAS	304L
+.fi
+.ft R
+.SH DESCRIPTION
+A number of these structures normally follow an \fBlsa_setting\fR
+structure specifying which \fBsignal_paths\fR should be processed
+tp detect events, which subgroup they occur in, and the minimum
+number of detections that must occur in that subgroup.
+.BB
+permissions="siu_s_siu_s", data_only=LSA_SETTINGS
+.EB
+.SH MEMBERS
+.TP
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_foreign(1,signal_path.signal_path_id)
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc)
+.EB
+.TP
+\fBsubnet\fI subnet number\fR
+Number of the subnet counting up from zero.
+.TP
+\fBmin_channels\fI minimum channels\fR
+Minimum number of channels that must trigger within this subnet to
+declare an event.  It is possible that different \fBmin_channels\fR
+could be given for the same subgroup.  In this case it is the
+algorithm's responsibility to specify an error or make a choice.
+.TP
+\fBspare\fI for future use\fR
+.SH "SEE ALSO"
+lsa_setting(4), lsa_detection(4)
+
+

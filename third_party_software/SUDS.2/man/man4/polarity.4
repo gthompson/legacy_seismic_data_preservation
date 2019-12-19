@@ -1,0 +1,109 @@
+.so ../man_macros/suds_man_macros
+.TH POLARITY 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+polarity \- evidence for reversed polarity for a signal_path
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	polarity_id;
+	DOMAIN	polarity_dc;
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	CODE1	evidence;
+	CODE1	clarity;
+	INT2	spare;
+	AUTHOR	authority;
+	ST_TIME	from_time; 
+	ST_TIME	thru_time; 
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_POLARITY;
+.sp 0.5
+.fi
+#define POLARITYS	309L
+.ft R
+.SH DESCRIPTION
+The \fBpolarity\fR structure describes evidence that a
+\fBsignal_path\fR had a polarity reversal over a specific period of
+time. It is assumed that the polarity is correct unless a
+\fBpolarity\fR structure exists.
+.BB
+permissions="s_s_siu_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBpolarity_id\fI polarity\fR
+A number that uniquely refers, within this \fBpolarity_dc\fR, to an
+instance of the \fBpolarity\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBpolarity_dc\fI polarity domain\fR
+Domain in which polarity_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBsignal_path_id\fI signal path number\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict, 
+db_must_exist=true, db_index=true
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBevidence\fI evidence\fR
+Evidence for polarity reversal.
+.BB
+codelist=rev_evidence
+.EB
+.TP
+\fBclarity\fI clarity\fR
+Clarity of the evidence for this polarity reversal.
+.BB
+codelist=clarities
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBauthority\fI authority\fR
+Who set up this association.
+.BB
+codelist=authorities, index_string=true
+.EB
+.TP
+\fBfrom_time\fI valid from time\fR
+Time this polarity reversal became valid.
+.TP
+\fBthru_time\fI valid thru time\fR
+Time this polarity reversal became no longer valid.
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

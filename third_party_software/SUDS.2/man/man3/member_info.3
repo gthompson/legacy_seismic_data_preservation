@@ -1,0 +1,247 @@
+.so ../man_macros/suds_man_macros
+.TH MEMBER_INFO 3 "1 July 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+member_info \- system information about a members of a SUDS structure
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT4	struct_number;
+	INT2	member_number;
+	INT2	member_type; 
+	INT2	member_length; 
+	INT2	member_offset;
+	INT2	pri_key_numb;
+	INT2	for_key_numb;
+	INT4	key_structure; 
+	INT4	key_member; 
+	CHAR	db_include;
+	CHAR	db_must_be_in;
+	CHAR	db_index_type;
+	CHAR	db_delete_type;
+	INT4	db_permission;
+	INT2	editor_row;
+	INT2	editor_column;
+	FIXED	name_len;
+	STRING	member_name[16];
+	FIXED	title_len;
+	STRING	member_title[24];
+	INT4	code_list_id;
+	FIXED	list_len;
+	STRING	code_list_name[24];
+	FIXED	default_len;
+	STRING	default_values[24];
+	FIXED	format_len;
+	STRING	print_format[20];
+	FIXED	allowed_len;
+	STRING	allowed_chars[24];
+	CODE1	checks_input;
+	CHAR	file_idx_type;
+	INT2	spare;
+	INT4	help_ptr;
+	INT4	spare_a;
+} SUDS_MEMBER_INFO, *MEMPTR;
+.sp 0.5
+.fi
+#define MEMBER_INFOS	202L
+.ft R
+.SH DESCRIPTION
+This system table explains all of the properties of a member of a
+structure in a manner used by \fBSUDS\fR utility programs.  This table
+is created automatically from the manual pages by the program
+\fBcompile_man(1)\fR and stored in the file \fBsuds_mem.h\fR.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR 
+Define number of this type of structure, i.e. 7.
+.TP
+\fBstructure_len\fI structure length\fR 
+Length of this structure in bytes.
+.TP
+\fBstruct_number\fI structure number\fR 
+Number of the structure.
+.TP
+\fBmember_number\fI member number\fR 
+Number of this member in the structure counting from 0.
+.TP
+\fBmember_type\fI member type\fR 
+Number of the type of this member referring to the three-letter defines
+in \fBvariable_info(3)\fR.
+.TP
+\fBmember_length\fI member length\fR 
+If this member is an array, then this is the length of the array.
+.TP
+\fBmember_offset\fI member offset\fR 
+Offset of beginning of this member from the top of the structure or in
+other words the address of this member minus the address of the first
+member of the structure. The offset can be determined at compile time
+by the following macro:
+.br
+.ft B
+.ti 1.5i
+#define oFFsetOF(type,memb) ((INT4)&((type *)0)->memb)
+.ft R
+.br
+It may not be possible to cast NULL or 0 in this way on some machines.
+offsetof is an ANSI C feature. See page 263 of "C, A Reference Manual"
+by Samuel P.  Harbison and Guy L. Steele Jr., Prentice Hall, 1991.
+This macro is needed since different machines will align structures in
+different ways and many of the SUDS programs refer to structure
+elements by pointer rather than name in order to be general.
+.TP
+\fBpri_key_numb\fI primary key number\fR 
+If this is part of the primary key, set to 1, otherwise set to NODATS.
+.TP
+\fBfor_key_numb\fI foreign key number\fR 
+Number of composite foreign key >= 0 where the number of each composite
+key must be unique within the structure. If this is not a foreign key,
+set to NODATS.
+.TP
+\fBkey_structure\fI key structure\fR 
+If this member is not a key, then set key_structure to NODATL. If this
+member is a primary key, then set key_structure to 0.  If this member
+is a foreign key,then set key_structure to the number of the structure
+containing the primary key.
+.TP
+\fBkey_member\fI key member\fR 
+If this member is not a key, then set key_member to NODATL. If this
+member is a primary key then set key_member to 0.  If this member is a
+foreign key set key_member to the number of the member containing the
+primary key. If this member is a composite key, then set key_member to
+the number of the first member of the structure containing part of the
+composite key.
+.TP
+\fBdb_include\fI include in db\fR 
+Normally set to T. If this member will not be stored in the database,
+then set to F. FIXED variable types would normally not be stored in the
+database since they are always the same and can be redetermined on
+output to SUDS structures.
+.BB
+allow_char="TF"
+.EB
+.TP
+\fBdb_must_be_in\fI must exist in db\fR 
+Normally set to F. If this member is a primary key or a foreign key
+that may not be null, i.e. the primary key must exist for insert or
+update of this structure, then set to T.
+.BB
+allow_char="TF"
+.EB
+.TP
+\fBdb_index_type\fI database index type\fR 
+If this member is not indexed in the database then set=NOCHAR, if
+standard index then set=I, if unique index then set=U, if clustered
+index then set=C.  A unique index means that only one instance of this
+value may exist. A clustered index means that the physical order of
+structures would be in the order of this index whenever possible.
+.BB
+allow_char="IUC"
+.EB
+.TP
+\fBdb_delete_type\fI database delete type\fR 
+Normally set to NOCHAR.
+For foreign keys this member can be set to restricted (R), nullify (N),
+or cascade (C). Restricted means that as long as an instance of this
+foreign key exists, the instance of the structure with the primary key
+referred to by this key may not be deleted. Nullify means this foreign
+key may be nullified so that the structure with the primary key may be
+deleted. Cascade means that if the structure with the primary key is
+deleted, delete this structure also.
+.BB
+allow_char="RNC"
+.EB
+.TP
+\fBdb_permission\fI database permissions\fR 
+Database permissions in fields of 4 bits. The least significant bit of
+each field is select or read, bit 1 is insert, bit 2 is update, and bit
+3 is delete.  The least significant bit field is permissions for the
+everyone or public, the next field is for group, the next is for
+analyst, and the next is for the database manager. The 16 most
+significant bits are reserved for future use.  The default permission
+is set from the default for this structure in \fBstructure_info(3)\fR.
+.TP
+\fBeditor_row\fI editor row\fR 
+Row of this member in the forms editor counting from 0 at the top of
+the screen.
+.TP
+\fBeditor_column\fI editor column\fR 
+The column of this member in the forms editor counting from 0 at the
+left.
+.TP
+\fBname_len\fI name length\fR 
+The maximum space reserved for the member name, i.e. 16.  Actual string
+can only contain 15 characters to allow for the NULL byte.
+.TP
+\fBmember_name\fI member_name\fR 
+Name in C for this member.
+.BB
+index_string=true
+.EB
+.TP
+\fBtitle_len\fI title length\fR 
+The maximum space reserved for the title, i.e. 24.  Actual string can
+only contain 23 characters to allow for the NULL byte.
+.TP
+\fBmember_title\fI member title\fR 
+Title for this member used, for example, in \fBstedit\fR 
+or \fBst2asc -v\fR.
+.TP
+\fBcode_list_id\fI code_list id\fR
+ID number of codelist.  Domains of code_lists are all defined as 2.
+.TP
+\fBlist_len\fI codelist length\fR 
+The maximum space reserved for the code list name, i.e. 24.  Actual
+string can only contain 23 characters to allow for the NULL byte.
+.TP
+\fBcode_list_name\fI code list name\fR 
+String containing the code list name for this member.
+.TP
+\fBdefault_len\fI default length\fR 
+The maximum space reserved for the default_values, i.e. 24.  Actual
+string can only contain 23 characters to allow for the NULL byte.
+.TP
+\fBdefault_values\fI default value\fR 
+String containing the default value or undefined value for this
+member.
+.TP
+\fBformat_len\fI format length\fR 
+The maximum space reserved for the format, i.e. 20.  Actual string can
+only contain 19 characters to allow for the NULL byte.
+.TP
+\fBprint_format\fI print format\fR 
+String containing the format to use when printing this member.
+.TP
+\fBallowed_len\fI allowed length\fR 
+The maximum space reserved for the allowed-chars, i.e. 20.  Actual
+string can only contain 19 characters to allow for the NULL byte.
+.TP
+\fBallowed_chars\fI allowable characters\fR 
+String containing a list of allowable characters during input.
+.TP
+\fBchecks_input\fI input subroutine\fR 
+A letter code pointing to a subroutine that can check the input value
+of a member in such programs as \fBstedit\fR.  The subroutines are
+described in \fBinput_subroutines(2)\fR. The name of the subroutine is
+given in the code_list \fBinput_subroutines\fR (See
+\fBcode_lists(6)\fR).  The manual compiler (\fBcompile_man(1)\fR) uses
+the code_list to convert the statement \fBcheck_input=subroutine\fR to
+this letter.  The input programs must select the proper routine using a
+\fBswitch\fR statement based on this code.
+.BB
+codelist=input_subroutines
+.EB
+.TP
+\fBfile_idx_type\fI index type\fR
+The way in which this member is to be used in file_index. 
+n=indexed_name, l=label_id, d=label_dc, f=from_time, t=thru_time
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBhelp_ptr\fI help pointer\fR
+Offset in bytes in help file to description of this member.
+.TP
+\fBspare_a\fI for future use\fR
+.SH "SEE ALSO"

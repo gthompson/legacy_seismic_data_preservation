@@ -1,0 +1,91 @@
+.so ../man_macros/suds_man_macros
+.TH ST_INTRO 2 "16 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_intro \- standard IO package and other subroutines for accessing \fBSUDS\fR structures
+.SH DESCRIPTION
+.PP
+Section 3 of this manual describes subroutines that ease access to and
+manipulation of \fBSUDS\fR structures. Programs using these subroutines
+should be compiled with the \fB-lsuds\fR flag.
+.PP
+\fBSUDS\fR is built around streams of data where a stream is simply a
+sequence of structures contained in a file, in a pipe, on a tape, as
+output from an indexed database, etc.  The basic input and output
+routines for reading and writing the structures are:
+.sp 0.5
+.br
+.nf
+.na
+.ta 2.5i
+.so ../../comp_man/iolib_names
+.fi
+.ad
+.LP
+These routines are designed to look like standard, buffered I/O except
+that errors are handled using \fBst_error\fR.  Fatal errors are
+reported and then call a user supplied subroutine \fBdie\fR which may
+simply call \fBexit\fR or may also clear buffers, reset terminal
+characteristics, etc. \fBPLEASE NOTE: your must define a routine called
+die.\fR It may simply be \fB INT4 die(n) INT4 n; {exit(n)};\fR 
+\fBst_error\fR provides an easy to use, general error handling capability
+.PP
+\fBWARNING:\fR Do not mix these routines with stdio(3s) or rawio(2)
+routines for the same file at the same time. Follow \fBst_open\fP and
+other routines with \fBst_close\fP before using \fBopen\fP or
+\fBfopen\fP, and so forth.
+.PP
+Defaults for input and output can be set in the file \fBsuds.def\fR.
+When \fBst_open(3)\fR is called for the first time, it looks for a file
+with this name first in the present directory, then if not found it
+looks in the effective user's home directory, then in the directory
+specified by the environmental variable \fBSUDS_INCLUDE\fR, and if
+still not found it looks finally in \fB/usr/include/suds\fR.
+Each line in this file is expected to contain three strings.  The
+only values presently allowed are
+.br
+	\fBwaveform_path domain path\fR
+.br
+where waveform_path is a key word, domain is the abbreviation for some
+domain in the authorities code_list (See code_lists(6)), and path
+is an absolute pathname to be prefaced to the pathname for waveform
+files from this domain (See calc_pathname(2)).
+.LP
+Other subroutines for use with \fBSUDS\fR structures include:
+.sp 0.5
+.br
+.nf
+.na
+.ta 1.8i 3.5i
+.so ../../comp_man/function_names
+.fi
+.ad
+.SH DIAGNOSTICS
+Mand of these subroutines return either SUCCESSFUL, FAILED, or IGNORED which are defined as follows:
+.br
+#define SUCCESSFUL	0
+.br
+#define FAILED	(-2)
+.br
+#define IGNORED	(-9)
+.br
+Some return FOUND or NOTFOUND which are defined as follows:
+.br
+#define FOUND	(-7)
+.br
+#define NOTFOUND 	(-8)
+.br
+Some return EOF meaning end of file, which is defined in \fB<stdio.h>\fR
+as (-1).
+Test values often used include
+.br
+#define TRUE (1)
+.br
+#define FALSE (0)
+.SH SEE ALSO
+st_intro(1), st_intro(5)
+.SH FILES
+.LP
+/usr/lib/libsuds.a
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+

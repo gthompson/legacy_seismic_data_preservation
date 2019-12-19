@@ -1,0 +1,243 @@
+.so ../man_macros/suds_man_macros
+.TH MUX_WAVEFORM 4 "6 May 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+mux_waveform \- information about waveforms that are multiplexed
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	mux_waveform_id;
+	DOMAIN	mux_waveform_dc;
+	REFERS2	recorder_id;
+	DOMAIN	recorder_dc;
+	FIXED	len_contr_f;
+	STRING	name_contr_f[12];
+	REFERS2	clock_rate_id;
+	DOMAIN	clock_rate_dc;
+	MS_TIME	from_time; 
+	MS_TIME	thru_time; 
+	FIXED	len_media_l; 
+	STRING	media_label[16];
+	FIXED	len_media_p; 
+	STRING	media_path[64];
+	CODE1	media;
+	CODE1	detector_type;
+	CODE1	trigger_type; 
+	CODE1	event_type;
+	CODE1	compression;
+	CODE1	data_units;
+	CHAR	spare_charA;
+	CODE1	clock_type;
+	INT4	dc_offset;
+	FLOAT4	nom_dig_rate;
+	INT4	numb_stations;
+	INT4	block_size; 
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_MUX_WAVEFORM;
+.sp 0.5
+#define MUX_WAVEFORMS	106L
+.fi
+.ft R
+.SH DESCRIPTION
+Header for data detected and saved by a waveform recorder. Usually the
+data are multiplexed together, but they may be all or partially
+demultiplexed. This header should contain the information needed by a
+demultiplexing program to produce individual \fBwaveform\fR structures
+for the waveforms for each station.  The association of individual
+channels to \fBsignal_path_ids\fR is done with the \fBrecorder_ass\fR 
+structures.  This structure is followed by the multiplexed data.
+.LP
+In SUDS, most programs utilize data associated with \fBwaveform\fR
+structures.  Thus the primary use for the \fBmux_waveform\fR structure is
+temporary, when transferring data from a recorder to a demultiplexing
+program. Some network operators may also chose to archive the original
+data in multiplexed format.  GENERALLY MUX_WAVEFORM STRUCTURES SHOULD
+BE SHORT LIVED.
+.LP
+Often when multiplexed data are written by an online detection program,
+the length of data to be written is not known when the structure_tag
+and structure must be written. If \fBstructure_tag.length_data\fR
+equals \fBNODATL\fR, and the member \fBdata_type\fR is set to some
+value other than \fBNODATL\fR, then the \fBSUDS\fR input routine
+\fBst_get(2)\fR assumes that the data goes to the end of the file. The
+number of bytes from the end of the structure to the end of the file is
+determined to set \fBstructure_tag.length_data\fR and divided by the
+length of the \fBmux_waveform.data_type\fR type to set
+\fBlength_data\fR.  When writing multiplexed data of unknown length,
+call \fBst_put\fR with \fBdata_len\fR equal to the length of the array
+of \fBsignal_path_ids\fR.  Use \fBst_put_mux(2)\fR to write the rest of
+the data.
+.BB
+permissions="siu_si_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBmux_waveform_id\fI multiplexed waveform id\fR
+.so ../man_macros/mux_waveform.descrip
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBmux_waveform_dc\fI mux data domain\fR
+Domain in which mux_waveform_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBrecorder_id\fI recorder id\fR
+A number that uniquely refers, within this \fBrecorder_id\fR, to an instance of 
+the \fBrecorder\fR structure.
+.BB
+key=part_foreign(1,recorder.recorder_id), db_delete=restrict, db_must_exist=true, index_string=true
+.EB
+.TP
+\fBrecorder_dc\fI recorder domain\fR
+Domain in which recorder_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,recorder.recorder_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP 
+\fBlen_contr_f\fI len control file name\fR
+Length of string for the name of the control file for the detection program, 12. 
+True length may only be 11 to allow for the NULL byte.
+.TP
+\fBname_contr_f\fI name of control file\fR
+Name of the control file for the program detecting earthquakes on this recorder.
+.TP
+\fBclock_rate_id\fI clock rate id\fR
+A number that uniquely refers, within this \fBclock_rate_id\fR, to an instance of 
+the \fBclock_rate\fR structure that has been applied to the data.
+.BB
+key=part_foreign(2,clock_rate.clock_rate_id), db_delete=restrict
+.EB
+.TP
+\fBclock_rate_dc\fI clock correction domain\fR
+Domain in which clock_rate_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,clock_rate.clock_rate_dc), 
+db_delete=restrict
+.EB
+.TP 
+\fBfrom_time \fI nominal start time\fR
+Time of the beginning of the traces.
+.TP 
+\fBthru_time \fI nominal end time\fR
+Time of the ending of the traces.
+.TP 
+\fBlen_media_l \fIlength of media label\fR
+The maximum space reserved for the media label, i.e. 16. 
+Actual string can only contain 15 characters to allow for the NULL byte.
+.TP 
+\fBmedia_label\fI media label\fR
+Label written on the storage medium.
+.TP 
+\fBlen_media_p\fR \fIlength of media path\fR
+The maximum space reserved for the media path name, i.e. 64. 
+Actual string can only contain 63 characters to allow for the NULL byte.
+.TP 
+\fBmedia_path\fI media pathname\fR
+Pathname for file containing this data on the media.  Typically stored on an archival
+media such as an optical disk or a tape.
+.BB
+ed_col=16
+.EB
+.TP
+\fBmedia\fI type of storage media\fR
+Type of media that the data is stored on.
+.BB
+codelist=media
+.EB
+.TP
+\fBdetector_type\fI type of detector\fR
+Type of detector.
+.BB
+codelist=recorder_types
+.EB
+.TP
+\fBtrigger_type\fI type of trigger\fR
+Type of trigger: l=longterm versus shortterm average, t=teleseismic
+.BB
+codelist=trigger_types
+.EB
+.TP
+\fBevent_type\fI event type\fR
+A character designating the type of event.
+.BB
+codelist=event_types
+.EB
+.TP
+\fBcompression\fI compression algorithm\fR
+Type of algorithm used to compress the data following this structure. NOCHAR
+means the data is not compressed.
+.BB
+codelist=compression_types
+.EB
+.TP
+\fBdata_units\fI data units type\fR
+.so ../man_macros/data_units.descrip
+.BB
+codelist=units_types
+.EB
+.TP
+\fBspare_charA\fI for future use\fR
+.TP
+\fBclock_type\fI clock type\fR
+Type of clock giving time.
+.BB
+codelist=clock_types
+.EB
+.TP
+\fBdc_offset\fI dc offset\fR
+dc offset in volts.
+.TP
+\fBnom_dig_rate\fI samples per second\fR
+Nominal rate of digitization in samples per second.
+.TP
+\fBnumb_stations\fI number of stations\fR
+Number of stations whose data are multiplexed together. Structure is followed
+by one \fBsignal_path_id\fR for each station and then by \fBdata_length\fR
+samples of a given \fBdata_type\fR.
+.TP
+\fBblock_size\fI block size\fR
+If data is partially demultiplexed, this is the total number of samples
+in each block. Number of samples per station in each block = \fBblock_size\fR /
+\fBnumb_stations\fR.
+.TP
+\fBdata_type\fI data type\fR
+.so ../man_macros/data_type.descrip
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI data length\fR
+Total number of samples of \fBdata_type\fR following this structure.
+Number of samples per station = \fBdata_length\fR/\fBnumb_stations\fR.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(3,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

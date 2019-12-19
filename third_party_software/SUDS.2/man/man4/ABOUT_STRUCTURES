@@ -1,0 +1,7 @@
+BASIC STRUCTURES contain ALL information about a logical entity that
+is time independent or varies very slowly with time.  Typically
+used in a one to many relationship.
+
+ASSOCIATIVE STRUCTURES associate two basic structures generally in
+a time-dependent manner.  Typically for a many-to-many relationship
+between structures.

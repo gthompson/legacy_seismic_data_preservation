@@ -1,0 +1,181 @@
+.so ../man_macros/suds_man_macros
+.TH RESPONSE 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+response \- information about the frequency response of a sensor, component, or total system
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	response_id;
+	DOMAIN	response_dc;
+	FIXED	len_name_resp;
+	STRING	name_response[20];
+	CODE1	response_type;
+	CODE1	input_units;
+	CODE1	output_units;
+	CHAR	spare_char;
+	FLOAT4	maximum_gain; 
+	FLOAT4	normalization; 
+	FLOAT4	frequency_max; 
+	FLOAT4	inp_samp_rate;
+	INT2	decim_factor;
+	INT2	decim_offset;
+	FLOAT4	estim_delay;
+	FLOAT4	used_delay;
+	ST_TIME	from_time;
+	ST_TIME	thru_time;
+	AUTHOR	authority;
+	INT4	spare;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_RESPONSE;
+.sp 0.5
+#define RESPONSES	109L
+.fi
+.ft R
+.SH DESCRIPTION
+Frequency response information for a particular sensor, channel,
+recorder, or total system. The \fBresponse\fR structure is followed by
+a number of structures (\fBdata_length\fR) specifying a response curve
+of corner frequency and slope (\fBresp_cfs_data\fR), frequency,
+amplitude, and phase (\fBresp_fap_data\fR), a finite impulse response
+(\fBresp_fir_data\fR), complex poles and zeros (\fBresp_pz_data\fR), a
+calibration (\fBresp_sen_data\fR), or sensitivity/gain
+(\fBresp_sen_data\fR).  This structure can also be followed by a series
+of \fBresponse_id\fRs for this \fBresponse_dc\fR specifying a sequence
+of filters in order from that applied first to that applied last.
+.BB
+permissions="siud_s_siud_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBresponse_id\fI response id\fR
+A number that uniquely identifies, within this \fBresponse_dc\fR, an instance 
+of  the \fBresponse\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBresponse_dc\fI response domain\fR
+Domain in which response_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBlen_name_resp\fI len response name\fR
+Length of string for response name, 20. True length may only be 19 to 
+allow for the NULL byte.
+.TP
+\fBname_response\fI response name\fR
+Name of this response. Typically used if this response applies to a generic 
+instrument type.
+.BB
+index_string=true
+.EB
+.TP
+\fBresponse_type\fI type of response\fR
+Type of response structure that follows the \fBresponse\fR structure. 
+.BB
+codelist=response_types
+.EB
+.TP
+\fBinput_units\fI type of input units\fR
+Type of data units on input. 
+.BB
+codelist=units_types
+.EB
+.TP
+\fBoutput_units\fI type of output units\fR
+Type of data units on output. 
+.BB
+codelist=units_types
+.EB
+.TP
+\fBspare_char\fI for future use\fR
+.TP
+\fBmaximum_gain\fI maximum gain\fR
+Value of the maximum value on the calibration curve. This is the factor by which
+the curve values are multiplied to get the total gain.
+.TP
+\fBnormalization\fI normalization factor\fR
+Value by which to multiply the calibration curve to cause the peak gain to be 1. 
+In other words this is 1 divided by the peak value of the calibration curve
+not including the factor \fBmaximum_gain\fR.
+.TP
+\fBfrequency_max\fI frequency at max\fR
+Frequency at the point of maximum gain on the response curve.
+.TP
+\fBinp_samp_rate\fI input sample rate\fR
+For finite impulse response (FIR) filters, this is the sample rate of the 
+input signal.
+.TP
+\fBdecim_factor\fI decimation factor\fR
+For finite impulse response (FIR) filters, this is the amount by which the input
+signal is decimated.
+.TP
+\fBdecim_offset\fI decimation offset\fR
+For finite impulse response (FIR) filters, this is which sample is chosen when decimation is used. Count from zero to any number less that the \fBdecim_factor\fR.
+.TP
+\fBestim_delay\fI estimated delay\fR
+For finite impulse response (FIR) filters, this is the estimated time
+delay of the system in seconds.
+.TP
+\fBused_delay\fI delay used\fR
+For finite impulse response (FIR) filters, this is the time
+delay of the system in seconds that was used.
+.TP
+\fBfrom_time\fI valid from time\fR
+Time this calibration became valid.
+.TP
+\fBthru_time\fI valid thru time\fR
+Time this calibration became no longer valid.
+.TP
+\fBauthority\fI authority\fR
+Who specified this response.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBdata_type\fI data type\fR
+Type of structure containing response data that follows this structure. This
+is the number specified in the define statement for each filter type:
+RESP_CFS_DATAS, RESP_FAP_DATAS, RESP_FIR_DATAS, RESP_PZ_DATAS, and
+RESP_SEN_DATAS.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of points\fR
+Number of points in the data curve of type \fBdata_type\fR that follow
+this structure.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+resp_cfs_data(4), resp_fap_data(4), resp_fir_data(4),
+resp_pz_data(4), resp_sen_data(4)

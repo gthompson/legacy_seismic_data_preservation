@@ -1,0 +1,32 @@
+.so ../man_macros/suds_man_macros
+.TH CALIB 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+calib \- poles and zeros of calibration information
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FLOAT4	 pole_cr;
+	FLOAT4	 pole_ci;
+	FLOAT4	 zero_cr;
+	FLOAT4	 zero_ci;
+} PCSUDS_CALIBR;
+.sp 0.5
+#define PC_CALIB	23L
+#define	PC_NUMCALPTS	30L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  \fBData only\fR following the PC_SUDS
+\fBcalibration\fR structure.
+.SH MEMBERS
+.TP
+\fBpole_cr\fI pole real\fR
+.TP
+\fBpole_ci\fI pole imaginary\fR
+.TP
+\fBzero_cr\fI zero real\fR
+.TP
+\fBzero_ci\fI zero imaginary\fR
+.SH "SEE ALSO"

@@ -1,0 +1,73 @@
+.so ../man_macros/suds_man_macros
+.TH CHANSET 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+chanset \- associate station/components into sets
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT2	type;
+	INT2	entries;
+	FIXED	len_netn_B;
+	STRING	network[4];
+	FIXED	len_set_nam_B;
+	STRING	name[5];
+	CHAR	pc_pad;
+	PAD2	pad_C;
+	ST_TIME	active;
+	ST_TIME	inactive;
+} PCSUDS_CHANSET;
+.sp 0.5
+#define PC_CHANSET		32L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.  Associates station/components into sets.
+This structure is followed by data consisting of \fBentries\fR
+instances of \fBchansetentry(pc)\fR structures.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBtype\fI set type\fR
+Set type; 0=single channel(s), 1=orthogonal vector.
+.TP
+\fBentries\fI entries in set\fR
+Number of entries in set (these follow as data).
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBlen_netn_B\fI len network name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_set_nam_B\fI len set name\fR
+.TP
+\fBname\fI set name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBpc_pad\fI pc padding\fR
+Padding inserted by 80x86 computers to align integers on an even
+byte boundary.
+.TP
+\fBpad_C\fI padding\fR
+.TP
+\fBactive\fI active time\fR
+Set is defined after this time.
+.TP
+\fBinactive\fI inactive time\fR
+Set is not defined after this time.
+.SH "SEE ALSO"
+chansetentry(pc)
+.SH AUTHOR
+Robert Banfill, August 23, 1993.

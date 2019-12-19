@@ -1,0 +1,170 @@
+.so ../man_macros/suds_man_macros
+.TH STREAM 3 "27 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+stream \- describes a SUDS input/output stream
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	CHAR	type;
+	CHAR	mode;
+	CODE1	endian_type;
+	CODE1	float_type;
+	INT4	byte_ptr;
+	UINT4	pack;
+	FIXED	len_io_name;
+	STRING	io_name[24];
+	CHRPTR	file_handle;
+	CODE1	machine_type;
+	CODE1	output_type;
+	CODE1	endian_change;
+	CODE1	float_change;
+	IDXPTR	index_to_file;
+	INT4	length_index;
+	INT4	struct_to_read;
+	INT4	bytes_in_file;
+	CHAR	sync_char;
+	CODE1	computer_type; 
+	INT2	suds_version;
+	INT4	struct_number;
+	INT4	struct_length; 
+	INT4	length_data; 
+} SUDS_STREAM;
+.sp 0.5
+#define STREAMS	203L
+.fi
+.ft R
+.SH DESCRIPTION
+SUDS input and output is based on a \fBstream\fR of structures, i.e.  a
+linear sequence of structures being read into a program or being
+written out of a program.  A stream may originate in a file, a pipe, a
+network interface, or a database management system.  Whenever a
+\fBstream\fR is opened (see \fBst_open(2)\fR), a \fBSTREAM\fR structure
+is dynamically allocated and maintained by the IO package until the
+stream is closed (see \fBst_close(2)\fR).  \fBThis structure is
+internal to SUDS.  Because it contains pointers (CHRPTR and IDXPTR), it
+should never be stored in a file or passed in a stream.\fR
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBtype\fI stream type\fR
+Type of stream. f=file or pipe, d=database.
+.TP
+\fBmode\fI stream mode\fR
+Mode of stream. c=closed, r=opened at beginning to read, w=opened at
+beginning to write, a=append (opened at end to write).
+.TP
+\fBendian_type\fI endian type\fR
+Type of byte order on this machine: big-endian (\fBb\fR) or
+little-endian (\fBl\fR).
+.BB
+codelist=endian_types allow_char="bl"
+.EB
+.TP
+\fBfloat_type\fI float type\fR
+Type of floating-point representation on this machine:
+IEEE (\fBi\fR) or VAX (\fBv\fR).
+.BB
+codelist=float_types allow_char="iv"
+.EB
+.TP
+\fBbyte_ptr\fI byte pointer\fR
+Used for packing characters and shorts into longs for XDR conversion
+on this stream.
+.TP
+\fBpack\fI pack\fR
+The four-byte integer into which characters and shorts are packed
+for XDR conversion on this stream.
+.TP 
+\fBlen_io_name\fR \fIlength of IO name\fR
+The maximum space reserved for the signal name, i.e. 24. 
+Actual string can only contain 23 characters to allow for the NULL byte.
+.TP 
+\fBio_name\fI input/output name\fR
+Last 23 letters of the filename or database name. If this name ends in
+".db", it is assumed by \fBst_open(2)\fR to be a database.
+.BB
+index_string=true
+.EB
+.TP
+\fBfile_handle\fI FILE pointer\fR
+If stream is a file, this points to the \fBFILE\fR structure (see 
+\fBstdio.h\fR).  If stream is a database, this points to a database
+structure.
+.TP
+\fBmachine_type\fI this computer type\fR
+Type of this computer: x, i, or v.
+.BB
+codelist=computer_types
+.EB
+.TP
+\fBoutput_type\fI type of output computer\fR
+Type of computer output is being written for: x, i, or v.
+.BB
+codelist=computer_types
+.EB
+.TP
+\fBendian_change\fI change byte order\fR
+For this stream, byte-order change is necessary (\fBt\fR) or 
+not necessary (\fBf\fR).
+.BB
+codelist=endian_types allow_char="ft"
+.EB
+.TP
+\fBfloat_change\fI change float type\fR
+Floating-point numbers in this stream must to changed
+from VAX to IEEE (\fBf\fR), to VAX from IEEE (\fBt\fR), or
+not changed (\fBn\fR).
+.BB
+codelist=float_types allow_char="ft"
+.EB
+.TP
+\fBindex_to_file\fI pointer to index\fR
+Pointer to a table of \fBfile_index\fR structures read
+or created by \fBst_index(2)\fR.
+.TP
+\fBlength_index\fI length index\fR
+Length of index created by \fBst_index(2)\fR.  Number of
+structures in this file.
+.TP
+\fBstruct_to_read\fI structure to be read\fR
+Number of structure to be read or to be written in this file.
+The byte to be read can be determined using \fBftell(2)\fR
+for example:
+.br
+.ce
+\fBoffset=ftell((FILE *)suds_in_stream->file_handle);\fR
+.TP
+\fBbytes_in_file\fI bytes in file\fR
+Total number of bytes in this file from fstat(2).  Equals
+NODATL for stdio or for a file opened for writing.
+.TP
+\fBsync_char\fI synchronization char\fR
+Structure_tag(3) for next structure in this stream.
+.TP
+\fBcomputer_type\fI type of computer\fR
+Structure_tag(3) for next structure in this stream.
+.BB
+codelist=computer_types
+.EB
+.TP
+\fBsuds_version\fI version of suds\fR
+Structure_tag(3) for next structure in this stream.
+.TP
+\fBstruct_number\fI structure code number\fR
+Structure_tag(3) for next structure in this stream.
+.TP
+\fBstruct_length\fI length of the structure\fR
+Structure_tag(3) for next structure in this stream.
+.TP
+\fBlength_data\fI length of data\fR
+Structure_tag(3) for next structure in this stream.
+.SH "SEE ALSO"

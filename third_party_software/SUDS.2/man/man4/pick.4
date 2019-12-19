@@ -1,0 +1,263 @@
+.so ../man_macros/suds_man_macros
+.TH PICK 4 "14 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+pick \- information about a phase pick or any other picked feature of a waveform
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	pick_id;
+	DOMAIN	pick_dc;
+	REFERS2	event_id;
+	DOMAIN	event_dc;
+	REFERS2	waveform_id;
+	DOMAIN	waveform_dc;
+	FIXED	len_signal_n;
+	STRING	signal_name[20];
+	MS_TIME	pick_time;
+	MS_TIME	nominal_time;
+	FLOAT4	error_minus;
+	FLOAT4	error_plus;
+	FLOAT4	signal_2_noise;
+	FLOAT4	spare;
+	CODE2	observ_phase;
+	CODE1	obs_time_qual;
+	CODE1	onset_type;
+	CODE1	orig_first_mot;
+	CODE1	first_motion;
+	CHAR	omit_from_sol;
+	CODE1	pick_method;
+	CODE1	record_media;
+	CODE1	obs_ampl_qual;
+	CODE1	amplitude_type;
+	CODE1	ampl_units;
+	FLOAT4	nom_amplitude;
+	FLOAT4	amp_gain_range;
+	FLOAT4	media_gain;
+	FLOAT4	period;
+	FLOAT4	obs_azimuth;
+	FLOAT4	obs_slowness;
+	FLOAT4	rectilinearity;
+	ST_TIME	time_picked;
+	AUTHOR	authority;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_PICK;
+.sp 0.5
+#define PICKS	110L
+.fi
+.ft R
+.SH DESCRIPTION
+Basic information about any type of feature picked from a waveform that is
+associated with a \fBwaveform\fR structure. Features are listed in the
+codelist \fBpick_types\fR and include different seismic phases, types
+of amplitude measurements, specification of a time or amplitude window, etc.
+.BB
+permissions="siud_siud_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBpick_id\fI pick id\fR
+A number that uniquely refers, within this \fBpick_dc\fR, to an instance of 
+the \fBpick\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBpick_dc\fI pick domain\fR
+Domain in which pick_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBevent_id\fI event id\fR
+A number that uniquely refers, within this \fBevent_dc\fR, to an instance of 
+the \fBevent\fR structure.
+.BB
+key=part_foreign(1,event.event_id), db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBevent_dc\fI event domain\fR
+Domain in which event_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,event.event_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBwaveform_id\fI waveform id\fR
+A number that uniquely refers, within this \fBwaveform_dc\fR, to an instance of 
+the \fBwaveform\fR structure.
+.BB
+key=part_foreign(2,waveform.waveform_id), db_delete=nullify,
+index_string=true
+.EB
+.TP
+\fBwaveform_dc\fI waveform domain\fR
+Domain in which waveform_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,waveform.waveform_dc), db_delete=nullify
+.EB
+.TP 
+\fBlen_signal_n\fR \fIlength signal name\fR
+The maximum space reserved for the signal name, i.e. 20. 
+Actual string can only contain 19 characters to allow for the NULL byte.
+.TP 
+\fBsignal_name\fI signal name\fR
+.so ../man_macros/signal_name.descrip
+.TP 
+\fBpick_time \fI time of pick\fR
+Time of pick.
+.TP 
+\fBnominal_time \fI nominal time of pick\fR
+Nominal time of pick.  This is the time based on
+\fBwaveform.nominal_time\fR, which is the base time associated with a
+waveform before any clock corrections have been applied.  A picking
+program should calculate both time and nominal_time.  The reason for
+keeping both values is to allow correction of time-code corrections by
+always maintaining the uncorrected time and a separate table of
+time-code corrections.
+.TP
+\fBerror_minus\fI pick error minus\fR
+Preferred time of pick minus earliest likely time of pick.
+Errors in timing have traditionally be represented by
+\fBobs_time_qual\fR with a scale from 0 to 4. This member and the
+next member allow a more quantitative measure of error in picking.
+.TP
+\fBerror_plus\fI pick error plus\fR
+Latest likely time of pick minus preferred time of pick.
+.TP
+\fBsignal_2_noise\fI ratio signal to noise\fR
+Ratio of signal to noise.  Absolute amplitude of first half cycle after
+the pick to the average absolute amplitude of 100 samples of the
+waveform prior to any arrivals for this event. 
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBobserv_phase\fI observed phase code\fR
+Code for observed phase from \fBpick_types\fR codelist.
+.BB
+codelist=pick_types
+.EB
+.TP
+\fBobs_time_qual\fI quality of timing\fR
+Quality of timing. 0 equals best, 4 equals worst.  This is an estimation
+of pick time accuracy made by the picker.
+.BB
+codelist=timing_qualities
+.EB
+.TP
+\fBonset_type\fI type of onset\fR
+e=emersio, i=impulsive.
+.BB
+codelist=onset_types
+.EB
+.TP
+\fBorig_first_mot\fI original first motion\fR
+Original first motion before any correction for polarity.  The reason
+for keeping both values is to allow correction of polarity corrections
+by always maintaining the uncorrected first motion and a separate table
+of polarity corrections.
+.BB
+codelist=first_motions
+.EB
+.TP
+\fBfirst_motion\fI first motion\fR
+U=up, D=down, +=probable up, -=probable down
+.BB
+codelist=first_motions
+.EB
+.TP
+\fBomit_from_sol\fI omit from solution\fR
+To omit this phase from a solution, set to the small letter 'o'.
+.BB
+allow_char="o"
+.EB
+.TP
+\fBpick_method\fI type of picking method\fR
+i=interactive,a=automatic,r=rtp, or user code
+.BB
+codelist=pick_methods
+.EB
+.TP
+\fBrecord_media\fI recording media\fR
+Media on which waveform was analyzed if not in digital form.
+.BB
+codelist=recording_medias
+.EB
+.TP
+\fBobs_ampl_qual\fI quality of amplitude\fR
+Quality of amplitude. 0 equals best, 4 equals worst.  This is an estimation
+of amplitude pick accuracy made by the picker.
+.BB
+codelist=timing_qualities
+.EB
+.TP
+\fBamplitude_type\fI type of amplitude\fR
+.BB
+codelist=amplitude_types
+.EB
+.TP
+\fBampl_units\fI units of amplitude\fR
+Units used for amplitude.
+.BB
+codelist=units_types
+.EB
+.TP
+\fBnom_amplitude\fI nominal amplitude\fR
+Amplitude picked as a signed variable equal to amplitude of later sample
+minus amplitude of earlier sample.  The reason for keeping the sign is
+to make it possible to redraw amplitude lines on top of a waveform.
+.TP
+\fBamp_gain_range\fI gain range\fR
+Factor by which amplitude should be multiplied to correct for automatic
+gain-ranging in the field amplifier.
+.TP
+\fBmedia_gain\fI media gain\fR
+Factor by which amplitude should be multiplied to correct for gain
+of the media if not digital.  
+.TP
+\fBperiod\fI period\fR
+Period in seconds of the amplitude picked.  This is the time from peak
+to trough times 2.
+.TP
+\fBobs_azimuth\fI observed azimuth\fR
+Azimuth to event source as observed from waveforms.
+.TP
+\fBobs_slowness\fI observed slowness\fR
+Slowness of the waveform travelling by station.
+.TP
+\fBrectilinearity\fI rectilinearity\fR
+Rectilinearity of the waveform.
+.TP
+\fBtime_picked\fI time pick made\fR
+Time this pick was made.
+.TP
+\fBauthority\fI pick authority\fR
+Who made this pick.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(3,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+.SH BUGS
+Is CUSP coda information taken care of?

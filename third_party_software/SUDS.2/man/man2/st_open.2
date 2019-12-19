@@ -1,0 +1,113 @@
+.so ../man_macros/suds_man_macros
+.TH ST_OPEN 2 "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_open \- open a stream containing suds structures
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <stdio.h>
+SUDS_STREAM *st_open(CHAR *filename, CHAR *mode);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_open
+function st_open(filename, type)
+	character*(*) filename, type
+.fi
+.ft R
+.SH DESCRIPTION
+\fBst_open\fR opens the \fIfilename\fR and associates a
+\fBSUDS_STREAM\fR handle with it.  The \fIfilename\fR is assumed to be
+a database name if it ends in ".db.  The first \fBst_open\fR call to a
+database system performs all necessary login operations, using the
+operating system effective username as the database username.  No
+password is supplied to or expected by the database system.
+.PP
+In FORTRAN the return value is an integer, which is the address of the SUDS_STREAM structure.  This integer is simply for use in other 
+functions such as \fBst_get, st_put, st_close\fR and should not be 
+printed since its value is large and not particularly meaningful.
+.LP
+\fImode\fR is a character string having one of the following values:
+.RS
+.TP 10
+\fBrb\fR
+open for reading
+.ns
+.TP 10
+\fBwb\fR
+open for writing; if \fIio_stream\fR is a file, truncate the file if it
+exists and create it if it does not exist.
+.ns
+.TP 10
+\fBab\fR
+append: open for writing if \fIfilename\fR is a database (same as \fIw\fR); open for writing at end of file, or create for writing, if \fIfilename\fR is a file.
+.TP 10
+\fBr+b\fR
+open for reading and writing at beginning of an existing file.
+.ns
+.TP 10
+\fBw+b\fR
+open for reading and writing; if \fIio_stream\fR is a file, truncate
+the file if it exists or create the file if it does not exist.
+.ns
+.TP 10
+\fBa+b\fR
+append: open for reading and writing if \fIfilename\fR is a database
+(same as \fIw\fR); open for writing at end of file, or create for
+writing, if \fIfilename\fR is a file.
+.RE
+.PP
+\fBIMPORTANT: Use of the update option is dangerous.\fR  If you write
+over an existing SUDS structure with a new structure that is longer or
+shorter, the file will become unreadable.
+.PP
+The second or third letter of the modestring must be a
+\fBb\fR for binary input or output.  On many computers, the default
+mode is text, which means the end-of-line characters may be translated
+on input to \fB\\n\fR and on output to whatever is standard on the
+machine.  Thus if you are opening a file for reading or writing SUDS
+structures, you must specify the binary default.  Actually to protect
+from human falability, the \fBb\fR
+is added by \fbst_open\fR if you leave it off.
+.PP
+.I st_open
+may be called with \fIfilename\fR equal to \fB"stdin", "stdout", \fRor\fB "stderr"\fR
+to allow easy specification of stdio defaults for files. It is not 
+necessary to specifically open stdio streams.
+.PP
+Defaults for input and output can be set in the file \fBsuds.def\fR.
+When \fBst_open(3)\fR is called for the first time, it looks for a file
+with this name first in the present directory, then if not found it
+looks in the effective user's home directory, then in the directory
+specified by the environmental variable \fBSUDS_INCLUDE\fR, and if
+still not found it looks finally in \fB/usr/include/suds\fR.  See \fBst_intro(3)\fR.
+.SH "SEE ALSO"
+fopen(3s),
+st_close(2),
+st_put(2), 
+st_get(2) 
+.SH DIAGNOSTICS
+.IR st_open
+returns a
+.SM
+.B NULL
+pointer on failure. Errors are reported by
+.IR st_error
+and a user supplied subroutine called
+.IR die(errno) 
+is called (See
+.IR st_error(3s)
+).
+.SH BUGS
+In order to support the same number of open files as the system does,
+.I st_open
+must allocate additional memory for data structures using
+.I malloc
+when each file is opened.
+This might confuse some programs which use their own memory allocators.
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+

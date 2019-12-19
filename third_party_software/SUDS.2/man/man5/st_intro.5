@@ -1,0 +1,138 @@
+.so ../man_macros/suds_man_macros
+.TH ST_INTRO 5 "14 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+st_intro_pc \- introduction to PC_SUDS structures and codes
+.SH OVERVIEW
+The initial version of SUDS was adopted for use in the IASPEI Software
+Library edited by W. H. K. Lee for use on IBM-compatible personal
+computers and was first released in 1989.  This software is available
+to thousands of people and is used throughout the world.  This early
+version of SUDS has come to be known as PC_SUDS.  PC_SUDS is
+substantially different from the new SUDS described in this manual.  It
+is not machine independent, is not a database model, and does not
+handle as many types of seismological data.  Many more advanced tools
+will be available for the new SUDS.
+.PP
+In order to make a direct and simple migration path from PC_SUDS to
+SUDS and in order to allow use of many new utility programs with
+existing PC_SUDS data, the SUDS input/output library has been programmed
+to recognize PC_SUDS data and to read it in a machine independent
+manner into structures in memory that have the same members as PC_SUDS
+structures, but that also have the members properly aligned for machine
+independence and include the \fBstructure_type\fR and
+\fBstructure_len\fR members that start all new SUDS structures.  This
+allows the PC_SUDS structures to work with most SUDS subroutines and
+utilities.  The conversion is done on input and on output so that on
+recording media and disks PC_SUDS data is still in PC_SUDS format.
+This allows PC_SUDS and SUDS data to exist together. \fBHowever, we
+strongly encourage you not to mix SUDS structures with PC_SUDS
+structures.  This will lead to many problems.\fR  If you have a great
+deal of data in PC_SUDS format, you may wish to use some of the new
+tools with that data.  You should consider moving to the new SUDS
+whenever the tools you need are available and when you are working with
+80386 and more advanced computers.  A filter \fBpc2suds(1)\fR is
+provided to convert data from PC_SUDS to SUDS when needed.
+.SH VERSION
+The descriptions on the following pages are based on the PC_SUDS
+documentation and include files for version 1.44 (23-Aug-1993).
+.SH "INTERNAL FORMAT"
+The input library recognizes PC_SUDS structures when reading the
+\fBstructtag\fR for PC_SUDS and the \fBstructure_tag\fR for SUDS.
+Both start with the letter \fBS\fR, but the second character for
+PC_SUDS is a letter \fB6\fR while for SUDS the second character is
+typically the letter \fBx\fR or other letters listed in the code_list
+\fBcomputer_types\fR.  In PC_SUDS the letter \fB6\fR is required
+by the PC_SUDS utilities.  If a different letter is used, that data will
+not be correctly read by the PC_SUDS or the SUDS utilities.
+.PP
+The internal format of PC_SUDS structures is described in the following
+manual pages.  The members \fBstructure_type\fR and \fBstructure_len\fR
+have been added since these are used by many utilities when handling
+SUDS structures.  Members have also been added to assure alignment of
+members on a byte that is evenly divisible by their length, or in the
+case of strings, on a 4-byte boundary.  These members that do not exist
+in the PC_SUDS structures all have names starting with \fBpad_\fR.
+.PP
+ SUDS does not allow for nested structures or members that are arrays
+in order to be compatible with most database systems.  The \fBstatident\fR
+structure is contained within many PC_SUDS structures and is thus
+included member by member in the equivalent SUDS structures.  Array
+members are given explicit names.  These changes mean that existing PC_SUDS
+utilities can not use the new input/output library unless the references
+to these members are changed.  However, existing PC_SUDS utilities and
+other programs will still continue to work when using PC_SUDS data
+written by the new SUDS library routines.
+.SH PROBLEMS
+Association of structures that are related, for example, to a single event,
+is done in PC_SUDS by physical organization into files or directories.
+In SUDS association is done by relational primary and foreign keys
+(LABEL and REFERS2 member types).  This adds some compexity to converting
+PC_SUDS to SUDS but has the benefit of being more explicit and being
+database compatible.
+.PP
+In C, ASCII strings are terminated by a null byte (\0).  This byte is
+used whenever printing, copying, scanning a string, etc.  In PC-SUDS
+network names are typically of length 4 and station names are of length
+5.  This means they can only have 3 and 4 characters respectively.
+However, much PC-SUDS data exists where someone has not so cleverly put
+4 and 5 characters respectively in these names.  Thus if after a name
+you get garbage characters, it means the program has to add the null
+byte or print the string character by character.
+.PP
+NODATA in PC_SUDS is defined as -32767. for all variable types.
+The IO library converts these values to suitable values in SUDS depending
+on type: short integer (NODATS=-32760), long integer (NODATL=-2147483640L), and floating point (NODATF=-1.7e+36).  NOTIME in PC_SUDS is the same as 
+MINTIME in SUDS.
+.SH "LIST OF STRUCTURES"
+Structures defined in the \fBPC_SUDS\fR standard are as
+follows:
+.br
+.nf
+.na
+.ta 1.1i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.so struct_names.5
+.fi
+.ad
+.PP
+The structures calib, calibration, equipment, error, evdescr, event, 
+eventsetting, focalmech, layers, loctrace, moment, residual, and velmodel
+are not commonly used in PC_SUDS and we suggest that you do not use them.
+.SH "PROPERTIES OF THE STRUCTURES"
+.nf
+.na
+.ta 1.5i 2.3i 3.1i 3.9i 4.7i
+.so struct_sizes.5
+.fi
+.ad
+.SH REFERENCES
+The following materials describe PC_SUDS and are in chronological order.
+Volumes in the IASPEI Software Library may be ordered from the
+Seismological Society of America, 201 Plaza Professional Building, El
+Cerrito, CA 94530, 510/525-5474, fax 510/525-7204.
+.PP
+Ward, Peter L., 1989, \fBSUDS: Seismic Unified Data System,\fR U.S.
+Geological Survey Open-File Report 89-188, 123 pages.
+.PP
+Lee, W. H. K., editor, 1989, \fBToolbox for Seismic Data Acquisition,
+Processing, and Analysis\fR: IASPEI Software Library, Volume 1, 284
+pages.
+.PP
+Lee, W. H. K., editor, 1990, \fBToolbox for Plotting and Displaying
+Seismic and Other Data\fR: IASPEI Software Library, Volume 2, 207
+pages.
+.PP
+Banfill, Robert, 1992, \fBSUDS, Seismic Unified Data System, Version 1.31,\fR
+Small Systems Support, Big Water, Utah, available from the IASPEI PC Working 
+Group, send a request by FAX to 415/858-2599, 27 pages.
+.PP
+Lee, W. H. K., editor, 1993, \fBDigital Seismogram Analysis and Waveform
+Inversion\fR: IASPEI Software Library, Volume 3, 166 pages.
+.PP
+Scherbaum, Frank, and Johnson, James, 1992, \fBProgrammable Interactive
+Toolbox for Seismological Analysis (PITSA)\fR: IASPEI Software Library,
+Volume 5, 269 pages.
+.PP
+Banfill, Robert, 1 December 1993, \fBPC-SUDS Utilities\fR, A collection
+of programs for routine processing of seismic data stored in the
+Seismic Unified Data System for DOS (PC-SUDS): IASPEI Software Library
+Supplement #1, 91 pages.

@@ -1,0 +1,179 @@
+.so ../man_macros/suds_man_macros
+.TH STRUCTURE_PROPERTIES 2 "25 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+structure_properties \- get information about the properties of structures
+and their members
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+INT4 type_of_structure(GENPTR ptr_to_structure);
+INT4 length_of_structure(GENPTR ptr_to_structure);
+INT4 type_of_data(GENPTR ptr_to_structure);
+INT4 words_of_data(GENPTR ptr_to_structure);
+INT4 bytes_of_data(GENPTR ptr_to_structure);
+CHAR *pointer_to_data(GENPTR ptr_to_structure);
+CHAR *name_of_structure(GENPTR ptr_to_structure);
+SUDS_STRUCTURE_INFO *get_structure_info(GENPTR ptr_to_structure);
+SUDS_MEMBER_INFO *get_member_info(GENPTR ptr_to_structure, CHAR *member_name);
+SUDS_VARIABLE_INFO *get_variable_info(INT4 type);
+INT4 get_size_of(INT4 type);
+INT4 get_type_from_name(CHAR *structure_name);
+INT4 width_of_field(SUDS_MEMBER_INFO member_info);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 type_of_structure, length_of_structure, type_of_data
+integer*4 words_of_data, bytes_of_data, get_size_of, type
+integer*4 get_type_from_name,width_of_field
+function type_of_structure(ptr_to_structure)
+function length_of_structure(ptr_to_structure)
+function type_of_data(ptr_to_structure)
+function words_of_data(ptr_to_structure)
+function bytes_of_data(ptr_to_structure)
+character *pointer_to_data(ptr_to_structure)
+	character *ptr_to_structure;
+function get_size_of(type)
+function get_type_from_name(CHAR *structure_name);
+function width_of_field(ptr_to_member_info);
+	character *member_info;
+.fi
+.ft R
+.SH DESCRIPTION
+These functions provide easy access to the properties of any
+structure.  They also provide access to the central tables of
+\fBSUDS\fR (\fBmember_info, structure_info, variable_info\fR).
+\fBThese central tables should only be accessed through these
+functions\fR because these tables may be maintained on different
+computers in a database, a caching system, or some other
+computer-dependent form.
+.PP
+Given a pointer to a structure (\fBptr_to_structure\fR), these
+functions return the following information:
+.PP
+\fBtype_of_structure\fR returns the structure define number or
+\fBNODATL\fR if \fBptr_to_structure\fR is \fBNULL\fR.
+.PP
+\fBlength_of_structure\fR returns the total number of bytes in the
+structure, not including data or
+\fBNODATL\fR if \fBptr_to_structure\fR is \fBNULL\fR.
+.PP
+\fBtype_of_data\fR returns the type of data following the structure.
+NODATL means no data follow this structure or
+ptr_to_structure\fR is \fBNULL\fR.
+.PP
+\fBwords_of_data\fR returns the length of data following the structure
+in words, 0 if no data follow this structure, and \fBNODATL\fR if
+\fBptr_to_structure\fR is \fBNULL\fR or structure type is unknown.
+.PP
+\fBbytes_of_data\fR returns the length of data following the structure
+in bytes, 0 if no data follow this structure, and \fBNODATL\fR if
+\fBptr_to_structure\fR is \fBNULL\fR or structure type is unknown.
+.PP
+\fBpointer_to_data\fR returns a pointer to the first byte following
+this structure whether data exists or not.  It returns \fBNULL\fR
+if \fBptr_to_structure\fR is \fBNULL\fR or structure type is unknown.
+.PP
+\fBname_of_structure\fR returns the name of a structure.  If the 
+structure is not known or if \fBptr_to_structure\fR is \fBNULL\fR,
+it returns NOSTRG.
+.PP
+\fBget_type_from_name\fR returns the type of a structure, given its
+name.  If name is unrecognized, it returns \fBNODATL\fR.
+.PP
+\fBget_structure_info\fR returns a pointer to a \fBstructure_info\fR
+structure with information about the structure pointed to by
+\fBptr_to_structure\fR.  This function may also be called with the
+address of an INT4 containing the structure_type.  Errors are
+reported by \fBst_error\fR and in this case, this function returns
+\fBNULL\fR.
+.PP
+\fBget_member_info\fR returns a pointer to a \fBmember_info\fR
+structure with information about the member with \fBmember_name\fR in
+the structure pointed to by \fBptr_to_structure\fR.  This function may
+also be called with the address of an INT4 containing the
+structure_type in place of the \fBptr_to_structure\fR.  Errors are
+reported by \fBst_error\fR and in this case, this function returns
+\fBNULL\fR.
+.PP
+\fBget_variable_info\fR returns a pointer to a \fBvariable_info\fR
+structure with information about the variable of a given \fBtype\fR
+(which is \fbvariables[i].define_num\fR).  Errors are
+reported by \fBst_error\fR and in this case, this function returns
+\fBNULL\fR.
+.PP
+\fBget_size_of\fR returns the length of the variable or structure in
+bytes. If type is negative, it refers to the define types
+in \fBvariable_info(3)\fR. If type is positive it refers to a structure
+define number and returns the struct_length (See structure_info(3)).
+IF the type is unknown, returns \fBNODATL\fR.
+.PP
+\fBwidth_of_field\fR returns the number of ASCII spaces needed to list
+this member.
+.SH EXAMPLE
+.nf
+INTV die(n) INTV n; { exit(n); }
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   SUDS_WAVEFORM *wf;
+   INT4 i;
+   SUDS_STRUCTURE_INFO *si;
+   SUDS_MEMBER_INFO *mi;
+   SUDS_VARIABLE_INFO *vi;
+
+   progname=argv[0];
+   i=st_create(WAVEFORMS,(GENPTR *)&wf,200L);
+   wf->data_type=FL4;   /* FL4 = -13 */
+   wf->data_length=50;
+.eo
+   printf("Type   of structure = %ld\n",type_of_structure((GENPTR)wf));
+   printf("Length of structure = %ld\n",length_of_structure((GENPTR)wf));
+   printf("Type   of data = %ld\n",type_of_data((GENPTR)wf));
+   printf("Words  of data = %ld\n",words_of_data((GENPTR)wf));
+   printf("Bytes of data = %ld\n",bytes_of_data((GENPTR)wf));
+   printf("Pointer to structure = %ld pointer to data = %ld\n",
+      wf,pointer_to_data((GENPTR)wf));
+   printf("Pointer to data - Pointer to structure = %ld\n",
+      (INT4)((INT4)pointer_to_data((GENPTR)wf)-(INT4)wf));
+.ec
+   si=get_structure_info((GENPTR)wf);
+.eo
+   if(si!=NULL) printf("The first 4 members of %s structure are:\n",
+      si->struct_name);
+   for(i=0;i<4;i++) printf("   %s\n",si->member_table[i].member_name);
+   mi=get_member_info((GENPTR)wf,"num_spikes");
+   printf("Member waveform.%s has the title \"%s\"\n",
+.ec
+      mi->member_name,mi->member_title);
+   vi=get_variable_info(LON);
+.eo
+   printf("For variable type %s, the minimum value is %s\n",
+.ec
+      vi->variable_name,vi->min_value);
+   exit(0);
+}
+
+The output of this program is:
+
+Type   of structure = 13
+Length of structure = 184
+Type   of data = -13
+Words  of data = 50
+Bytes of data = 200
+Pointer to structure = 0x46ea8 pointer to data = 0x46f60
+Pointer to data - Pointer to structure = 184
+The first 4 members of waveform structure are:
+   structure_type
+   structure_len
+   waveform_id
+   waveform_dc
+Member waveform.num_spikes has the title "number of spikes"
+For variable type LONGIT, the minimum value is -180.
+.fi
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

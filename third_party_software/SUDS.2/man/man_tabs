@@ -1,0 +1,69 @@
+.nr PP 12
+.nr PS 12
+.nr VS 14
+.LP
+Print on the frontmost separator that contains the tab "TEXT":
+.sp 4
+.nr PP 37
+.nr PS 37
+.nr VS 39
+.LP
+.ti 2.5i
+\fB\s+9SUDS\s-9
+.sp 1
+.br
+.ce
+-----
+.sp 1.5
+.ti 1.0i
+\s+9S\s-9eismic
+.sp 1
+.ti 2.0i
+\s+9U\s-9nified
+.sp 1
+.ti 3.0i
+\s+9D\s-9ata
+.sp 1
+.ti 4.0i
+\s+9S\s-9ystem\fR
+.bp 0
+.nr PP 12
+.nr PS 12
+.nr VS 14
+.LP
+Print on the front and back of the tab:
+.sp 3
+.nr PP 16
+.nr PS 16
+.nr VS 18
+.LP
+TEXT
+.LP
+1: COMMANDS
+.LP
+2: SUBROUTINES
+.LP
+3: SYSTEM STRUCTURES
+.LP
+4: USER STRUCTURES
+.LP
+5: PC-SUDS STRUCTURES
+.LP
+6: CODE_LISTS
+.LP
+7: MAPPINGS
+.sp 4
+.nr PP 12
+.nr PS 12
+.nr VS 14
+.LP
+Total of 8 tabs printed front and back, mylar reinforcement on the
+tabs and along the 3 holes on left for standard 3-ring binder.
+.LP
+Quantity 200 sets
+.LP
+These will be used with OpenFile Report 94-003 but do not contain
+the number or date so they can be used with subsequent versions.
+.PP
+Peter Ward, 415-329-4736, project 9930-12183
+

@@ -1,0 +1,64 @@
+.so ../man_macros/suds_man_macros
+.TH XXX 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+xxx \- 
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	xxx_id;
+	DOMAIN	xxx_dc;
+	INT4	number;
+	STRPTR	meaning;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_XXX;
+.sp 0.5
+#define XXXS	0L
+.fi
+.ft R
+.SH DESCRIPTION
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBxxx_id\fI xxx id\fR
+A number that uniquely identifies, within this \fBxxx_dc\fR, an instance 
+of the \fBxxx\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBxxx_dc\fI xxx domain\fR
+Domain in which xxx_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBauthority\fI authority\fR
+.so ../man_macros/authority.descrip
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

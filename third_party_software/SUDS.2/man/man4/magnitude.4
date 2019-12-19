@@ -1,0 +1,113 @@
+.so ../man_macros/suds_man_macros
+.TH MAGNITUDE 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+magnitude \- magnitude calculated for a solution
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	magnitude_id;
+	DOMAIN	magnitude_dc;
+	REFERS2	solution_id;
+	DOMAIN	solution_dc;
+	FLOAT4	mag_value;
+	FLOAT4	mag_error;
+	CODE1	mag_type;
+	CHAR	preferred;
+	INT2	num_reports;
+	INT2	num_used;
+	INT2	spare_a;
+	FLOAT4	rms_of_mag;
+	AUTHOR	authority;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_MAGNITUDE;
+.sp 0.5
+#define MAGNITUDES	307L
+.fi
+.ft R
+.SH DESCRIPTION
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBmagnitude_id\fI magnitude id\fR
+A number that uniquely identifies, within this \fBmagnitude_dc\fR, an instance 
+of  the \fBmagnitude\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBmagnitude_dc\fI magnitude domain\fR
+Domain in which magnitude_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBsolution_id\fI solution id\fR
+.so ../man_macros/solution.descrip
+.BB
+key=part_foreign(1,solution.solution_id), db_delete=cascade, 
+db_must_exist=true
+.EB
+.TP
+\fBsolution_dc\fI solution domain\fR
+Domain in which solution_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,solution.solution_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBmag_value\fI value of magnitude\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBmag_error\fI error in magnitude\fR
+.TP
+\fBmag_type\fI type of magnitude\fR
+Type of magnitude.
+.BB
+codelist=magnitude_types
+.EB
+.TP
+\fBpreferred\fI preferred\fR
+If this is the preferred magnitude for this solution, set to the capitol
+letter 'P'.
+.TP
+\fBnum_reports\fI number of reports\fR
+Number of readings reported.
+.TP
+\fBnum_used\fI number used\fR
+Number of readings used in the calculation of magnitude.
+.TP
+\fBspare_a\fI for future use\fR
+.TP
+\fBrms_of_mag\fI rms of magnitudes\fR
+Root mean square of the individual magnitudes averaged.
+.TP
+\fBauthority\fI authority\fR
+.so ../man_macros/authority.descrip
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

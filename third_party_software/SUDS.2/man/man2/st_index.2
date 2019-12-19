@@ -1,0 +1,192 @@
+.so ../man_macros/suds_man_macros
+.TH ST_INDEX 2 "24 April 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_index, st_position, st_tell, st_peek \- index and reposition a stream of suds structures
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <stdio.h>
+struct quick_index {
+   INT4 tag_offset;
+   INT4 structure_num;
+   INT4 third_member;
+   INT4 bytes_data;
+} table[];
+INT4 st_index(CHRPTR file_name, SUDS_STREAM *stream);
+INT4 st_position(SUDS_STREAM *stream, INT4 number_of_structure, INT4 read_write);
+INT4 st_tell(SUDS_STREAM *stream);
+INT4 st_save_idx(CHRPTR file_name,SUDS_STREAM *stream);
+INT4 search_index(INT4 structure_num, INT4 third_member, INT4 bytes_data,
+    INT4 instance, SUDS_STREAM *suds_in_stream)
+#define TO_READ	-827
+#define TO_WRITE	-828
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_index, st_position, st_tell, st_peek, st_save_idx, search_index, readwrite
+function st_index(file_name,stream)
+function st_position(stream, number_of_structure,readwrite)
+function st_tell(stream)
+function st_save_idx(file_name,stream)
+function search_index(number_of_structure, third_member, bytes_data, instance, suds_in_stream)
+	character*(*) file_name
+	integer*4 stream, number_of_structure, third_member, bytes_data, instance
+.fi
+.ft R
+.SH DESCRIPTION
+These routines allow indexed access to a file of \fBSUDS\fR structures.
+Open the file with code such as: 
+.br
+		\fBstream=st_open(file_name,"rb")\fR 
+.br
+.B st_index
+tries to open a file with the same file_name but with the suffix
+\fB.idx\fR replacing any other suffix such as \fB.st\fR.
+\fBst_index\fR expects this file to contain one \fBquick_index\fR
+structure per SUDS structure in the file opened with \fBst_open\fR.  If
+no such file is found or if the modification time on such an index file
+is older than the modification time of the main file, \fBst_index\fR
+creates an index.  In either case the table of \fBquick_index\fr
+structures is pointed to by \fBstream->file_index\fR and is of length
+\fBstream->length_index\fR.
+.PP
+.B st_position
+sets the position of the next input or output operation on the
+.IR stream .
+The new position is just before the nth structure specified by
+.I number_of_structure
+counting the first structure in the stream as zero.  \fBread_write\fR
+should be set to \fBTO_READ\fR to cause the positioning to be after the
+\fBstructure_tag\fR or to \fBTO_WRITE\fR to cause the positioning to be
+before the \fBstructure_tag\fR.
+.B st_position
+returns \fBSUCCESSFUL\fR or \fBFAILED\fR.
+.PP
+.B st_position
+undoes any effects of
+.B  st_unget (2).
+.PP
+.B st_tell
+returns the offset, i.e. the number of the current structure relative
+to the beginning of the file associated with the named
+.IR stream.
+.PP
+.B st_save_idx
+stores the index in the file \fIfile_name.idx\fR.  If \fBfile_name\fR
+ends in \fB.st\fR, the \fBst\fR is replaced by \fBidx\fR.  The suffix
+\fB.idx\fR is added so do not include it in \fBfile_name\fR.
+.PP
+The \fBquick_index\fR structure is initialized by reading each
+\fBstructure_tag\fR(3), skipping 8 bytes and reading the 9th through 12th
+bytes of the structure, and then skipping to the next \fBstructure_tag\fR.
+The 9th through 12th bytes of the structure are assumed to be the third
+member of the structure since the manual compiler requires the first two
+members to be \fIstructure_type\fR and \fIstructure_len\fR for all non
+data-only structures.  The third member is typically the \fBLABEL\fR or
+primary key.
+.PP
+.B search_index
+returns the number of the structure in the file counting from zero,
+whose structure_number
+equals \fIstructure_num\fR, whose third_member equals
+\fIthird_member\fR, and whose bytes_of_data equals \fIbytes_data\fR.
+If \fIthird_member\fR equals NODATL, it is ignored.  If
+\fIbytes_data\fR equals 0 or NODATL, it is ignored and if
+\fIbytes_data\fR equals 1, the structure must have some data following
+it.  \fIinstance\fR should normally be set to 0.  If multiple structures
+satisfy the search criteria, \fBsearch_index\fR returns minus the
+number of instances found, and individual instances can be found by
+setting \fIinstance\fR to equal to 1 for the first instance, 2 for the
+second, etc.  \fBsearch_index\fR returns \fBEOF\fR (defined as -1 in
+stdio.h) if no structure is found with required properties.
+.SH "SEE ALSO" 
+fseek(3), st_open(2), st_unget(2), stream(3)
+.SH DIAGNOSTICS
+.B st_index
+returns SUCCESSFUL or FAILED.
+.B st_position
+returns FAILED for improper seeks,
+otherwise SUCCESSFUL.
+An improper seek can be, for example, an
+.B st_position
+done on a file that has not been opened via
+.B st_open.
+.PP
+These routines return an error if the file_name is a database.
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH EXAMPLE
+.ft B
+.nf
+#include <suds/suds.h>
+
+INTV die(n) INTV n; {exit(n);}
+
+main()
+{
+   SUDS_STREAM *in;
+   INT4 i,struct_number,position;
+   STRING indexed_name[24];
+   struct quick_index  *index;
+   INTV nargc;
+   INT4 structure_num, third_member, bytes_data, instance;
+
+   nargc=argc;
+   progname=argv[0];
+   in=st_open("test_idx.st","rb");
+   position=st_index("test_idx.st",in);
+.eo
+   printf("st_index returns %ld\n",position);
+   index=(struct quick_index *)in->index_to_file;
+   printf("length index=%ld\n",in->length_index);
+   printf("     File_offset  Struct_num  3rd_member  Bytes_data\n");
+   for(i=0;i<in->length_index;i++) 
+      printf("%3d: %11ld %11ld %11ld %11ld\n",i,
+         index[i].tag_offset,index[i].structure_num,
+         index[i].third_member,index[i].bytes_data);
+   struct_number=3;
+   st_position(in,struct_number,TO_READ);
+   printf("%2ld %10ld\n",struct_number,
+      in->struct_number);
+   struct_number=10;
+   st_position(in,struct_number,TO_READ);
+   printf("%2ld %10ld\n",struct_number,
+      in->struct_number);
+.ec
+   structure_num=300;
+   third_member=2;
+   bytes_data=0;
+   instance=0;
+   i=search_index(structure_num, third_member, bytes_data, instance,in);
+.eo
+   printf("search_index(%ld,%ld,%ld,%ld) returns %ld\n",
+      structure_num, third_member, bytes_data, instance,i);
+   structure_num=324;
+   third_member=1;
+   instance=0;
+   i=search_index(structure_num, third_member, bytes_data, instance,in);
+   printf("search_index(%ld,%ld,%ld,%ld) returns %ld\n",
+      structure_num, third_member, bytes_data, instance,i);
+   third_member=1;
+   instance=3;
+   i=search_index(structure_num, third_member, bytes_data, instance,in);
+   printf("search_index(%ld,%ld,%ld,%ld) returns %ld\n",
+      structure_num, third_member, bytes_data, instance,i);
+   third_member=1;
+   instance=7;
+   i=search_index(structure_num, third_member, bytes_data, instance,in);
+   printf("search_index(%ld,%ld,%ld,%ld) returns %ld\n",
+      structure_num, third_member, bytes_data, instance,i);
+   third_member=150;
+   instance=0;
+   i=search_index(structure_num, third_member, bytes_data, instance,in);
+   printf("search_index(%ld,%ld,%ld,%ld) returns %ld\n",
+      structure_num, third_member, bytes_data, instance,i);
+.ec
+   st_save_idx("test_idx.st",in);
+   st_close(in);
+}
+.fi
+.ft R

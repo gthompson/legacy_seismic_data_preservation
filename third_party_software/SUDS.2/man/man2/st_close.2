@@ -1,0 +1,63 @@
+.so ../man_macros/suds_man_macros
+.TH ST_CLOSE 2 "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_close \- close a stream of SUDS structures
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <stdio.h>
+INT4 st_close(SUDS_STREAM *io_stream);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_close
+function st_close(io_stream)
+	integer*4 io_stream
+.fi
+.ft R
+.SH DESCRIPTION
+Close the connection between the calling program and \fIio_stream\fR as
+defined by \fBst_open\fR.  If this stream is a file, any buffered data
+are written out before the file is closed and buffers allocated by the
+standard input/output system are freed. If \fIio_stream\fR is a
+database, any transaction in process will be ended and if this 
+connection is the only one between the user program
+and the database, then all necessary database logout operations are
+automatically performed.
+.PP
+.B st_close
+is performed automatically for all open streams upon calling
+.B st_die(3).
+Any transaction in progress will be aborted.
+.SH "SEE ALSO"
+fclose(3s), st_open(2), st_die(2), st_error(2), st_end_trans(2)
+.SH DIAGNOSTICS
+Returns SUCCESSFUL or FAILED. Errors are reported by
+.IR st_error
+and then a user supplied subroutine called
+.B die(errno)
+is called (See
+.B st_error(2)
+).
+.SH EXAMPLE
+.ft B
+.nf
+	#include <suds/suds.h>
+.LP
+.ft B
+	SUDS_STREAM *in;
+.LP
+.ft B
+	in=st_open("myfile","r");
+	in=st_close(in);
+.ft R
+.fi
+.LP
+By reassigning the SUDS_STREAM pointer to NULL with \fBst_close\fR, 
+you can be sure the pointer can not be used until an \fBst_open\fR has
+been called.
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

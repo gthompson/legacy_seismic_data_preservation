@@ -1,0 +1,4 @@
+A number that uniquely refers, within this comment_dc, to an instance 
+of the \fBcomment\fR structure. Comments are generally not 
+searchable because they are not of standard format. Thus it is recommended that
+comments not be heavily used.

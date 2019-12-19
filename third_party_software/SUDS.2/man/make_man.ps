@@ -1,0 +1,18 @@
+# Print complete SUDS manual 
+ptroff -t -ms manual.text >! suds_man.ps
+cat min_schema.ps >> suds_man.ps
+cat schema_2_5.ps >> suds_man.ps
+cd man1
+ptroff -t  -rP21 -rD1 -rC1 -man MAN1 >>  ../suds_man.ps
+cd ../man2
+ptroff -t  -rP47 -rD1 -rC1 -man MAN2 >>  ../suds_man.ps
+cd ../man3
+ptroff -t -rP103 -rD1 -rC1 -man MAN3 >>  ../suds_man.ps
+cd ../man4
+ptroff -t -rP133 -rD1 -rC1 -man MAN4 >>  ../suds_man.ps
+cd ../man5
+ptroff -t -rP261 -rD1 -rC1 -man MAN5 >>  ../suds_man.ps
+cd ../man6
+ptroff -t -rP317 -rD1 -rC1 -man MAN6 >>  ../suds_man.ps
+cd ../man7
+ptroff -t -rP355 -rD1 -rC1 -man MAN7 >>  ../suds_man.ps

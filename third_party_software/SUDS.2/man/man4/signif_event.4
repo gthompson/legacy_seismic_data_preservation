@@ -1,0 +1,202 @@
+.so ../man_macros/suds_man_macros
+.TH SIGNIF_EVENT 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+signif_event \- information about a major earthquake that complements the solution
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	REFERS2	event_id;
+	DOMAIN	event_dc;
+	FIXED	len_eq_name;
+	STRING	eq_name[20];
+	FIXED	len_country;
+	STRING	country[16];
+	FIXED	len_state;
+	STRING	state[16];
+	INT2	local_time;
+	INT2	num_felt_rep;
+	AUTHOR	felt_authority;
+	FLOAT4	event_magnitude;
+	AUTHOR	mag_authority;
+	AUTHOR	mm_authority;
+	INT2	mm_intensity;
+	CHAR	event_type;
+	CHAR	spare_code;
+	CHAR	tectonism;
+	CHAR	waterwave;
+	CHAR	mechanism;
+	CHAR	medium;
+	AUTHOR	tect_auth;
+	AUTHOR	water_auth;
+	AUTHOR	mech_auth;
+	AUTHOR	medium_auth;
+	FLOAT4	len_aftersh;
+	FLOAT4	dip_aftersh;
+	FLOAT4	strike_aftersh;
+	FLOAT4	peak_accel;
+	AUTHOR	accel_auth;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SIGNIF_EVENT;
+.sp 0.5
+#define SIGNIF_EVENTS	113L
+.fi
+.ft R
+.SH DESCRIPTION
+Information about a significant or major earthquake.  This is
+information that is additional to an \fBevent\fR structure that is
+typically of interest for very large earthquakes only.
+.BB
+permissions="siud_s_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBevent_id\fI event id\fR
+.so ../man_macros/event.descrip
+.BB
+key=part_foreign(1,event.event_id), db_delete=cascade, db_must_exist=true,
+index_string=true
+.EB
+.TP
+\fBevent_dc\fI event domain\fR
+Domain in which event_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,event.event_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP 
+\fBlen_eq_name \fIlength eq name\fR
+The maximum space reserved for the earthquake name, i.e. 20. 
+Actual string can only contain 19 characters to allow for the NULL byte.
+.TP 
+\fBeq_name\fI earthquake name\fR
+Name of this earthquake.
+.TP 
+\fBlen_country \fIlength country name\fR
+The maximum space reserved for the country name, i.e. 16. 
+Actual string can only contain 15 characters to allow for the NULL byte.
+.TP 
+\fBcountry\fI country name\fR
+Name of country earthquake is in or off the coast of.
+.TP 
+\fBlen_state\fR \fIlength of state name\fR
+The maximum space reserved for the state name, i.e. 16. 
+Actual string can only contain 15 characters to allow for the NULL byte.
+.TP 
+\fBstate\fI state name\fR
+Name of state containing the earthquake.
+.TP
+\fBlocal_time\fI local time\fR
+Difference of local time minus Greenwich mean time in minutes.
+.TP
+\fBnum_felt_rep\fI number of felt reports\fR
+Number of felt reports.
+.TP
+\fBfelt_authority\fI felt authority\fR
+Who collected the felt reports.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBevent_magnitude\fI event magnitude\fR
+Summary magnitude of this event.
+.TP
+\fBmag_authority\fI magnitude authority\fR
+Who calculated the magnitude.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBmm_authority\fI mercali authority\fR
+Who determined the Modified Mercalli Intensity.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBmm_intensity\fI mm intensity\fR
+The Modified Mercalli Intensity.
+.TP
+\fBevent_type\fI event type\fR
+A character designating the type of event.
+.TP
+\fBspare_code\fI for future use\fR
+.TP
+\fBtectonism\fI tectonism observed\fR
+Observed u=uplift, s=subsidence, S=strikeslip faulting, N=normal faulting, 
+T=thrust.
+.TP
+\fBwaterwave\fI waterwave observed\fR
+s=seiche, t=tsunami.
+.TP
+\fBmechanism\fI focal mechanism\fR
+t=thrust, s=strike-slip, n=normal, e=explosive.
+.TP
+\fBmedium\fI medium\fR
+Medium around the earthquake or explosion if known.
+.TP
+\fBtect_auth\fI tectonism authority\fR
+Who reported tectonism.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBwater_auth\fI water authority\fR
+Who reported water waves.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBmech_auth\fI mechanism authority\fR
+Who reported focal mechanism.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBmedium_auth\fI medium authority\fR
+Who reported the medium.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBlen_aftersh\fI length aftershocks\fR
+Length of aftershock zone in kilometers.
+.TP
+\fBdip_aftersh\fI dip aftershocks\fR
+Dip of aftershock zone in degrees from horizontal.
+.TP
+\fBstrike_aftersh\fI strike aftershocks\fR
+Strike of aftershock zone in degrees clockwise from north.
+.TP
+\fBpeak_accel\fI peak acceleration\fR
+Largest peak acceleration observed by all reliable accelerographs during
+this event.
+.TP
+\fBaccel_auth\fI medium authority\fR
+Who reported the peak acceleration.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+

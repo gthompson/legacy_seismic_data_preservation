@@ -1,0 +1,35 @@
+.so ../man_macros/suds_man_macros
+.TH SIG_PATH_DATA 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+sig_path_data \- List of signal_paths to follow the focal_mechanism structure
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+} SUDS_SIG_PATH_DATA;
+.sp 0.5
+#define SIG_PATH_DATAS	306L
+.fi
+.ft R
+.SH DESCRIPTION
+List of signal_paths to follow the \fBfocal_mechanism\fR structure. 
+.BB
+data_only=FOCAL_MECHS
+.EB
+.SH MEMBERS
+.TP
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_foreign(1,signal_path.signal_path_id)
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc)
+.EB
+.SH "SEE ALSO"

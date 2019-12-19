@@ -1,0 +1,146 @@
+.so ../man_macros/suds_man_macros
+.TH MAP_ELEMENT 4 "27 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+map_element \- lines and points to be plotted on a map
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	map_element_id;
+	DOMAIN	map_element_dc;
+	LATIT	latitude;
+	LONGIT	longitude;
+	FLOAT4	elevation;
+	CODE4	element;
+	CODE4	map_source;
+	INT4	map_scale;
+	FLOAT8	line_value;
+	ST_TIME	time_mapped;
+	ST_TIME	time_encoded;
+	AUTHOR	authority;
+	INT2	importance;
+	CODE1	compression;
+	CODE1	units;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_MAP_ELEMENT;
+.sp 0.5
+#define MAP_ELEMENTS	312L
+.fi
+.ft R
+.SH DESCRIPTION
+Information about lines or points to be plotted on maps.  Virtually anything
+that could be plotted on a map could be included in the \fBcode_list 
+map_items\fR refered to by the member \fBelement\fR.  The data that 
+follows this structure would typically be of type \fBCHAR\fR for a name
+or of type \fBmap_data\fR for series of locations such as those specifying
+contour lines.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBmap_element_id\fI map element id\fR
+A number that uniquely identifies, within this \fBmap_element_dc\fR, an instance 
+of  the \fBmap_element\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBmap_element_dc\fI map element domain\fR
+Domain in which map_element_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBlatitude\fI latitude\fR
+Latitude, south is negative.
+.BB
+index_string=true
+.EB
+.TP 
+\fBlongitude\fI longitude\fR
+Longitude, west is negative.
+.TP 
+\fBelevation\fI elevation\fR
+Elevation in kilometers, above sea level is positive.
+.TP
+\fBelement\fI map element code\fR
+What type of line or point these data represent.
+.BB
+codelist=map_items
+.EB
+.TP
+\fBmap_source\fI map source code\fR
+Source of these data.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBmap_scale\fI map scale\fR
+Scale of map digitized. If 1:20,000 then set map_scale=20000.
+.TP
+\fBline_value\fI line value\fR
+If this element is a contour line, then this is the value of the contour.
+.TP
+\fBtime_mapped\fI time mapped\fR
+Time this map was made.
+.TP
+\fBtime_encoded\fI time map digitized\fR
+Time this map was digitized.
+.TP
+\fBauthority\fI who digitized map\fR
+Who digitized this map.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBimportance\fI importance\fR
+Importance of this feature.
+.TP
+\fBcompression\fI compression algorithm\fR
+Type of algorithm used to compress the data following this structure. NOCHAR
+means the data is not compressed.
+.BB
+codelist=compression_types
+.EB
+.TP
+\fBunits\fI units\fR
+Type of units represented by the contour line.
+.BB
+codelist=units_types
+.EB
+.TP
+\fBdata_type\fI data type\fR
+Type of data that follows this structure.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of points\fR
+Number of data points of type \fBdata_type\fR that follow
+this structure.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

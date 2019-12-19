@@ -1,0 +1,16 @@
+site.4
+signal_path.4
+service.4
+polarity.4
+seismo_ass.4
+seismometer.4
+recorder_ass.4
+recorder.4
+sig_path_cmp.4
+sig_path_ass.4
+event.4
+solution.4
+magnitude.4
+solution_err.4
+pick.4
+pick_residual.4

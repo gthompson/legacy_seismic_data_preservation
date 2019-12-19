@@ -1,0 +1,97 @@
+.so .suds_man_macros
+.TH MOMENT 5 "9 November 1993" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+moment \- information about a moment calculation for an origin of an event
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	REFERS2	solution_id;
+	DOMAIN	solution_dc;
+	CHAR	constraints;
+	CHAR 	spare_code;
+	INT2	spare;
+	FLOAT4	scalar_moment; 
+	FLOAT4	norm_tens1_1;
+	FLOAT4	norm_tens1_2;
+	FLOAT4	norm_tens1_3;
+	FLOAT4	norm_tens2_1;
+	FLOAT4	norm_tens2_2;
+	FLOAT4	norm_tens3_1;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_MOMENT;
+.sp 0.5
+#define MOMENTS	27L
+.fi
+.ft R
+.SH DESCRIPTION
+Information about a moment calculated for an earthquake.
+.BB
+permissions="siud_si_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBsolution_id\fI solution number\fR
+.so .solution.descrip
+.BB
+key=part_foreign(1,solution.solution_id), db_delete=cascade, 
+index_string=true
+.EB
+.TP
+\fBsolution_dc\fI solution domain\fR
+Domain in which solution_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,solution.solution_dc), db_delete=cascade
+.EB
+.TP
+\fBconstraints\fI constraint type\fR
+Type of constraints.
+.TP
+\fBspare_code\fI for future use\fR
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBscalar_moment\fI scalar moment\fR
+Scalar value of moment.
+.TP
+\fBnorm_tens1_1\fI tensor component 1_1\fR
+Component of the normalized stress tensor.
+.TP
+\fBnorm_tens1_2\fI tensor component 1_2\fR
+Component of the normalized stress tensor.
+.TP
+\fBnorm_tens1_3\fI tensor component 1_3\fR
+Component of the normalized stress tensor.
+.TP
+\fBnorm_tens2_1\fI tensor component 2_1\fR
+Component of the normalized stress tensor.
+.TP
+\fBnorm_tens2_2\fI tensor component 2_2\fR
+Component of the normalized stress tensor.
+.TP
+\fBnorm_tens3_1\fI tensor component 3_1\fR
+Component of the normalized stress tensor.
+.TP
+\fBcomment_id\fI comment\fR
+.so .comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+

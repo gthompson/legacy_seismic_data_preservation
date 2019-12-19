@@ -1,0 +1,32 @@
+.so ../man_macros/suds_man_macros
+.TH SSAM_BAND_DATA 4 "11 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+ssam_band_data \- passband for the Seismic Spectral Amplitude Monitor
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FLOAT4	upper_freq;
+	FLOAT4	lower_freq;
+} SUDS_SSAM_BAND_DATA;
+.sp 0.5
+#define SSAM_BAND_DATAS	317L
+.fi
+.ft R
+.SH DESCRIPTION
+Passband for the SSAM (Seismic Spectral Amplitude Monitor). A number of
+these structures follow an \fBssam_setup\fR specifying the different
+spectral passbands.
+.BB
+data_only=SSAM_SETUPS
+.EB
+.SH MEMBERS
+.TP
+\fBupper_freq\fI upper frequency\fR
+Frequency of the upper end of the frequency passband.
+.TP
+\fBlower_freq\fI lower frequency\fR
+Frequency of the lower end of the frequency passband.
+.SH "SEE ALSO"
+ssam_data(4), ssam_setup(4)

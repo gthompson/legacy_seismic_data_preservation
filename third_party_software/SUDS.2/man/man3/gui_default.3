@@ -1,0 +1,78 @@
+.so ../man_macros/suds_man_macros
+.TH GUI_DEFAULT 3 "26 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+gui_default \- user-set defaults to control graphical user interface
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	default_id;
+	DOMAIN	default_dc;
+	CODE1	degree_rep;
+	CHAR	show_fixed;
+	CODE2	time_rep;
+	INT2	spare_1;
+	INT2	spare_2;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_GUI_DEFAULT;
+.sp 0.5
+#define GUI_DEFAULTS	206L
+.fi
+.ft R
+.SH DESCRIPTION
+Default values for a given user that control graphical user interface
+and conversions to ASCII.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBdefault_id\fI default id\fR
+A number that uniquely identifies, within this \fBdefault_dc\fR, an
+instance of the \fBdefault\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBdefault_dc\fI default domain\fR
+Domain in which default_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBdegree_rep\fI degrees representation\fR
+.BB
+codelist=degree_types
+.EB
+.TP
+\fBshow_fixed\fI show fixed\fR
+If not NOCHAR, then display members of type FIXED.
+.TP
+\fBtime_rep\fI time representation\fR
+.BB
+codelist=time_types, index_string=true
+.EB
+.TP
+\fBspare_1\fI for future use\fR
+.TP
+\fBspare_2\fI for future use\fR
+.TP
+\fBcomment_id\fI comment\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

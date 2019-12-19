@@ -1,0 +1,168 @@
+.so ../man_macros/suds_man_macros
+.TH ST_TIME 2 "26 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+make_mstime, scan_mstime, decode_mstime, list_mstime, get_mstime \- suds time and date utilities
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+MS_TIME make_mstime(INT4 year, INT4 month, INT4 day, INT4 hour, INT4 min, FLOAT8 second);
+MS_TIME scan_mstime(CHRPTR field);
+INT4 decode_mstime(MS_TIME time, INT4 *year, INT4 *month, INT4 *day, INT4 *hour, INT4 *min,
+.br
+	FLOAT8 *second);
+STRING *list_mstime(MS_TIME time, INT4 form, CHAR *out_string);
+MS_TIME get_mstime();
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+double precision make_mstime, get_mstime
+function make_mstime(year,month,day,hour,min,second)
+function scan_mstime(field)
+function decode_mstime(time,year,month,day,hour,min,second)
+function list_mstime(time,form,out_string)
+function get_mstime()
+	integer*4 year,month,day,hour,min,form
+	real*4 second
+	double precision time
+	character*(*) field
+	character*36 out_string
+.fi
+.ft R
+.SH DESCRIPTION
+All times and dates in \fBsuds\fR are kept in terms of Greenwich Mean
+Time (GMT) either as \fBms_time\fR, millisecond time, a double
+precision decimal number of seconds since 00:00:00 GMT Jan. 1,1970 (8
+bytes of storage) or as \fBst_time\fR, stamp time, a long integer
+representation of the same value (4 bytes of storage). \fBms_time\fR
+has a resolution of 5 microseconds between 1900 and 2040 AD.
+.PP
+These routines provide simple conversion to and from other forms of
+time.  \fByear\fR is a four digit number such as 1988, \fBmonth\fR may
+be 1-12, \fBday\fR may be 1-31, \fBhour\fR may be 0-23, \fBmin\fR may
+be 0-59, and \fBsecond\fR is a double precision number.
+.LP
+\fBmake_mstime\fR returns an \fBms_time\fR variable.
+.LP
+\fBscan_mstime\fR returns an \fBms_time\fR variable from a string in
+one of the forms discussed under OPTIONS.
+.LP
+\fBdecode_mstime\fR returns through pointers the components of the time
+variable.
+.LP
+\fBget_mstime\fR returns the computer's clock as an \fBms_time\fR
+variable.
+.LP
+\fBlist_mstime\fR fills the \fIout_string\fR with time in one of
+several options specified by \fIform\fR and returns a pointer to that
+string.  The length of \fIout_string\fR should be 36.
+.SH OPTIONS
+.PP
+\fBform\fR may be an integer representing one of the following formats
+where yr=year (2 digits), mo=month (1-12), dy=day (1=31), hr=hour
+(0-23), mn=minute (0-59), and sc=second (0=59):
+.TP
+0       a floating-point number
+.TP
+1       yrmodyhrmnsc.000
+.TP
+2       yrmodyhrmnsc
+.TP
+3       yr mo dy hr mn sc.000
+.TP
+4       yr mo dy hr mn sc
+.TP
+5       mo/dy/yr hr:mn sc.000 GMT
+.TP
+6       mo/dy/yr hr:mn sc GMT
+.TP
+7       month_name dy, year hr:mn sc.000 GMT
+.TP
+8       month_name dy, year hr:mn sc GMT
+.TP
+9       year/month_name/day/yrmody.hrmnsc
+.TP
+10      yrmody.hrmnsc
+.PP
+If only a few digits are given, the remaining digits are assumed to be 0,
+except if month is not specified, it is assumed to be 1. Thus 79 is
+equivalent to 790100000000.000
+.PP
+When time is a nodata value of MINTIME or MAXTIME (see
+variable_info(5)), these words are printed with additional spaces to
+make up a string of the proper length for each of the above options.
+.PP
+Note when only 2 digits are used to represent the year, there is an
+ambiguity for years > 1999.  Thus the negative of the value
+\fBNOTIME\fR (See variable_info(5)) is given as 01/19/38 which is
+January 19,2038.
+.SH "SEE ALSO"
+gettimeofday(2), ctime(3), time(3C)
+.SH DIAGNOSTICS
+Errors are reported by \fBst_error\fR and the routines return a zero
+value or NULL pointer.
+.SH EXAMPLES
+.nf
+INTV die(n) INTV n; { exit(n); }
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   FLOAT8 tim,tim1,sec;
+   INT4 i,year,month,day,hour,min;
+   STRING time_str[36];
+
+   progname=argv[0];
+   tim=get_mstime();
+.eo
+   printf("system time = %lf\n",tim);
+   for(i=0;i<9;i++)printf("%s\n",list_mstime(tim,i,time_str));
+   decode_mstime(tim,&year,&month,&day,&hour,&min,&sec);
+   printf("year=%ld month=%ld day=%ld hour=%ld min=%ld sec=%f\n",
+      year,month,day,hour,min,sec);
+   tim1=make_mstime(year,month,day,hour,min,sec);
+   printf("remade time is %lf which differs by %lf\n",tim1,tim1-tim);
+   day=yrday(month,day,isleap(year,GREGORIAN));
+   printf("day of year is %ld\n",day);
+   tim1=make_mstime(year,0L,day,hour,min,sec);
+   printf("remade time is %lf which differs by %lf\n",tim1,tim1-tim);
+   printf("\n");
+.ec
+
+   year=1900;
+   month=1;
+   day=1;
+   hour=0;
+   min=0;
+   sec=0.0;
+   tim1=make_mstime(year,month,day,hour,min,sec);
+.eo
+   printf("time for %02ld/%02ld/%02ld %ld:%02ld %6.2lf is %lf\n",
+.ec
+      month,day,year-1900L,hour,min,sec,tim1);
+   exit(0);
+}
+
+Which will produce output dependent on the date but looking like this:
+
+system time = 742575595.424494
+742575595.424494
+930713145955.424
+930713145955
+93 07 13 14 59 55.424
+93 07 13 14 59 55
+07/13/93 14:59 55.424
+07/13/93 14:59 55
+Jul 13, 1993 14:59 55.424 GMT
+Jul 13, 1993 14:59 55 GMT
+year=1993 month=7 day=13 hour=14 min=59 sec=55.424494
+remade time is 742575595.424494 which differs by 0.000000
+day of year is 194
+remade time is 742575595.424494 which differs by 0.000000
+time for 01/01/00 0:00   0.00 is -2208988800.000000
+.fi
+.SH AUTHORS
+Bruce Julian and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

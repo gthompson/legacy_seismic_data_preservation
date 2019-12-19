@@ -1,0 +1,56 @@
+.so ../man_macros/suds_man_macros
+.TH ST_UNGET 2 "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_unget \- push a suds structure back into input stream
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <stdio.h>
+INT4 st_unget(GENPTR st_ptr, SUDS_STREAM *stream);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_unget
+funtion st_unget(st_ptr, stream)
+	character*(*) st_ptr;
+	integer*4 stream;
+.fi
+.ft R
+.SH DESCRIPTION
+.B st_unget
+pushes the structure pointed to by
+.I st_ptr
+back onto an input stream.  That structure will be returned by the next
+.I st_get
+call on that stream.
+.B st_unget 
+leaves the file
+.I stream
+unchanged.
+.PP
+Only one structure may be put back on the stream.
+.PP
+An
+.B  st_seek (2)
+erases all memory of pushed back structure.
+.SH "SEE ALSO"
+st_get(2),
+st_seek(2)
+.SH DIAGNOSTICS
+Errors are reported by
+.B st_error.
+.B st_unget
+returns
+.SM
+.B EOF
+if it can't push a structure back and
+.IR ST_ERR
+(defined in st_error.h) if
+.IR stream
+is not open.
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH BUGS
+NOT PRESENTLY IMPLEMENTED

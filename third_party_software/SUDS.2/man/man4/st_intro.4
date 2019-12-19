@@ -1,0 +1,466 @@
+.TH ST_INTRO 4 "10 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+st_intro \- introduction to \fBSUDS\fR structures and codes
+.SH OVERVIEW
+The \fBS\fReismic \fBU\fRnified \fBD\fRata \fBS\fRystem (\fBSUDS\fR) is
+based on organizing data into \fIstructures or groups that provide all
+of the important information about a logical entity\fR such as an
+earthquake hypocentral solution, a seismic waveform, a phase pick, or
+the frequency response of a component or system. These structures or
+groups of data can then be accessed and utilized efficiently and stored
+in a machine-independent manner, in any order, on any type of storage
+device.
+.PP
+A structure consists of an ordered list of members. Multiple instances
+of a structure can be thought of as a table where there is one column
+for each member and one row for each instance of the structure. Some
+members of some structures refer to specific instances of other
+structures, providing a way to relate, for example, specific phase
+picks to a specific earthquake solution, a specific waveform to a
+specific recorder, etc. Thus \fBSUDS\fR, besides being a data format,
+is a model or plan for a relational database system.
+.PP
+Chapter 4 of the manual provides a description of each structure and a
+definition for each member of each structure. The information in these
+manual pages provides a complete description of the \fBSUDS\fR
+structures in a format appropriate for the C-language. Use of
+\fBSUDS\fR with other programming languages such as FORTRAN that
+support structures, is easy and will be described elsewhere. All
+information in the manual required for computer programs to access and
+fully utilize \fBSUDS\fR structures is extracted automatically by a
+computer program (\fBcomp_man(1)\fR) and compiled into four files
+that are typically included in source programs. These files contain the
+central tables used by utility programs to read, search, utilize, and
+write \fBSUDS\fR structures, files, streams, and databases. Thus the
+manual provides complete documentation of \fBSUDS\fR and is the
+ultimate authority for \fBSUDS\fR.
+.LP
+This introduction describes the conventions used in defining \fBSUDS\fR
+structures. It is important for all users of \fBSUDS\fR to understand
+these conventions.
+.SH "VARIABLE TYPES"
+The types of variables used in \fBSUDS\fR are specified using
+\fBtypedefs\fR, a C language facility for assigning new names to
+variable types. This is done to enhance portability, to clarify the
+purpose of each variable type, to extend some variable types to include
+an allowable range of values, and to facility use of other computer
+languages. The properties of all variable types are contained in
+\fBvariable_info(2)\fR. Many variable types are similar to computer
+language types such as:
+.br
+.nf
+.ta 0.5i 2.0i 3.5i
+	\fBSUDS type    C type  FORTRAN type\fR
+	INT2	short	INTEGER*2
+	INT4    long	INTEGER*4
+	FLOAT4	float	REAL*4
+	FLOAT8	double	REAL*8 or DOUBLE PRECISION
+	CHAR    char	CHARACTER
+	STRING	char x[len]	CHARACTER*LEN x
+.fi
+.LP
+Other variable types carry additional information as follows:
+.IP \fBLONGIT\fR
+Longitude as a FLOAT8 with a range limited from -180.0 to +180.0.
+.IP \fBLATIT\fR
+Latitude as a FLOAT8 with a range limited from -90.0 to +90.0.
+.IP \fBST_TIME\fR
+Stamp time or time in seconds since or before January 1, 1970, 00:00:00
+Greenwich Mean Time. This is the same as \fBUNIX\fR time (see
+\fBtime(3V)\fR) and is an \fBINT4\fR.
+.IP \fBMS_TIME\fR
+Millisecond time is similar to ST_TIME but is a FLOAT8 in seconds with
+a precision of approximately 1 microsecond between 1900 and 2040 AD.
+.IP \fBFIXED\fR
+A constant fixed by definition. Each structure begins with 2 FIXED
+members specifying structure_type and structure_length.  The eXternal
+Data Representation (\fBXDR\fR) used to store \fBSUDS\fR structures in
+machine independent binary format, requires that a character string
+must be preceded by its maximum length as an INT4 and that this length
+must be an integral multiple of 4. Thus FIXED members precede all
+strings. FIXED variable types may not be stored in some database
+implementations of \fBSUDS\fR since they do not change.
+.IP \fBCODE\fR
+A number or letter that refers to an ASCII string. Codes are used in
+\fBSUDS\fR to save space and to enforce standardization of ASCII
+strings for ease of searching. They allow standard ASCII strings of
+arbitrary length to be used, thus promoting clarity. Codes may be a
+character (CODE1), a 16-bit integer (CODE2), or a 32-bit integer
+(CODE4) depending on how many different codes are likely to be needed
+for a given application. Codes are related to the ASCII strings via the
+\fBcode_list(4)\fR structure and are described in detail in \fBAppendix
+I: code_lists(6)\fR.  Codes should be accessed only through the
+subroutines described in \fBfind_code(2)\fR because some
+\fBcode_lists\fR such as \fBauthorities\fR will ultimately be stored in
+a disk file rather than in memory.
+.IP \fBAUTHOR\fR
+A 32-bit integer that designates who analyzed the data, who is
+responsible for a given observation, who made a particular pick from a
+waveform, etc. The number is meant to be unique world-wide. In order to
+give each institution basic autonomy over its own needs, each
+institution is assigned a base number by a global authority, i.e. the
+organization managing the \fBSUDS\fR standard.  The base number is an
+even multiple of 10,000. The institution can then assign the next 9,999
+numbers above the base number in any way they choose and register these
+numbers with the global authority for periodic distribution to all
+\fBSUDS\fR users. The \fBSUDS\fR standard allows for more than 400,000
+institutions to participate.
+.IP
+The \fBauthority\fR can be used to signify an individual, a group for
+example responsible for producing an earthquake catalog, a computer
+program that calculates automatic solutions, etc. Often it is useful to
+display either the ASCII string or an abbreviation. The abbreviation is
+defined as the first 5 characters or less than 5 characters occurring
+before a colon. The abbreviation is used as the \fBnetwork_name\fR in
+specifying the complete name of a seismic signal.  Thus some care
+should be made to keep the abbreviations unique, at least among data
+that may ultimately be merged.  Part of the \fBauthorities\fR code list
+might be as follows:
+.nf
+.ta 0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+SUDS CODE LIST authorities[] = {
+	20000, "UOA: Seismology Lab, University of Atlantis (base number)",
+	20100, "JS: Dr. John Smith, seismologist",
+	20101, "CJcat: Charlotte Jones, as earthquake catalog production manager",
+	20102, "CJ: Charlotte Jones, staff seismologist, for personal use",
+	20103, "LR: Lisa Roberts, data analyst",
+	20134, "SW: Sam Wong, graduate student",
+	21000, "CPG: Central Atlantis processing group",
+	22000, "PIC: auto picker program, version 1.1", };
+.fi
+.ft R
+.IP \fBLABEL\fR
+A unique INT4 assigned by an authority to label or identify a specific
+instance of a structure. Most structures have a label or primary key. A
+LABEL variable name normally ends in \fB_id\fR and must be followed in
+the structure by a DOMAIN member.  Unique labels can be determined
+using the subroutine \fBfind_label(2)\fR.
+.IP \fBREFERS2\fR
+An INT4 that refers to a specific instance of a label or primary key.
+This member relates one structure to another structure and in database
+terminology is a foreign key. A REFERS2 variable name normally ends in
+\fB_id\fR and must be followed in the structure by a DOMAIN member.
+.IP \fBDOMAIN\fR
+LABELs and REFERS2s are unique within a DOMAIN. The DOMAIN is the
+authority assigning the value to a LABEL. All LABEL and REFER2 members
+of structures must be followed by a DOMAIN member. The name of a DOMAIN
+member normally ends in \fB_dc\fR. In some database implementations,
+the DOMAIN may be omitted and all LABELs and REFERS2s are converted on
+input to a single DOMAIN.
+.IP
+The DOMAIN may apply to a network, a person, a group, etc. For example,
+the following entries might be added to the \fBauthorities\fR code
+list:
+.nf
+.ta 0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+SUDS CODE LIST authorities[] = {
+	29001, "CAS: Central Atlantis Seismic Networking",
+	29002, "WIN: Wingding Volcano Seismic Network",
+	29010, "LOMA: Loma Prieta Aftershock Temporary Network",
+	29901, "SUNB: SUN3/60 earthquake detection and recording system at WIN", }
+.fi
+.ft R
+.IP
+Thus the value of DOMAIN members defined by the SUNB processor would be
+29901. The \fBdomain_code\fR for the private database of John Smith
+would be 20100, and those for the official earthquake catalog at the
+University of Atlantis might be 21000 or 29001.
+.IP
+It is generally advisable to use new values for DOMAIN members only
+when truly required. For example an earthquake recording device is not
+likely to know about any other domain than its own. When the data are
+demultiplexed and added to a data set for catalog processing, however,
+it is typically best to adopt the DOMAIN value for the new data set and
+to change the relevant LABEL and REFER2 members to be unique in the new
+domain.
+.SH "MISSING DATA"
+In the real world of data collection, it is often important to
+differentiate between data that has a value of 0 and data that is
+missing typically because of hardware failure. \fBSUDS\fR uses special
+numbers near the maximum or minimum range of numbers to designate
+missing data. The different missing number symbols for different data
+types are defined in \fBvariable_info(3)\fR and include \fBNODATS\fR,
+\fBNODATL\fR, \fBNODATF\fR, \fBNOTIME\fR, \fBNOCHAR\fR, \fBNOSTRG\fR,
+and \fBNOLIST\fR. The \fBSUDS\fR utility programs print these symbols
+and accept input of these symbols. Programmers should refer to missing
+data using the defines given in \fBvariable_info(3)\fR.
+.SH "LIST OF STRUCTURES"
+Structures currently defined by the \fBSUDS\fR standard are as
+follows:
+.br
+.nf
+.na
+.ta 1.1i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.so struct_names.4
+.fi
+.ad
+.SH "PROPERTIES OF THE STRUCTURES"
+.nf
+.na
+.ta 1.5i 2.3i 3.1i 3.9i 4.7i
+.so struct_sizes.4
+.fi
+.ad
+.SH "DEFINING NEW STRUCTURES"
+In principal, new \fBSUDS\fR structures can be defined to meet any
+need. Any person wishing to define a new structure, however, needs to
+consider whether an existing structure can possibly fit the need. When
+at all possible, existing structures should be used in order to
+minimize programming complexity. While many utility programs can work
+with any structure, most work-horse programs will only utilize a small
+set of structures. Thus, for example, if there were several structures
+that described earthquake phase readings, each phase-processing program
+would need to know about all of these structures or some of these
+programs would not know how to utilize some of these structures and the
+data would grow incompatible. THUS TRY TO USE EXISTING STRUCTURES
+WHENEVER POSSIBLE. New members can be added to the ends of existing
+structures to improve their utility in your case and spare variables
+exist in some structures to meet the same need.  Additions and
+modifications should not be taken lightly, however, and should be
+viewed as a last resort.
+.PP
+\fBSUDS\fR structures are defined so that on machines with Big-endian
+byte order and IEEE floating point representation, they are already
+in \fBXDR\fR (eXternal Data Representation)
+format and can be read and written without any conversion or bit
+manipulation. This imposes several restrictions that are enforced by
+the manual compiler.  Each member must begin on a byte boundary evenly
+divisible by its length.  Thus a FLOAT8 must begin on a byte boundary
+divisible by 8. This implies that CHAR and INT2 members must be grouped
+as 4 CHARs, 2 CHARS and an INT2, an INT2 and 2 CHARS, or 2 INT2s. In
+fact XDR does not recognize these types and they are packed and
+unpacked by \fBSUDS\fR input-output routines. Structures must have a
+total length evenly divisible by 8.  XDR requires that all strings have
+a maximum length evenly divisible by 4 and that they be preceded by an
+INT4 or FIXED containing the maximum length.
+.PP
+The first member of a structure must be \fBFIXED structure_type\fR and
+the second member must be \fBFIXED structure_len\fR.  The
+\fBstructure_type\fR is used by many routines to identify the
+structure.  The \fBstructure_len\fR is to provide an error check in the
+future when members may be added to existing structures.
+.PP
+\fBLABEL\fR and \fBREFERS2\fR members must be followed by corresponding
+\fBDOMAIN\fR members.
+.PP
+Names in \fBSUDS\fR are limited to the following lengths to be
+compatible with some computer compilers and database systems. These
+lengths are enforced by the lengths of strings in the variable_info,
+member_info, and structure_info:
+.br
+.nf
+.ta 1.0i 3.0iR 3.5i
+	Structure names	15	preferably <= 12
+	Member names	15	preferably <= 12
+	Variable names	7
+	Structure typedef names	23
+	Structure define names	16
+.fi
+Structure members are uniquely defined as
+\fBstructure_name.member_name\fR. The total length of such names should
+be less than 27. The \fBdefine_name\fR for each structure should be the
+structure name capitalized followed by the letter \fBS\fR The typedef
+name of structures should be the structure name capitalized preceded by
+\fBSUDS_\fR
+.PP
+Structures are groups of data that define logical entities. Often this
+entity includes data that follows the structure. A \fBwaveform\fR
+structure is followed by  waveform data and a \fBvel_model\fR structure
+is followed by data in the format of \fBvel_layer\fR structures. In
+order for the data to be read and written properly with \fBXDR\fR
+routines, these header structures must contain the members \fBCODE4
+data_type\fR and \fBINT4 data_length\fR and the definitions of these
+members must contain the fields \fBsets_data_type=true\fR and
+\fBsets_data_length=true\fR.
+.SH "NORMALIZATION"
+.PP
+The relational model requires that each member of a structure must be
+"atomic", i.e. it may not contain multiple values of the same meaning
+or type.  Multiple values should typically be put in another table
+referred to by the first table.
+.PP
+For purposes of searching, from experience, and from relational
+algebra, relational tables should be normalized typically in what is
+known as Third Normal Form.  There is a lot written about normalization
+and there are many approaches.  Primary goals of normalization are to
+find and isolate time-independent properties of relationships, remove
+redundant information, and provide unique identification of individual
+records.
+.IP
+A table is in FIRST NORMAL FORM if a primary key exists that is not
+NULL, is unique, and does not contain a submember that is a primary key
+itself.  All attributes are atomic, i.e. not repeating.
+.IP
+A table is in SECOND NORMAL FORM if it is in first normal form and all
+non-key attributes are fully functionally dependent on the primary key
+or in other words the non-key attributes must be uniquely identifiable
+from a subset of the primary key.
+.IP
+A table is in THIRD NORMAL FORM if it is in second normal form and all
+non-key attributes are non-transitively dependent on the primary key or
+in other words a non-key attribute must be solely dependent on
+(determined by) the primary key, not by anything else.
+.PP
+Normalization is a guide but not a strict requirement because sometimes
+it is far more efficient given the way particular data are used to
+allow some redundancy.  A typical tradeoff in SUDS is whether all event
+related structures should contain an event_id.  If they do, it is easier
+within or without a database, to search everything concerning an event.
+.PP
+Denormalization has been introducted for user efficiency in several
+cases.  Care needs to be taken to be sure these fields do not become
+inconsistent. \fBsignal_name\fR is duplicated in \fBsignal_path,
+waveform,\fR and \fBpick.\fR  \fBsolution.pref_magnitude\fR duplicates
+the magnitude value when \fBmagnitude.preferred\fR equals 'P'.
+.SH "MANUAL FORMAT"
+Because the manual is compiled to create the \fBSUDS\fR include files,
+certain requirements must be met when creating new sections. Each
+manual directory contains a \fBTEMPLATE\fR that should be used as a
+starting point. The original files are in standard \fBtroff(1)\fR
+format using the \fBman\fR macro package.  The manual compiler extracts
+all lines with the token \fB#define\fR but ignores lines with a space
+between the \fB#\fR and \fBdefine\fR. The compiler looks for the tokens
+\fBtypedef struct\fR and copies until the end of the line containing
+the right brace. The compiler decodes the first line after the
+line \fB.SH NAME\fR and after each line \fB.TP\fR and their format should be
+kept standard.  The compiler collects all information between square
+brackets which in the original files are designated by lines \fB.BB\fR
+and \fB.EB\fR signifying begin bracket and end bracket. These macros
+are defined in the file \fB../man_macros/suds_man_macros\fR which is included in the
+\fBtroff\fR file with the line
+.br
+.ti 2.0i
+\fB.so ../man_macros/suds_man_macros\fR
+.LP
+All fields between the brackets must be of the form \fBkey_word =
+string\fR and be separated by commas. Allowable key_words are as
+follows:
+.IP \fBallow_char=string\fR
+A string of characters allowed on input to specify this member. The
+characters may include a range in ASCII order specified by a ~. To
+allow negative numbers, the minus sign must be included.  Thus for a
+positive integer, the string would be "0~9", for a positive or negative
+float it is "0~9.-", for a string with only letters it is "a~zA~Z", for
+all ascii characters it is the string " ~~".  To accept input of the
+character '~', make '~' the last character in the string.  The
+\fBallow_char\fR specification is needed only if different from the
+default for this data type. For members of type \fBCODE1\fR, the
+allow_char string is determined by the manual compiler from the
+appropriate \fBcodelist\fR if the \fBcodelist\fR has 23 or less
+members. To override this feature, specify the \fBallow_char\fR after
+specifying the \fBcodelist\fR.
+.IP \fBcheck_input=subroutine\fR
+name of subroutine to be used to check input to this member (see
+\fBcheck_input(2)\fR).
+.IP \fBcodelist=name\fR
+if this member is a code, give the name of code_list as given in
+\fBcode_lists(6)\fR.
+.IP \fBdb_delete=string\fR
+where the string is restrict, nullify, or cascade. Restrict means that
+if a request is made to delete a primary key, do not allow deletion
+until all foreign references have been deleted. Nullify means that if a
+request is made to delete a primary key, nullify this foreign
+reference. Cascade means that if a request is made to delete a primary
+key referred to by this structure, delete this structure also.
+.IP \fBdb_index=string\fR
+where string is true, unique, or clustered. Include if this member is
+to be indexed in the database by a standard index that allow
+duplicates, a unique index that requires uniqueness, or a clustered
+index that requires uniqueness and makes storage logically contiguous
+by index order. Clustered defaults to unique if not supported by a
+particular database management system.
+.IP \fBdb_must_exist=true\fR
+Most members of structures may be NULL but primary keys and some
+foreign keys must exist for the structure to have meaning. If a
+structure is being inserted in the database, db_must_exist members must
+be specified.  ASSUMED TRUE FOR ALL PRIMARY KEYS.
+.IP \fBdefault_value=string\fR
+default is only included if this value is different than the standard
+default for this variable type. The default value is a string read
+using the format.
+.IP \fBed_col=number\fR
+column in the forms editor that this member begins to be displayed at.
+The default value is the define \fBED_COL\fR in \fBvariable_info(3)\fR.
+.IP \fBed_row=number\fR
+row in the forms editor that this member is to be displayed on. The
+default value is (2 * member_number) + 1. When a structure contains to
+many members the default becomes simply member_number + 1.
+.IP \fBformat=string\fR
+format is the C format string used to read the default_value string and
+to write the value in utility programs such as the screen editor and
+st2asc. The default is determined for the member type from
+\fBvariable_info(3)\fR.
+.IP \fBin_db=false\fR
+Specifies that the member is to be omitted from the database. In some
+database implementations this specification may be automatic for
+members of FIXED type because the values are known and for DOMAIN
+variables when the database is set up for a single DOMAIN. This
+specification is optional for other members, but should normally not be
+used since those members will be set to the default_value when written
+out by the database.
+.IP \fBindex_string=true\fR
+This member is used to create an ASCII string used in \fBst_index(2)\fR
+\fBstdescr(1)\fR, etc.
+.IP \fBkey=part_primary\fR
+.br
+.sp -0.5
+.IP "\fBkey=part_foreign(composite_key_#,table_name.member_name)\fR"
+There may be only one group of part_primary keys per structure.
+Structures are related to each other by keys. The existence of keys
+means that on insertion, update, or deletion of structures with keys,
+other structures may be affected. In the case of an associative table
+where the primary_key is made up of two or more composite foreign keys
+the specification should be
+.br
+.ti 1.5i
+key=part_primary, key=part_foreign(1,table_name.member_name)
+.IP \fBpermissions=string\fR
+permissions is a string giving permissions to select or read a member
+or table(s), insert (i) a member or table, update (u) a member or
+table, and delete (d) a member or table for the manager, analyst,
+group, and general public. Each permission field may contain up to the
+following 4 letters to grant permission such as "siud_siu_siu_s" where
+the manager has all permissions and the public may only select. The
+default permission is given by the define \fBPERMIS\fR in
+\fBmember_info(3)\fR. The permissions are encoded in the member_infole in
+four 4-bit blocks contained in the db_permission variable. The most
+significant 4 bits (bits 15 to 12) refer to the manager and the least
+significant 4 bits refer to public. Bits 31 to 16 are reserved for
+future categories of permissions. In each 4-bit block, bit0(lsb)=d,
+bit1=u, bit2=i, bit3=s. Thus a default_value of "siud_siu_siu_s"
+becomes 0xf771.  Permissions can be set for all members of a table by
+putting the permissions = statement at the end of the \fBDESCRIPTION\fR
+section.  This global permission will apply if no specific permission
+is assigned to a member.
+.IP \fBsets_data_type=true\fR
+If this structure is followed by data, one of these statements must be
+included for the member that specifies the type of the data.
+.IP \fBsets_data_length=true\fR
+If this structure is followed by data, one of these statements must be
+included for the member that specifies the length of the data.
+.IP \fBsets_data_offset=true\fR
+If this structure is followed by large amounts of data that will not be
+stored directly in a database system, one of these statements can be
+included for the member that specifies the file_offset of the data.
+See \fBwaveform(4)\fR.
+.SH "SEE ALSO"
+\fI4. External Data Representation: Sun Technical Notes and 5. External
+Data Representation Standard: Protocol Specification\fR in \fBNetwork
+Programming Guide\fR
+.LP
+st_intro(1), st_intro(2)
+.SH FILES
+.LP
+/usr/include/suds/suds.h
+.LP
+/usr/include/suds/suds_cod.h
+.LP
+/usr/include/suds/suds_mem.h
+.LP
+/usr/include/suds/suds_str.h
+.LP
+/usr/include/suds/suds_var.h
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

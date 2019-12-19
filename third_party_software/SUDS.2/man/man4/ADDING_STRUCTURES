@@ -1,0 +1,10 @@
+
+To add new structures to SUDS you must:
+
+1) Create a manual file *.5 using TEMPLATE as a starting point.
+
+2) Add the name of the new file to MAN5 in alphabetical order.
+
+3) Add the name of the new file to suds/compile_man/Makefile
+
+4) remake SUDS using suds/remake_suds

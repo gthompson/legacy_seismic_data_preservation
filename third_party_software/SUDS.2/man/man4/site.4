@@ -1,0 +1,235 @@
+.so ../man_macros/suds_man_macros
+.TH SITE 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+site \- geographical location and other information about a site containing equipment, source,  etc.
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	site_id;
+	DOMAIN	site_dc;
+	LATIT	site_lat;
+	LONGIT	site_long; 
+	FLOAT4	site_elev;
+	CODE1	coordinates;
+	CODE1	distance_units;
+	CODE1	depth_units;
+	CODE1	site_type;
+	REFERS2	coordinate_id;
+	DOMAIN	coordinate_dc;
+	FIXED	len_site_n;
+	STRING	site_name[8];
+	FIXED	len_old_name;
+	STRING	old_name[8];
+	CODE4	network;
+	CODE1	site_precision;
+	CODE1	elev_precision;
+	CODE1	survey_method;
+	CHAR	spare;
+	CODE1	status;
+	CODE1	region_type;
+	INT2	region;
+	CODE1	site_cond;
+	CODE1	enclosure;
+	CODE2	rock_type;
+	FIXED	len_site_d;
+	STRING	site_descrip[44];
+	ST_TIME	from_time;
+	ST_TIME	thru_time;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SITE;
+.sp 0.5
+.fi
+#define SITES	300L
+.ft R
+.SH DESCRIPTION
+A site is a geographical location where sensors, other pieces of
+equipment, a seismic source, etc. are located.
+.BB
+permissions="s_s_siu_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBsite_id\fI site id\fR
+A number that uniquely refers, within this \fBsite_dc\fR, to an instance of 
+the \fBsite\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBsite_dc\fI site domain\fR
+Domain in which site_id is unique.
+.BB
+key=part_primary, codelist=authorities
+.EB
+.TP 
+\fBsite_lat\fI site latitude\fR
+Latitude, south is negative.  May be north-south coordinate on a local
+coordinate system, or distance on a radial coordinate system.
+.TP 
+\fBsite_long\fI site longitude\fR
+Longitude, west is negative.  May be east-west coordinate on a local
+coordinate system, or azimuth in degrees on a radial coordinate system.
+.TP 
+\fBsite_elev\fI site elevation\fR
+Elevation in kilometers, above sea level is positive.
+.TP
+\fBcoordinates\fI coordinate system\fR
+.BB
+codelist=coordinate_types
+.EB
+.TP
+\fBdistance_units\fI distance units\fR
+.BB
+codelist=units_types
+.EB
+.TP
+\fBdepth_units\fI depth units\fR
+.BB
+codelist=units_types
+.EB
+.TP
+\fBsite_type\fI type of site\fR
+.BB
+codelist=site_types
+.EB
+.TP
+\fBcoordinate_id\fI coordinate id\fR
+If coordinates are on a local grid, this points to a coordinate_sys
+structure describing the grid in earth coordinates.
+.BB
+key=part_foreign(1,coordinate_sys.coordinate_id), db_delete=nullify
+.EB
+.TP
+\fBcoordinate_dc\fI coordinate system dc\fR
+Domain in which coordinate_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,coordinate_sys.coordinate_dc), db_delete=nullify
+.EB
+.TP 
+\fBlen_site_n\fR \fIlen site name\fR
+The maximum space reserved for the site name, i.e. 8. 
+Actual string can only contain 7 characters to allow for the NULL byte.
+.TP 
+\fBsite_name\fI site name\fR
+Name of the site. Must be unique within this network.
+The site name is concatenated into the \fBsignal_name.\fR
+.BB
+index_string=true
+.EB
+.TP 
+\fBlen_old_name\fR \fIlen old site name\fR
+The maximum space reserved for the old site name, i.e. 8. 
+Actual string can only contain 7 characters to allow for the NULL byte.
+.TP 
+\fBold_name\fI old site name\fR
+Former name of this site.  For use in networks where names have been
+changed to protect the innocent. This name acts as a cross-reference to
+another \fBsite\fR structure whose \fBsite.thru_time\fR has passed.
+.TP
+\fBnetwork\fI network\fR
+The network containing this site. Typically this is an authority code
+assigned by the organization that installed and maintains the physical site.
+If a site is part of two or more networks, users may decide to have only
+one site structure with the network code for the primary operator or
+duplicate site structures for each network with different network codes.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBsite_precision\fI site precision\fR
+Precision with which site is located.
+.BB
+codelist=precision_codes
+.EB
+.TP
+\fBelev_precision\fI elevation precision\fR
+Precision with which elevation is determined.
+.BB
+codelist=precision_codes
+.EB
+.TP
+\fBsurvey_method\fI survey method\fR
+Method used to survey location of site.
+.BB
+codelist=survey_methods
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBstatus\fI site status\fR
+Status of this site.
+.BB
+codelist=status
+.EB
+.TP
+\fBregion_type\fI type of region\fR
+.BB
+codelist=region_types
+.EB
+.TP
+\fBregion\fI region in network\fR
+Number of the region within this network.  These numbers are assigned by
+the authority for this network and apply only within this network.
+.TP
+\fBsite_cond\fI site condition type\fR
+Condition of site: p=permafrost
+.BB
+codelist=site_conditions
+.EB
+.TP
+\fBenclosure\fI enclosure code\fR
+Type of structure that encloses the sensor: d=dam, n=nuclear power plant, 
+v=underground vault, b=buried, s=on surface, etc.
+.BB
+codelist=enclosure_types
+.EB
+.TP
+\fBrock_type\fI rock code\fR
+Code for type of rock.
+.BB
+codelist=rock_types
+.EB
+.TP 
+\fBlen_site_d \fIlength site description\fR
+The maximum space reserved for the site description, i.e. 44. 
+Actual string can only contain 43 characters to allow for the NULL byte.
+.TP 
+\fBsite_descrip\fI site description\fR
+Description of the site.
+.TP
+\fBfrom_time\fI beginning time\fR
+Time any data first began to be collected from this site.
+.BB
+db_index=true
+.EB
+.TP
+\fBthru_time\fI ending time\fR
+Time last data was collected from this site.
+.BB
+db_index=true
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+

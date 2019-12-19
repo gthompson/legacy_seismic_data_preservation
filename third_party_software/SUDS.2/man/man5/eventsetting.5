@@ -1,0 +1,75 @@
+.so ../man_macros/suds_man_macros
+.TH EVENTSETTING 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+eventsetting \- settings for earthquake trigger system
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netnw;
+	STRING	netwname[4];
+	MS_TIME	beginttime;
+	INT2	const1;
+	INT2	const2;
+	INT2	threshold;
+	INT2	const3;
+	FLOAT4	minduration;
+	FLOAT4	maxduration;
+	CODE1	algorithm;
+	CHAR	spareK;
+	INT2	spareI;
+	PAD4	pad_J;
+} PCSUDS_EVENTSETTING;
+.sp 0.5
+#define PC_EVENTSETTING	27L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  Settings for an earthquake detection program.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netnw\fI len network name\fR
+.TP
+\fBnetwname\fI network name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBbeginttime\fI begin time\fR
+Time these values in effect.
+.TP
+\fBconst1\fI constant 1\fR
+.TP
+\fBconst2\fI constant 2\fR
+.TP
+\fBthreshold\fI threshold\fR
+.TP
+\fBconst3\fI constant 3\fR
+.TP
+\fBminduration\fI min duration\fR
+Minimum duration for event.
+.TP
+\fBmaxduration\fI max duration\fR
+Maximum duration for event.
+.TP
+\fBalgorithm\fI algorithm\fR
+Triggering algorithm: x=xdetect, m=mdetect, e=eqdetect.
+.BB
+codelist=algorith
+.EB
+.TP
+\fBspareK\fI for future use\fR
+.TP
+\fBspareI\fI for future use\fR
+.TP
+\fBpad_J\fI padding\fR
+.SH "SEE ALSO"

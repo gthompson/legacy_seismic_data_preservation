@@ -1,0 +1,75 @@
+.so ../man_macros/suds_man_macros
+.TH CALC_PATHNAME 2 "25 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+calc_pathname \- calculate waveform pathname from data_group_id and data_group_dc
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+CHRPTR calc_pathname(SUDS_WAVEFORM *waveform_ptr, CHRPTR path_buffer);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+character*(*) calc_pathname
+function calc_pathname(waveform_ptr,buffer)
+	character*(*) waveform_ptr,buffer
+.fi
+.ft R
+.SH DESCRIPTION
+Put a  pathname in \fIpath_buffer\fR and return a pointer to
+\fIpath_buffer\fR.  The waveform_ptr must point to a WAVEFORM
+structure. The pathname returned is
+\fB/waveform_path/year/month/day/yrmody.hrmnsc\fR where
+\fBwaveform_path\fR is the default path for this domain specified in
+the file \fBsuds.def\fR (see st_intro(2)) or if no default is specified,
+\fBwaveform_path=/waveforms/domain\fR
+.PP
+When waveforms are written to a database, the waveform structure is
+typically stored in the database, but the waveforms are stored in a
+file with this pathname together with the waveform structures.
+.SH "SEE ALSO"
+st_intro(2), st_time(2)
+.SH DIAGNOSTICS
+Gives an error message and returns a blank or zero length string if
+data_group_id or data_group_dc are not defined or if the structure pointer
+does not point to a WAVEFORM structure.
+.SH EXAMPLE
+.nf
+INTV die(n) INTV n; { exit(n);}
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   SUDS_WAVEFORM wf;
+   CHAR buf[100];
+   SUDS_STREAM *ss;
+
+   progname=argv[0];
+   st_init(WAVEFORMS,(GENPTR)&wf);
+.eo
+   printf("The following ERROR is expected.\n");
+   printf("pathname is (%s)\n",calc_pathname(&wf,buf));
+   wf.data_group_dc=10000L;
+   wf.data_group_id=(INT4)make_mstime(1992L,9L,25L,22L,45L,15.0);
+   printf("data_group_id=%ld\n",wf.data_group_id);
+   printf("pathname is (%s)\n",calc_pathname(&wf,buf));
+   wf.data_group_dc=52000L;
+   printf("pathname is (%s)\n",calc_pathname(&wf,buf));
+.ec
+   exit(0);
+}
+
+This program produces the following output:
+ERROR in sun4/cal_path:
+cannot calc_pathname when data_group_id undefined
+   errno=2: No such file or directory
+pathname is ()
+data_group_id=717461115
+pathname is (/suds/gsmen/1992/Sep/25/920925.224515)
+pathname is (/waveforms/asro/1992/Sep/25/920925.224515)
+.fi
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

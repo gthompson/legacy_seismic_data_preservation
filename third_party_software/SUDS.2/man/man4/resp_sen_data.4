@@ -1,0 +1,42 @@
+.so ../man_macros/suds_man_macros
+.TH RESP_SEN_DATA 4 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+resp_sen_data \- response sensitivity/gain
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FLOAT4	sensitivity;
+	FLOAT4	frequency;
+	ST_TIME	cal_time;
+	INT4	spare;
+} SUDS_RESP_SEN_DATA;
+.sp 0.5
+#define RESP_SEN_DATAS	319L
+.fi
+.ft R
+.SH DESCRIPTION
+Response information when specified as sensitivity or gain at a series of
+frequencies resulting from a calibration.  A number of these structures 
+(\fBresponse.data_length\fR) follow structure \fBresponse\fR as data.
+.BB
+data_only=RESPONSES
+.EB
+.SH MEMBERS
+.TP
+\fBsensitivity\fI sensitivity/gain\fR
+Sensitivity/gain at a given frequency.
+.TP
+\fBfrequency\fI frequency\fR
+Frequency point on the amplitude versus frequency curve in hertz.
+.TP
+\fBcal_time\fI time of calibration\fR
+Time this point was calibrated.
+.TP
+\fBspare\fI for future use\fR
+.SH "SEE ALSO"
+response(4), resp_cfs_data(4), resp_fap_data(4), resp_fir_data(4),
+resp_pz_data(4)
+
+

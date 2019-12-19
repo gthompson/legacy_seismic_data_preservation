@@ -1,0 +1,1441 @@
+%!
+%%BoundingBox: (atend)
+%%Pages: (atend)
+%%DocumentFonts: (atend)
+%%EndComments
+%
+% FrameMaker PostScript Prolog 2.0, for use with FrameMaker 2.0
+% Copyright (c) 1986,87,89 by Frame Technology, Inc.  All rights reserved.
+%
+% Known Problems:
+%	Due to bugs in Transcript, the 'PS-Adobe-' is omitted from line 1
+/FMversion (2.0) def 
+% Set up Color vs. Black-and-White
+	/FMPrintInColor systemdict /colorimage known def
+% Uncomment this line to force b&w on color printer
+%   /FMPrintInColor false def
+/FrameDict 190 dict def 
+systemdict /errordict known not {/errordict 10 dict def
+		errordict /rangecheck {stop} put} if
+% The readline in 23.0 doesn't recognize cr's as nl's on AppleTalk
+FrameDict /tmprangecheck errordict /rangecheck get put 
+errordict /rangecheck {FrameDict /bug true put} put 
+FrameDict /bug false put 
+mark 
+% Some PS machines read past the CR, so keep the following 3 lines together!
+currentfile 5 string readline
+00
+0000000000
+cleartomark 
+errordict /rangecheck FrameDict /tmprangecheck get put 
+FrameDict /bug get { 
+	/readline {
+		/gstring exch def
+		/gfile exch def
+		/gindex 0 def
+		{
+			gfile read pop 
+			dup 10 eq {exit} if 
+			dup 13 eq {exit} if 
+			gstring exch gindex exch put 
+			/gindex gindex 1 add def 
+		} loop
+		pop 
+		gstring 0 gindex getinterval true 
+		} def
+	} if
+/FMVERSION {
+	FMversion ne {
+		/Times-Roman findfont 18 scalefont setfont
+		100 100 moveto
+		(FrameMaker version does not match postscript_prolog!)
+		dup =
+		show showpage
+		} if
+	} def 
+/FMLOCAL {
+	FrameDict begin
+	0 def 
+	end 
+	} def 
+	/gstring FMLOCAL
+	/gfile FMLOCAL
+	/gindex FMLOCAL
+	/orgxfer FMLOCAL
+	/orgproc FMLOCAL
+	/organgle FMLOCAL
+	/orgfreq FMLOCAL
+	/yscale FMLOCAL
+	/xscale FMLOCAL
+	/manualfeed FMLOCAL
+	/paperheight FMLOCAL
+	/paperwidth FMLOCAL
+/FMDOCUMENT { 
+	array /FMfonts exch def 
+	/#copies exch def
+	FrameDict begin
+	0 ne dup {setmanualfeed} if
+	/manualfeed exch def
+	/paperheight exch def
+	/paperwidth exch def
+	setpapername
+	manualfeed {true} {papersize} ifelse 
+	{manualpapersize} {false} ifelse 
+	{desperatepapersize} if
+	/yscale exch def
+	/xscale exch def
+	currenttransfer cvlit /orgxfer exch def
+	currentscreen cvlit /orgproc exch def
+	/organgle exch def /orgfreq exch def
+	end 
+	} def 
+	/pagesave FMLOCAL
+	/orgmatrix FMLOCAL
+	/landscape FMLOCAL
+/FMBEGINPAGE { 
+	FrameDict begin 
+	/pagesave save def
+	3.86 setmiterlimit
+	/landscape exch 0 ne def
+	landscape { 
+		90 rotate 0 exch neg translate pop 
+		}
+		{pop pop}
+		ifelse
+	xscale yscale scale
+	/orgmatrix matrix def
+	gsave 
+	} def 
+/FMENDPAGE {
+	grestore 
+	pagesave restore
+	end 
+	showpage
+	} def 
+/FMDEFINEFONT { 
+	FrameDict begin
+	findfont 
+	ReEncode 
+	2 index exch 
+	definefont exch 
+	scalefont 
+	FMfonts 3 1 roll 
+	put
+	end 
+	} bind def
+/FMNORMALIZEGRAPHICS { 
+	newpath
+	0.0 0.0 moveto
+	1 setlinewidth
+	0 setlinecap
+	0 0 0 sethsbcolor
+	0 setgray 
+	} bind def
+	/fx FMLOCAL
+	/fy FMLOCAL
+	/fh FMLOCAL
+	/fw FMLOCAL
+	/llx FMLOCAL
+	/lly FMLOCAL
+	/urx FMLOCAL
+	/ury FMLOCAL
+/FMBEGINEPSF { 
+	end 
+	/FMEPSF save def 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	[/fy /fx /fh /fw /ury /urx /lly /llx] {exch def} forall 
+	fx fy translate 
+	rotate
+	fw urx llx sub div fh ury lly sub div scale 
+	llx neg lly neg translate 
+	} bind def
+/FMENDEPSF {
+	FMEPSF restore
+	FrameDict begin 
+	} bind def
+FrameDict begin 
+/setmanualfeed {
+%%BeginFeature *ManualFeed True
+	 statusdict /manualfeed true put
+%%EndFeature
+	} def
+/max {2 copy lt {exch} if pop} bind def
+/min {2 copy gt {exch} if pop} bind def
+/inch {72 mul} def
+/pagedimen { 
+	paperheight sub abs 16 lt exch 
+	paperwidth sub abs 16 lt and
+	{/papername exch def} {pop} ifelse
+	} def
+	/papersizedict FMLOCAL
+/setpapername { 
+	/papersizedict 14 dict def 
+	papersizedict begin
+	/papername /unknown def 
+		/Letter 8.5 inch 11.0 inch pagedimen
+		/LetterSmall 7.68 inch 10.16 inch pagedimen
+		/Tabloid 11.0 inch 17.0 inch pagedimen
+		/Ledger 17.0 inch 11.0 inch pagedimen
+		/Legal 8.5 inch 14.0 inch pagedimen
+		/Statement 5.5 inch 8.5 inch pagedimen
+		/Executive 7.5 inch 10.0 inch pagedimen
+		/A3 11.69 inch 16.5 inch pagedimen
+		/A4 8.26 inch 11.69 inch pagedimen
+		/A4Small 7.47 inch 10.85 inch pagedimen
+		/B4 10.125 inch 14.33 inch pagedimen
+		/B5 7.16 inch 10.125 inch pagedimen
+	end
+	} def
+/papersize {
+	papersizedict begin
+		/Letter {lettertray} def
+		/LetterSmall {lettertray lettersmall} def
+		/Tabloid {11x17tray} def
+		/Ledger {ledgertray} def
+		/Legal {legaltray} def
+		/Statement {statementtray} def
+		/Executive {executivetray} def
+		/A3 {a3tray} def
+		/A4 {a4tray} def
+		/A4Small {a4tray a4small} def
+		/B4 {b4tray} def
+		/B5 {b5tray} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	statusdict begin stopped end 
+	} def
+/manualpapersize {
+	papersizedict begin
+		/Letter {letter} def
+		/LetterSmall {lettersmall} def
+		/Tabloid {11x17} def
+		/Ledger {ledger} def
+		/Legal {legal} def
+		/Statement {statement} def
+		/Executive {executive} def
+		/A3 {a3} def
+		/A4 {a4} def
+		/A4Small {a4small} def
+		/B4 {b4} def
+		/B5 {b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	stopped 
+	} def
+/desperatepapersize {
+	statusdict /setpageparams known
+		{
+		paperwidth paperheight 0 1 
+		statusdict begin
+		{setpageparams} stopped pop 
+		end
+		} if
+	} def
+/savematrix {
+	orgmatrix currentmatrix pop
+	} bind def
+/restorematrix {
+	orgmatrix setmatrix
+	} bind def
+/dmatrix matrix def
+/dpi    72 0 dmatrix defaultmatrix dtransform
+    dup mul exch   dup mul add   sqrt def
+/freq dpi 18.75 div 8 div round dup 0 eq {pop 1} if 8 mul dpi exch div def
+/sangle 1 0 dmatrix defaultmatrix dtransform exch atan def
+/DiacriticEncoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /space /exclam /quotedbl
+/numbersign /dollar /percent /ampersand /quotesingle /parenleft
+/parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+/two /three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I /J /K
+/L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft /backslash
+/bracketright /asciicircum /underscore /grave /a /b /c /d /e /f /g /h
+/i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z /braceleft /bar
+/braceright /asciitilde /.notdef /Adieresis /Aring /Ccedilla /Eacute
+/Ntilde /Odieresis /Udieresis /aacute /agrave /acircumflex /adieresis
+/atilde /aring /ccedilla /eacute /egrave /ecircumflex /edieresis
+/iacute /igrave /icircumflex /idieresis /ntilde /oacute /ograve
+/ocircumflex /odieresis /otilde /uacute /ugrave /ucircumflex
+/udieresis /dagger /.notdef /cent /sterling /section /bullet
+/paragraph /germandbls /registered /copyright /trademark /acute
+/dieresis /.notdef /AE /Oslash /.notdef /.notdef /.notdef /.notdef
+/yen /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/ordfeminine /ordmasculine /.notdef /ae /oslash /questiondown
+/exclamdown /logicalnot /.notdef /florin /.notdef /.notdef
+/guillemotleft /guillemotright /ellipsis /.notdef /Agrave /Atilde
+/Otilde /OE /oe /endash /emdash /quotedblleft /quotedblright
+/quoteleft /quoteright /.notdef /.notdef /ydieresis /Ydieresis
+/fraction /currency /guilsinglleft /guilsinglright /fi /fl /daggerdbl
+/periodcentered /quotesinglbase /quotedblbase /perthousand
+/Acircumflex /Ecircumflex /Aacute /Edieresis /Egrave /Iacute
+/Icircumflex /Idieresis /Igrave /Oacute /Ocircumflex /.notdef /Ograve
+/Uacute /Ucircumflex /Ugrave /dotlessi /circumflex /tilde /macron
+/breve /dotaccent /ring /cedilla /hungarumlaut /ogonek /caron
+] def
+/ReEncode { 
+	dup 
+	length 
+	dict begin 
+	{
+	1 index /FID ne 
+		{def} 
+		{pop pop} ifelse 
+	} forall
+	Encoding StandardEncoding eq 
+	{
+		/Encoding DiacriticEncoding def
+	}if
+	currentdict 
+	end 
+	} bind def
+/graymode true def
+	/bwidth FMLOCAL
+	/bpside FMLOCAL
+	/bstring FMLOCAL
+	/onbits FMLOCAL
+	/offbits FMLOCAL
+	/xindex FMLOCAL
+	/yindex FMLOCAL
+	/x FMLOCAL
+	/y FMLOCAL
+/setpattern {
+	 /bwidth  exch def
+	 /bpside  exch def
+	 /bstring exch def
+	 /onbits 0 def  /offbits 0 def
+	 freq sangle landscape {90 add} if 
+		{/y exch def
+		 /x exch def
+		 /xindex x 1 add 2 div bpside mul cvi def
+		 /yindex y 1 add 2 div bpside mul cvi def
+		 bstring yindex bwidth mul xindex 8 idiv add get
+		 1 7 xindex 8 mod sub bitshift and 0 ne
+		 {/onbits  onbits  1 add def 1}
+		 {/offbits offbits 1 add def 0}
+		 ifelse
+		}
+		setscreen
+	 {} settransfer
+	 offbits offbits onbits add div FMsetgray
+	/graymode false def
+	} bind def
+/grayness {
+	FMsetgray
+	graymode not {
+		/graymode true def
+		orgxfer cvx settransfer
+		orgfreq organgle orgproc cvx setscreen
+		} if
+	} bind def
+	/HUE FMLOCAL
+	/SAT FMLOCAL
+	/BRIGHT FMLOCAL
+	/Colors FMLOCAL
+FMPrintInColor 
+	
+	{
+	/HUE 0 def
+	/SAT 0 def
+	/BRIGHT 0 def
+	% array of arrays Hue and Sat values for the separations [HUE BRIGHT]
+	/Colors   
+	[[0    0  ]    % black
+	 [0    0  ]    % white
+	 [0.00 1.0]    % red
+	 [0.37 1.0]    % green
+	 [0.60 1.0]    % blue
+	 [0.50 1.0]    % cyan
+	 [0.83 1.0]    % magenta
+	 [0.16 1.0]    % comment / yellow
+	 ] def
+      
+	/BEGINBITMAPCOLOR { 
+		BITMAPCOLOR} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPCOLORc} def
+	/K { 
+		Colors exch get dup
+		0 get /HUE exch store 
+		1 get /BRIGHT exch store
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} def
+	/FMsetgray { 
+		/SAT exch 1.0 exch sub store 
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} bind def
+	}
+	
+	{
+	/BEGINBITMAPCOLOR { 
+		BITMAPGRAY} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPGRAYc} def
+	/FMsetgray {setgray} bind def
+	/K { 
+		pop
+		} def
+	}
+ifelse
+/normalize {
+	transform round exch round exch itransform
+	} bind def
+/dnormalize {
+	dtransform round exch round exch idtransform
+	} bind def
+/lnormalize { 
+	0 dtransform exch cvi 2 idiv 2 mul 1 add exch idtransform pop
+	} bind def
+/H { 
+	lnormalize setlinewidth
+	} bind def
+/Z {
+	setlinecap
+	} bind def
+/X { 
+	fillprocs exch get exec
+	} bind def
+/V { 
+	gsave eofill grestore
+	} bind def
+/N { 
+	stroke
+	} bind def
+/M {newpath moveto} bind def
+/E {lineto} bind def
+/D {curveto} bind def
+/O {closepath} bind def
+	/n FMLOCAL
+/L { 
+ 	/n exch def
+	newpath
+	normalize
+	moveto 
+	2 1 n {pop normalize lineto} for
+	} bind def
+/Y { 
+	L 
+	closepath
+	} bind def
+	/x1 FMLOCAL
+	/x2 FMLOCAL
+	/y1 FMLOCAL
+	/y2 FMLOCAL
+	/rad FMLOCAL
+/R { 
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	x1 y1
+	x2 y1
+	x2 y2
+	x1 y2
+	4 Y 
+	} bind def
+/RR { 
+	/rad exch def
+	normalize
+	/y2 exch def
+	/x2 exch def
+	normalize
+	/y1 exch def
+	/x1 exch def
+	newpath
+	x1 y1 rad add moveto
+	x1 y2 x2 y2 rad arcto
+	x2 y2 x2 y1 rad arcto
+	x2 y1 x1 y1 rad arcto
+	x1 y1 x1 y2 rad arcto
+	closepath
+	16 {pop} repeat
+	} bind def
+/C { 
+	grestore
+	gsave
+	R 
+	clip
+	} bind def
+/U { 
+	grestore
+	gsave
+	} bind def
+/F { 
+	FMfonts exch get
+	setfont
+	} bind def
+/T { 
+	moveto show
+	} bind def
+/RF { 
+	rotate
+	0 ne {-1 1 scale} if
+	} bind def
+/TF { 
+	gsave
+	moveto 
+	RF
+	show
+	grestore
+	} bind def
+/P { 
+	moveto
+	0 32 3 2 roll widthshow
+	} bind def
+/PF { 
+	gsave
+	moveto 
+	RF
+	0 32 3 2 roll widthshow
+	grestore
+	} bind def
+/S { 
+	moveto
+	0 exch ashow
+	} bind def
+/SF { 
+	gsave
+	moveto
+	RF
+	0 exch ashow
+	grestore
+	} bind def
+/B { 
+	moveto
+	0 32 4 2 roll 0 exch awidthshow
+	} bind def
+/BF { 
+	gsave
+	moveto
+	RF
+	0 32 4 2 roll 0 exch awidthshow
+	grestore
+	} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/dx FMLOCAL
+	/dy FMLOCAL
+	/dl FMLOCAL
+	/t FMLOCAL
+	/t2 FMLOCAL
+	/Cos FMLOCAL
+	/Sin FMLOCAL
+	/r FMLOCAL
+/W { 
+	dnormalize
+	/dy exch def
+	/dx exch def
+	normalize
+	/y  exch def
+	/x  exch def
+	/dl dx dx mul dy dy mul add sqrt def
+	dl 0.0 gt {
+		/t currentlinewidth def
+		savematrix
+		/Cos dx dl div def
+		/Sin dy dl div def
+		/r [Cos Sin Sin neg Cos 0.0 0.0] def
+		/t2 t 2.5 mul 3.5 max def
+		newpath
+		x y translate
+		r concat
+		0.0 0.0 moveto
+		dl t 2.7 mul sub 0.0 rlineto
+		stroke
+		restorematrix
+		x dx add y dy add translate
+		r concat
+		t 0.67 mul setlinewidth
+		t 1.61 mul neg  0.0 translate
+		0.0 0.0 moveto
+		t2 1.7 mul neg  t2 2.0 div     moveto
+		0.0 0.0 lineto
+		t2 1.7 mul neg  t2 2.0 div neg lineto
+		stroke
+		t setlinewidth
+		restorematrix
+		} if
+	} bind def
+/G { 
+	gsave
+	newpath
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath fill
+	grestore
+	} bind def
+/A { 
+	gsave
+	savematrix
+	newpath
+	2 index 2 div add exch 3 index 2 div sub exch 
+	normalize 2 index 2 div sub exch 3 index 2 div add exch 
+	translate 
+	scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	restorematrix
+	stroke
+	grestore
+	} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/w FMLOCAL
+	/h FMLOCAL
+	/xx FMLOCAL
+	/yy FMLOCAL
+	/ww FMLOCAL
+	/hh FMLOCAL
+	/FMsaveobject FMLOCAL
+	/FMoptop FMLOCAL
+	/FMdicttop FMLOCAL
+/BEGINPRINTCODE { 
+	/FMdicttop countdictstack 1 add def 
+	/FMoptop count 4 sub def 
+	/FMsaveobject save def
+	userdict begin 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	3 index neg 3 index neg translate
+	} bind def
+/ENDPRINTCODE {
+	count -1 FMoptop {pop pop} for 
+	countdictstack -1 FMdicttop {pop end} for 
+	FMsaveobject restore 
+	} bind def
+/gn { 
+	0 
+	{	46 mul 
+		cf read pop 
+		32 sub 
+		dup 46 lt {exit} if 
+		46 sub add 
+		} loop
+	add 
+	} bind def
+	/str FMLOCAL
+/cfs { 
+	/str sl string def 
+	0 1 sl 1 sub {str exch val put} for 
+	str def 
+	} bind def
+/ic [ 
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0
+	{0 hx} {1 hx} {2 hx} {3 hx} {4 hx} {5 hx} {6 hx} {7 hx} {8 hx} {9 hx}
+	{10 hx} {11 hx} {12 hx} {13 hx} {14 hx} {15 hx} {16 hx} {17 hx} {18 hx}
+	{19 hx} {gn hx} {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}
+	{13} {14} {15} {16} {17} {18} {19} {gn} {0 wh} {1 wh} {2 wh} {3 wh}
+	{4 wh} {5 wh} {6 wh} {7 wh} {8 wh} {9 wh} {10 wh} {11 wh} {12 wh}
+	{13 wh} {14 wh} {gn wh} {0 bl} {1 bl} {2 bl} {3 bl} {4 bl} {5 bl} {6 bl}
+	{7 bl} {8 bl} {9 bl} {10 bl} {11 bl} {12 bl} {13 bl} {14 bl} {gn bl}
+	{0 fl} {1 fl} {2 fl} {3 fl} {4 fl} {5 fl} {6 fl} {7 fl} {8 fl} {9 fl}
+	{10 fl} {11 fl} {12 fl} {13 fl} {14 fl} {gn fl}
+	] def
+	/sl FMLOCAL
+	/val FMLOCAL
+	/ws FMLOCAL
+	/im FMLOCAL
+	/bs FMLOCAL
+	/cs FMLOCAL
+	/len FMLOCAL
+	/pos FMLOCAL
+/ms { 
+	/sl exch def 
+	/val 255 def 
+	/ws cfs 
+	/im cfs 
+	/val 0 def 
+	/bs cfs 
+	/cs cfs 
+	} bind def
+400 ms 
+/ip { 
+	is 
+	0 
+	cf cs readline pop 
+	{	ic exch get exec 
+		add 
+		} forall 
+	pop 
+	
+	} bind def
+/wh { 
+	/len exch def 
+	/pos exch def 
+	ws 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/bl { 
+	/len exch def 
+	/pos exch def 
+	bs 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/s1 1 string def
+/fl { 
+	/len exch def 
+	/pos exch def 
+	/val cf s1 readhexstring pop 0 get def
+	pos 1 pos len add 1 sub {im exch val put} for
+	pos len 
+	} bind def
+/hx { 
+	3 copy getinterval 
+	cf exch readhexstring pop pop 
+	} bind def
+	/h FMLOCAL
+	/w FMLOCAL
+	/d FMLOCAL
+	/lb FMLOCAL
+	/bitmapsave FMLOCAL
+	/is FMLOCAL
+	/cf FMLOCAL
+/wbytes { 
+	dup 
+	8 eq {pop} {1 eq {7 add 8 idiv} {3 add 4 idiv} ifelse} ifelse
+	} bind def
+/BEGINBITMAPBWc { 
+	1 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAPGRAYc { 
+	8 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAP2BITc { 
+	2 {} COMMONBITMAPc
+	} bind def
+/COMMONBITMAPc { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	r                    
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} image 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BEGINBITMAPBW { 
+	1 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAPGRAY { 
+	8 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAP2BIT { 
+	2 {} COMMONBITMAP
+	} bind def
+/COMMONBITMAP { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	r                    
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} image
+	bitmapsave restore 
+	grestore
+	} bind def
+	/proc1 FMLOCAL
+	/proc2 FMLOCAL
+	/newproc FMLOCAL
+/Fmcc {
+    /proc2 exch cvlit def
+    /proc1 exch cvlit def
+    /newproc proc1 length proc2 length add array def
+    newproc 0 proc1 putinterval
+    newproc proc1 length proc2 putinterval
+    newproc cvx
+} bind def
+/ngrayt 256 array def
+/nredt 256 array def
+/nbluet 256 array def
+/ngreent 256 array def
+	/gryt FMLOCAL
+	/blut FMLOCAL
+	/grnt FMLOCAL
+	/redt FMLOCAL
+	/indx FMLOCAL
+	/cynu FMLOCAL
+	/magu FMLOCAL
+	/yelu FMLOCAL
+	/k FMLOCAL
+	/u FMLOCAL
+/colorsetup {
+	currentcolortransfer
+	/gryt exch def
+	/blut exch def
+	/grnt exch def
+	/redt exch def
+	0 1 255 {
+		/indx exch def
+		/cynu 1 red indx get 255 div sub def
+		/magu 1 green indx get 255 div sub def
+		/yelu 1 blue indx get 255 div sub def
+		/k cynu magu min yelu min def
+		/u k currentundercolorremoval exec def
+		nredt indx 1 0 cynu u sub max sub redt exec put
+		ngreent indx 1 0 magu u sub max sub grnt exec put
+		nbluet indx 1 0 yelu u sub max sub blut exec put
+		ngrayt indx 1 k currentblackgeneration exec sub gryt exec put
+	} for
+	{255 mul cvi nredt exch get}
+	{255 mul cvi ngreent exch get}
+	{255 mul cvi nbluet exch get}
+	{255 mul cvi ngrayt exch get}
+	setcolortransfer
+	{pop 0} setundercolorremoval
+	{} setblackgeneration
+	} bind def
+	/tran FMLOCAL
+/fakecolorsetup {
+	/tran 256 string def
+	0 1 255 {/indx exch def 
+		tran indx
+		red indx get 77 mul
+		green indx get 151 mul
+		blue indx get 28 mul
+		add add 256 idiv put} for
+	currenttransfer
+	{255 mul cvi tran exch get 255.0 div}
+	exch Fmcc settransfer
+} bind def
+/BITMAPCOLOR { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	colorsetup
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} {is} {is} true 3 colorimage 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPCOLORc { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	colorsetup
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} {is} {is} true 3 colorimage
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPGRAY { 
+	8 {fakecolorsetup} COMMONBITMAP
+	} bind def
+/BITMAPGRAYc { 
+	8 {fakecolorsetup} COMMONBITMAPc
+	} bind def
+/ENDBITMAP {
+	} bind def
+end 
+%%EndProlog
+%%BeginSetup
+(2.0) FMVERSION
+1 1 612 792 0 1 6 FMDOCUMENT
+/fillprocs 32 array def
+fillprocs 0 { 0.000000 grayness } put
+fillprocs 1 { 0.100000 grayness } put
+fillprocs 2 { 0.300000 grayness } put
+fillprocs 3 { 0.500000 grayness } put
+fillprocs 4 { 0.700000 grayness } put
+fillprocs 5 { 0.900000 grayness } put
+fillprocs 6 { 0.970000 grayness } put
+fillprocs 7 { 1.000000 grayness } put
+fillprocs 8 {<0f1e3c78f0e1c387> 8 1 setpattern } put
+fillprocs 9 {<0f87c3e1f0783c1e> 8 1 setpattern } put
+fillprocs 10 {<cccccccccccccccc> 8 1 setpattern } put
+fillprocs 11 {<ffff0000ffff0000> 8 1 setpattern } put
+fillprocs 12 {<8142241818244281> 8 1 setpattern } put
+fillprocs 13 {<03060c183060c081> 8 1 setpattern } put
+fillprocs 14 {<8040201008040201> 8 1 setpattern } put
+fillprocs 15 {} put
+fillprocs 16 { 1.000000 grayness } put
+fillprocs 17 { 0.900000 grayness } put
+fillprocs 18 { 0.700000 grayness } put
+fillprocs 19 { 0.500000 grayness } put
+fillprocs 20 { 0.300000 grayness } put
+fillprocs 21 { 0.100000 grayness } put
+fillprocs 22 { 0.030000 grayness } put
+fillprocs 23 { 0.000000 grayness } put
+fillprocs 24 {<f0e1c3870f1e3c78> 8 1 setpattern } put
+fillprocs 25 {<f0783c1e0f87c3e1> 8 1 setpattern } put
+fillprocs 26 {<3333333333333333> 8 1 setpattern } put
+fillprocs 27 {<0000ffff0000ffff> 8 1 setpattern } put
+fillprocs 28 {<7ebddbe7e7dbbd7e> 8 1 setpattern } put
+fillprocs 29 {<fcf9f3e7cf9f3f7e> 8 1 setpattern } put
+fillprocs 30 {<7fbfdfeff7fbfdfe> 8 1 setpattern } put
+fillprocs 31 {} put
+%%EndSetup
+0 24 /Palatino-Bold FMDEFINEFONT
+1 18 /Times-Bold FMDEFINEFONT
+2 14 /Times-Bold FMDEFINEFONT
+3 24 /Times-Bold FMDEFINEFONT
+%%Page: "1" 1
+%%BeginPaperSize: Letter
+%%EndPaperSize
+612 792 1 FMBEGINPAGE
+72 746.06 720 756 R
+7 X
+0 K
+V
+72 212.76 720 222.7 R
+V
+198 747 612 774 R
+V
+0 F
+0 X
+(SETS AND VIEWS IN SUDS) 244.43 758 T
+36 409.25 36 409.25 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+495 558 567 594 R
+7 X
+V
+1 F
+0 X
+(PICK) 508.51 572 T
+495 558 567 594 R
+0 Z
+N
+207 468 306 504 R
+7 X
+V
+0 X
+(POLARITY) 209.02 482 T
+207 468 306 504 R
+N
+135 648 234 684 R
+7 X
+V
+0 X
+(SITE) 164 662 T
+135 648 234 684 R
+N
+162 198 306 234 R
+7 X
+V
+0 X
+(SIG_CMP_ASS) 172.53 212 T
+162 198 306 234 R
+N
+27 378 144 414 R
+7 X
+V
+0 X
+(RECORDER) 34.03 392 T
+27 378 144 414 R
+N
+405 288 549 324 R
+7 X
+V
+0 X
+(SIG_P) 408.37 302 T
+(A) 458.02 302 T
+(TH_CMP) 469.68 302 T
+405 288 549 324 R
+N
+207 288 351 324 R
+7 X
+V
+0 X
+(SEISMO_ASS) 223.01 302 T
+207 288 351 324 R
+N
+315 378 459 414 R
+7 X
+V
+0 X
+(SEISMOMETER) 319.02 392 T
+315 378 459 414 R
+N
+18 288 180 324 R
+7 X
+V
+0 X
+(RECORDER_ASS) 26.54 302 T
+18 288 180 324 R
+N
+558 648 648 684 R
+7 X
+V
+0 X
+(EVENT) 572.01 662 T
+558 648 648 684 R
+N
+612 558 720 594 R
+7 X
+V
+0 X
+(SOLUTION) 618.52 572 T
+612 558 720 594 R
+N
+99 558 243 594 R
+7 X
+V
+0 X
+(SIGNAL_P) 108.36 572 T
+(A) 195.99 572 T
+(TH) 207.65 572 T
+99 558 243 594 R
+N
+45 468 144 504 R
+7 X
+V
+0 X
+(SER) 54.83 482 T
+(VICE) 89.19 482 T
+45 468 144 504 R
+N
+183.31 605.54 180 594 176.69 605.54 180 605.54 4 Y
+V
+180 648 180 604.54 2 L
+1 H
+2 Z
+N
+96.8 513.89 90 504 90.53 515.99 93.66 514.94 4 Y
+V
+108 558 93.35 513.99 2 L
+N
+239.29 515.43 242.99 504.01 233.8 511.73 236.55 513.58 4 Y
+V
+207 558 237.12 512.74 2 L
+N
+540 378 702 414 R
+7 X
+V
+0 X
+(SOLUTION_ERR) 550.03 392 T
+540 378 702 414 R
+0.5 H
+0 Z
+N
+648 468 774 504 R
+7 X
+V
+0 X
+(MAGNITUDE) 654.03 482 T
+648 468 774 504 R
+N
+477 468 630 504 R
+7 X
+V
+0 X
+(PICK_RESIDUAL) 480.04 482 T
+477 468 630 504 R
+N
+542.18 598.32 530.99 594 538.19 603.6 540.19 600.96 4 Y
+V
+603 648 539.4 600.35 2 L
+1 H
+2 Z
+N
+659.38 604.04 665.97 594.01 655.07 599.02 657.22 601.53 4 Y
+V
+603 648 658.01 600.87 2 L
+N
+696.31 515.54 693 504 689.69 515.54 693 515.54 4 Y
+V
+693 558 693 514.54 2 L
+N
+525.31 515.54 522 504 518.69 515.54 522 515.54 4 Y
+V
+522 558 522 514.54 2 L
+N
+642.31 425.54 639 414 635.69 425.54 639 425.54 4 Y
+V
+639 558 639 424.54 2 L
+N
+568.49 509.78 557.97 504.02 563.84 514.48 566.16 512.13 4 Y
+V
+612 558 565.49 511.41 2 L
+N
+308.57 327.17 296.99 324.02 305.14 332.83 306.85 330 4 Y
+V
+387 378 306.01 329.46 2 L
+N
+300 234.09 288 234.01 298.13 240.43 299.06 237.26 4 Y
+V
+477 288 298.11 236.97 2 L
+N
+226.04 335.97 224.99 324.01 219.54 334.7 222.79 335.34 4 Y
+V
+180 558 222.99 334.34 2 L
+N
+165.31 335.54 162 324 158.69 335.54 162 335.54 4 Y
+V
+162 558 162 334.54 2 L
+N
+200.33 245.8 197.99 234.03 193.73 245.25 197.03 245.52 4 Y
+V
+171 558 197.12 244.5 2 L
+N
+93.31 335.54 90 324 86.69 335.54 90 335.54 4 Y
+V
+90 378 90 334.54 2 L
+N
+333 261 441 270 R
+7 X
+V
+2 F
+0 X
+(sig_path_cmp_id) 336.08 260.67 T
+288 351 387 360 R
+7 X
+V
+0 X
+(seismometer_id) 290.87 350.67 T
+567 621 639 630 R
+7 X
+V
+0 X
+(event_id) 577.74 620.67 T
+576 531 657 540 R
+7 X
+V
+0 X
+(solution_id) 583.45 530.67 T
+315 468 459 504 R
+7 X
+V
+1 F
+0 X
+(W) 333.7 482 T
+(A) 349.69 482 T
+(VEFORM) 360.36 482 T
+315 468 459 504 R
+0.5 H
+0 Z
+N
+434.19 508.33 422.99 504.01 430.2 513.6 432.19 510.96 4 Y
+V
+495 558 431.4 510.36 2 L
+1 H
+2 Z
+N
+333.48 512.47 341.99 504.01 330.29 506.68 331.88 509.57 4 Y
+V
+243 558 332.77 509.08 2 L
+N
+315 702 459 738 R
+7 X
+V
+0 X
+(DA) 325.87 716 T
+(T) 350.52 716 T
+(A_GROUP) 361.18 716 T
+315 702 459 738 R
+0.5 H
+0 Z
+N
+548.28 691.07 557.97 684 546.01 684.86 547.14 687.97 4 Y
+V
+459 720 548.11 687.62 2 L
+1 H
+2 Z
+N
+390.31 515.54 387 504 383.69 515.54 387 515.54 4 Y
+V
+387 702 387 514.54 2 L
+N
+675 198 738 333 R
+7 X
+V
+3 F
+0 X
+(pola) 684.5 317 T
+(pic) 691.17 291 T
+(mag) 684.52 265 T
+(err) 690.53 239 T
+468 702 567 711 R
+7 X
+V
+2 F
+0 X
+(data_gr) 473.7 701.67 T
+(oup_id) 520.08 701.67 T
+337 612 432 626 R
+7 X
+V
+0 X
+(data_gr) 340.7 616.67 T
+(oup_id) 387.08 616.67 T
+198 531 306 540 R
+7 X
+V
+0 X
+(signal_path_id) 208.06 530.67 T
+54 531 153 540 R
+7 X
+V
+0 X
+(signal_path_id) 59.56 530.67 T
+144 621 216 630 R
+7 X
+V
+0 X
+(site_id) 160.57 620.67 T
+54 351 144 360 R
+7 X
+V
+0 X
+(r) 63.77 350.67 T
+(ecorder_id) 69.73 350.67 T
+657 531 747 540 R
+7 X
+V
+0 X
+(solution_id) 668.95 530.67 T
+585 198 648 333 R
+7 X
+V
+3 F
+0 X
+(sigp) 595.84 317 T
+(serv) 595.19 291 T
+(r) 594.74 265 T
+(eco) 604.96 265 T
+(sigc) 597.18 239 T
+(seis) 598.51 213 T
+585 333 747 360 R
+7 X
+V
+0 F
+0 X
+(VIEWS) 625.35 344 T
+144 441 243 450 R
+7 X
+V
+2 F
+0 X
+(signal_path_id) 149.56 440.67 T
+459 531 531 540 R
+7 X
+V
+0 X
+(pick_id) 472.84 530.67 T
+FMENDPAGE
+%%EndPage: "1" 2
+0 36 /Times-Roman FMDEFINEFONT
+2 24 /Times-Roman FMDEFINEFONT
+%%Page: "2" 2
+612 792 1 FMBEGINPAGE
+72 746.06 720 756 R
+7 X
+0 K
+V
+72 212.76 720 222.7 R
+V
+792 612 927 747 2 L
+V
+0.5 H
+2 Z
+0 X
+N
+72 657 756 684 R
+7 X
+V
+0 F
+0 X
+(What are we demonstrating with suds?) 134.59 660 T
+72 288 756 630 R
+7 X
+V
+1 F
+0 X
+( ) 72 618 T
+(1.) 99 598 T
+(Sample database for the USGS Northern California Seismic Network ) 126 598 T
+(containing:) 126 578 T
+(All available station, hardwar) 126 538 T
+(e, maintenance, polarity information \0505.3 mb\051) 354.56 538 T
+(Phase and event information for January) 126 518 T
+(, 1993 \05015.3 mb\051) 441.33 518 T
+(2.) 99 478 T
+(Basic SUDS utility pr) 126 478 T
+(ograms for working with SUDS data.) 290.11 478 T
+(3.) 99 438 T
+(Integration of PC-SUDS data used with the IASPEI softwar) 126 438 T
+(e with new ) 584.41 438 T
+(SUDS utilities and pr) 126 418 T
+(ograms running on any type of computer) 289.12 418 T
+(.) 602.29 418 T
+(4.) 99 378 T
+(Intr) 126 378 T
+(oduction to the Graphical User Interface possibilities for SUDS data ) 156.65 378 T
+(demonstrated on an 80486 under MSDOS and on a Spar) 126 358 T
+(c 10 under UNIX.) 558.99 358 T
+(5.) 99 318 T
+(SUDS data and utilities in a machine independent envir) 126 318 T
+(onment.) 551.5 318 T
+72 288 756 630 R
+0 Z
+N
+72 711 756 738 R
+7 X
+V
+2 F
+0 X
+(1994  SSA  Meeting) 316.05 722 T
+FMENDPAGE
+%%EndPage: "2" 3
+%%Page: "3" 3
+612 792 1 FMBEGINPAGE
+72 746.06 720 756 R
+7 X
+0 K
+V
+72 212.76 720 222.7 R
+V
+54 644.04 738 675.36 R
+V
+0 F
+0 X
+(Plans this year for SUDS) 215.03 651.36 T
+54 216 738 612.72 R
+7 X
+V
+1 F
+0 X
+( ) 54 600.72 T
+(1.) 81 580.72 T
+(Conversion to SUDS of all aspects of seismic data for the USGS Northern ) 108 580.72 T
+(California Seismic Network and the University of Alaska/USGS Alaska ) 108 560.72 T
+(Seismic Network.  Integration of database into common use of these data.) 108 540.72 T
+(2.) 81 500.72 T
+(W) 108 500.72 T
+(riting basic \336lters into and out of other formats.) 125.67 500.72 T
+(3.) 81 460.72 T
+(Conversion of the input/output subr) 108 460.72 T
+(outines of some major pr) 384.56 460.72 T
+(ocessing ) 576.1 460.72 T
+(packages to utilize SUDS data.) 108 440.72 T
+(4.) 81 400.72 T
+(SUDS \050V) 108 400.72 T
+(ersion 2.6\051 to be r) 175.8 400.72 T
+(eleased about April 15, 1994.  This is assumed to) 309.89 400.72 T
+(be very close to the \336nal standard version and should be r) 108 380.72 T
+(eviewed by anyone) 549.96 380.72 T
+(potentially inter) 108 360.72 T
+(ested in using SUDS in the futur) 231.11 360.72 T
+(e to assur) 477.68 360.72 T
+(e compatibility) 550.3 360.72 T
+(.) 663.75 360.72 T
+(5.) 81 320.72 T
+(Meeting on December 3-4, 1994, of the MEMSAC Gr) 108 320.72 T
+(oup and other) 515.37 320.72 T
+(inter) 108 300.72 T
+(ested parties to agr) 144.65 300.72 T
+(ee on any changes needed befor) 290.71 300.72 T
+(e adopting SUDS ) 531.74 300.72 T
+(as an International Standard \050V) 108 280.72 T
+(ersion 3.0\051.) 352.23 280.72 T
+(6.) 81 240.72 T
+(Movement of large volumes of data into SUDS Format, V) 108 240.72 T
+(ersion 3.0.) 546.04 240.72 T
+54 216 738 612.72 R
+0.5 H
+0 Z
+N
+54 706.68 738 738 R
+7 X
+V
+2 F
+0 X
+(1994  SSA  Meeting) 298.05 722 T
+FMENDPAGE
+%%EndPage: "3" 4
+%%Page: "4" 4
+612 792 1 FMBEGINPAGE
+72 746.06 720 756 R
+7 X
+0 K
+V
+72 212.76 720 222.7 R
+V
+54 644.04 738 675.36 R
+V
+0 F
+0 X
+(Please consider contributing to this team ef) 59.41 651.36 T
+(fort) 680.62 651.36 T
+54 252 738 612.72 R
+7 X
+V
+1 F
+0 X
+( ) 54 600.72 T
+(1.) 81 580.72 T
+(Just become familiar with SUDS and contribute your experience to the ) 108 580.72 T
+(discussion.) 108 560.72 T
+(2.) 81 520.72 T
+(W) 108 520.72 T
+(rite  basic \336lters into and out of formats of inter) 125.67 520.72 T
+(est to you.  This is ) 491.1 520.72 T
+(perhaps the best way to understand SUDS and how it may help you get) 108 500.72 T
+(mor) 108 480.72 T
+(e Seismology done with less effort.) 139.65 480.72 T
+(3.) 81 440.72 T
+(Convert input/output subr) 108 440.72 T
+(outines for one of your pr) 311.59 440.72 T
+(ograms  to utilize) 507.65 440.72 T
+(SUDS data and contribute this pr) 108 420.72 T
+(ogram for general use.) 365.06 420.72 T
+3 F
+(Between now and December 3, 1994, is the best time for) 111.54 360.72 T
+(you to assur) 96.37 336.72 T
+(e that SUDS will be fully compatible with your) 219.88 336.72 T
+(futur) 329.59 310.72 T
+(e needs.) 382.46 310.72 T
+54 252 738 612.72 R
+0.5 H
+0 Z
+N
+54 706.68 738 738 R
+7 X
+V
+2 F
+0 X
+(1994  SSA  Meeting) 298.05 722 T
+FMENDPAGE
+%%EndPage: "4" 5
+%%Trailer
+%%BoundingBox: 0 0 612 792
+%%Pages: 4 1
+%%DocumentFonts: Palatino-Bold
+%%+ Times-Bold
+%%+ Times-Roman

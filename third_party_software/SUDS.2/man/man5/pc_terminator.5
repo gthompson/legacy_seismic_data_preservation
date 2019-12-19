@@ -1,0 +1,39 @@
+.so ../man_macros/suds_man_macros
+.TH PC_TERMINATOR 5 "26 March 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+pc_terminator \- structure to end a sequence of related structures
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT2	structid;
+	INT2	spareA;
+	PAD4	pad_O;
+} PCSUDS_TERMINATOR;
+.sp 0.5
+#define PC_TERMINATOR	3L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBstructid\fI structure id\fR
+Id for structure at beginning of this sequence.
+.BB
+index_string=true
+.EB
+.TP
+\fBspareA\fI for future use\fR
+.TP
+\fBpad_O\fI padding\fR
+.SH "SEE ALSO"

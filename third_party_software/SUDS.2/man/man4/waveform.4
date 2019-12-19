@@ -1,0 +1,332 @@
+.so ../man_macros/suds_man_macros
+.TH WAVEFORM 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+waveform \- information about a waveform for a single station component
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	waveform_id;
+	DOMAIN	waveform_dc;
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	REFERS2	mux_waveform_id;
+	DOMAIN	mux_waveform_dc;
+	REFERS2	data_group_id;
+	DOMAIN	data_group_dc;
+	REFERS2	calibration_id;
+	DOMAIN	calibration_dc;
+	FIXED	len_signal_n;
+	STRING	signal_name[20];
+	MS_TIME	from_time;
+	MS_TIME	thru_time;
+	MS_TIME	nominal_time;
+	INT2	local_time;
+	CODE1	resolution;
+	CODE1	data_units;
+	AUTHOR	digitized_by;
+	INT4	spare_a;
+	FLOAT4	nom_dig_rate;
+	FLOAT4	prec_dig_rate;
+	FLOAT4	min_val_data;
+	FLOAT4	max_val_data;
+	FLOAT4	average_noise;
+	FLOAT4	dc_removed;
+	INT4	num_pos_clip;
+	INT4	num_neg_clip;
+	INT2	num_spikes;
+	INT2	num_glitches;
+	FLOAT4	weight;
+	CODE1	time_source;
+	CODE1	gain_ranged;
+	CODE1	signal_type;
+	CODE1	filter_code;
+	CODE1	compression;
+	CODE1	time_status;
+	CHAR	spare_b;
+	CHAR	spare_c;
+	INT4	file_offset;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	processing_id;
+	DOMAIN	processing_dc;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_WAVEFORM;
+.sp 0.5
+#define WAVEFORMS	107L
+.fi
+.ft R
+.SH DESCRIPTION
+Descriptive information about a seismic waveform. Normally followed by
+the waveform.  The waveform is an array of numbers of binary storage
+type \fBdata_type\fR in units of \fBdata_units\fR and length
+sizeof(data_type) times \fBdata_length\fR.
+.BB
+permissions="siud_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBwaveform_id\fI waveform id\fR
+A number that uniquely refers, within this \fBwaveform_dc\fR, to an
+instance of the \fBwaveform\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBwaveform_dc\fI waveform domain\fR
+Domain in which waveform_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict,
+db_must_exist=true
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc),
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBmux_waveform_id\fI mux data id\fR
+.so ../man_macros/mux_waveform.descrip
+.BB
+key=part_foreign(2,mux_waveform.mux_waveform_id), db_delete=nullify
+.EB
+.TP
+\fBmux_waveform_dc\fI mux waveform domain\fR
+Domain in which mux_waveform_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,mux_waveform.mux_waveform_dc),
+db_delete=nullify
+.EB
+.TP
+\fBdata_group_id\fI data group id\fR
+.so ../man_macros/data_group.descrip
+.BB
+key=part_foreign(3,data_group.data_group_id), db_delete=cascade
+.EB
+.TP
+\fBdata_group_dc\fI data group domain\fR
+Domain in which data_group_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,data_group.data_group_dc),
+db_delete=cascade
+.EB
+.TP
+\fBcalibration_id\fI calibration id\fR
+Key to description of a calibration signal contained in this waveform.
+.BB
+key=part_foreign(4,calibration.calibration_id), db_delete=nullify
+.EB
+.TP
+\fBcalibration_dc\fI calibration domain\fR
+Domain in which calibration_id is unique.
+.BB
+codelist=authorities, key=part_foreign(4,calibration.calibration_dc)
+.EB
+.TP
+\fBlen_signal_n\fR \fIlen signal name\fR
+The maximum space reserved for the signal name, i.e. 20.  Actual string
+can only contain 19 characters to allow for the NULL byte.
+.TP
+\fBsignal_name\fI signal name\fR
+.so ../man_macros/signal_name.descrip
+.BB
+index_string=true
+.EB
+.TP
+\fBfrom_time\fR \fIbeginning time\fR
+GMT time of the first sample in the waveform including all clock 
+corrections.
+.TP
+\fBthru_time\fR \fIending time\fR
+GMT time of the last sample in the waveform including all clock 
+corrections.
+.TP
+\fBnominal_time\fI nominal time\fR
+GMT time of the first sample in the waveform without any clock
+corrections. This value is set when the time code is associated with
+the waveform usually in the demultiplexing program and should never be
+changed. The reason for keeping this time is to allow checking and
+changing all time corrections applied to it.
+.TP
+\fBlocal_time\fI local time\fR
+Minutes to add to GMT to get local time.
+.TP
+\fBresolution\fI bits of resolution\fR
+Number of bits of resolution of the waveform when it is originally 
+digitized.
+.BB
+codelist=resolutions
+.EB
+.TP
+\fBdata_units\fI data units type\fR
+.so ../man_macros/data_units.descrip
+.BB
+codelist=units_types
+.EB
+.TP
+\fBdigitized_by\fI digitized by\fR
+Group or person collecting this data.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBspare_a\fI for future use\fR
+.TP
+\fBnom_dig_rate\fI samples per second\fR
+Nominal rate of digitization in samples per second.
+.TP
+\fBprec_dig_rate\fI calculated samples/sec\fR
+Calculated rate of digitization in samples per second.
+.TP
+\fBmin_val_data\fI minimum value\fR
+Smallest data value in the waveform (datatype s,l,f only).
+.TP
+\fBmax_val_data\fI maximum value\fR
+Largest data value in the waveform (datatype s,l,f only).
+.TP
+\fBaverage_noise\fI average noise\fR
+Average value of the first 200 samples of the waveform
+(datatype s,l,f only).
+.TP
+\fBdc_removed\fI dc removed\fR
+DC offset that has been removed from the data.
+.TP
+\fBnum_pos_clip\fI num + clipped samples\fR
+.TP
+\fBnum_neg_clip\fI num - clipped samples\fR
+.TP
+\fBnum_spikes\fI number of spikes\fR
+.TP
+\fBnum_glitches\fI number of glitches\fR
+.TP
+\fBweight\fI weight\fR
+Weight used to sum this waveform.
+.TP
+\fBtime_source\fI source of time\fR
+i=IRIG local clock, I=IRIG radio time, s=IRIG satellite time, S=BCD
+encoded on waveform satellite time, l=local clock, r=WWV, WWVH, b=WWVB,
+o=other.
+.BB
+codelist=time_codes
+.EB
+.TP
+\fBgain_ranged\fI gain ranging\fR
+g=waveform may include gain ranging changes, c=gain ranging has been
+corrected for, and NOCHAR=gain ranging is never used for this
+component.
+.BB
+codelist=amplitude_types
+.EB
+.TP
+\fBsignal_type\fI type of signal\fR
+Type of triggered signal or 'C' for continuous data.
+.BB
+codelist=event_types
+.EB
+.TP
+\fBfilter_code\fI filter code\fR
+Indicates that waveform has been filtered or decimated since creation
+and implies the existence of one or more \fBfilter\fR structures
+associating the appropriate \fBresponse\fR structures that specify the
+filter response.  f=filtered
+.BB
+codelist=filter_types
+.EB
+.TP
+\fBcompression\fI compression algorithm\fR
+Type of algorithm used to compress the data following this structure.
+NOCHAR means the data is not compressed.
+.BB
+codelist=compression_types
+.EB
+.TP
+\fBtime_status\fI time correction status\fR
+Status of the time correction. Time corrections are typically not a
+problem now, but when they are, a description of what corrections have
+been applied should be put in the comment associated with this
+structure.
+.BB
+codelist=time_corrects
+.EB
+.TP
+\fBspare_b\fI for future use\fR
+.TP
+\fBspare_c\fI for future use\fR
+.TP
+\fBfile_offset\fI offset in file\fR
+Number of bytes from beginning of file to the beginning of the
+\fBstructure_tag\fR announcing this instance of this structure.  This
+offset is for use in indexing waveform files and will be valid only in
+limited circumstances.  In most implementations of databases for
+\fBSUDS\fR, the \fBwaveform\fR structures will be stored in the
+database without the data and the \fBwaveform\fR structures and data
+will be stored in files often located on read-only mass storage
+systems.  The file name and path are based on the \fBdata_group_id\fR
+and \fBdata_group_dc\fR and the location in the file is this offset.
+Thus the database software is able to access the waveform directly and
+return it to the user as if it existed within the database.
+.BB
+sets_data_offset=true
+.EB
+.TP
+\fBdata_type\fI data storage type\fR
+.so ../man_macros/data_type.descrip
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of samples\fR
+Number of samples of type \fBdata_type\fR in the waveform.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBprocessing_id\fI processing id\fR
+.BB
+key=part_foreign(5,processing.processing_id), db_delete=nullify
+.EB
+.TP
+\fBprocessing_dc\fI processing domain\fR
+Domain in which processing_id is unique.
+.BB
+codelist=authorities, key=part_foreign(5,processing.processing_dc),
+db_delete=nullify
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(6,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is
+unique.
+.BB
+codelist=authorities, key=part_foreign(6,comment.comment_dc),
+db_delete=nullify
+.EB
+.SH "SEE ALSO"
+.SH BUGS
+.LP
+Detector uptime?
+.LP
+Flag for triggered on?

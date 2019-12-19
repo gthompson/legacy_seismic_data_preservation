@@ -1,0 +1,38 @@
+.so ../man_macros/suds_man_macros
+.TH ST_COMMAND 2  "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_command \- Send a command to a database management system for execution
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.LP
+.ft B
+INT4 st_command(CHAR *command, SUDS_STREAM *io_stream);
+.ft R
+.SH FORTRAN_SYNOPSIS
+.LP
+.ft B
+integer*4 st_command
+.br
+function st_command(command,io_stream)
+.br
+	character*(*) command
+.br
+	integer*4 output_stream
+.ft R
+.SH DESCRIPTION
+Send a command, typically expressed in SQL (Structured Query Language),
+to a database management system (DBMS) for execution.  The command
+normally specifies some action to be taken upon \fIio_stream\fR but can
+be any command acceptable to the underlying DBMS.
+.PP
+An \fBst_get\fR call to a DBMS must normally be preceded by an
+\fBst_command\fR call sending an SQL SELECT command to the DBMS.
+.SH DIAGNOSTICS
+Returns SUCCESSFUL or FAILED.  Errors are reported by st_error(2).
+.PP
+If \fIio_stream\fR is a  file, then \fIcommand\fR is ignored and
+SUCCESSFUL is returned.  Errors are reported by \fBst_error(3s)\fR.
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

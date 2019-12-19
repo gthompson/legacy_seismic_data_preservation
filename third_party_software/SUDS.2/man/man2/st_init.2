@@ -1,0 +1,67 @@
+.so ../man_macros/suds_man_macros
+.TH ST_INIT 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_init, st_create \- initialize or create and initialize a suds structure
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+void st_init(INT4 type, GENPTR pointer);
+INT4 st_create(INT4 type, GENPTR *pointer, INT4 data_bytes);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_create
+subroutine st_init(type,structure)
+function st_create(type,structure,data_bytes)
+	integer*4 type, data_bytes
+.fi
+.ft R
+.SH DESCRIPTION
+.B st_init
+initializes all fields of a
+.B suds
+structure of a given
+.B type
+to the default values defined in the \fBmember_info(5)\fR stored in the
+file
+.B suds_mem.h
+This initialization is important since fields with no data should be
+initialized to one of the constants
+.B NODATS, NODATL, NODATF, NOTIME, NOCHAR, NOSTRG, or NOLIST
+(see variable_info(5)) and defined in the file
+.B suds.h.
+.PP
+.B st_create
+uses
+.I malloc
+to create space for a new structure and then initializes the structure
+and returns the number of bytes created.
+.PP
+.B data_bytes
+is the length of data in bytes that follow the structure when
+appropriate.
+.PP
+\fBst_create\fR causes the program to exit via a user supplied 
+subroutine called \fBdie\fR (st_error(3)) if the structure \fBtype\fR
+is unknown or the program is unable to \fBmalloc\fR space.
+.PP
+\fBst_init\fR causes the program to exit via a user supplied subroutine
+called \fBdie\fR (st_error(3)) if the structure \fBtype\fR is unknown.
+.PP
+NOTE that \fBpointer\fR in \fBst_create\fR is the address of a
+pointer.  The most common problem in using this subroutine will be
+leaving the \fB&\fR out!  Note you must use \fB(GENPTR *)\fR to keep
+ANSI C happy.
+.SH EXAMPLE
+.nf
+#include <suds/suds.h>
+INT4 i;
+SUDS_SIGNAL_PATH *sp;
+	i=st_create(SIGNAL_PATHS,(GENPTR *)&sp,0);
+.fi
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+

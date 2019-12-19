@@ -1,0 +1,90 @@
+.so ../man_macros/suds_man_macros
+.TH COPY_STRUCT 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+copy_struct \- copy a structure
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+INT4 copy_struct(GENPTR *copy_ptr, GENPTR original_ptr, INT4 data_bytes_out);
+.fi
+.ft R
+.SH DESCRIPTION
+\fBcopy_struct\fR makes a copy of a structure and any data following
+the structure.  If this type of structure can have data after it, the
+\fIdata_length\fR and \fIdata_type\fR are read from the structure.  In
+this case \fIdata_bytes\fR is examined, and if it is greater than or
+equal to 0 and not equal to NODATL, the data associated with the new
+structure will contain \fIdata_bytes\fR number of bytes.  A pointer to
+the space created for the copy is returned through \fIcopy_ptr\fR.
+Note that \fIcopy_ptr\fR is the address of a pointer.
+.SH DIAGNOSTICS
+\fBcopy_struct\fR returns SUCCESSFUL or FAILED.  Cases of failure
+include if sufficient space for a copy cannot be allocated or if a null
+pointer is passed as \fIoriginal_ptr\fR.
+.SH EXAMPLE
+If you want to  convert data from INT2 to FLOAT4 and the number of
+words of INT2 data is 1000, then
+.nf
+INTV die(n) INTV n; { exit(n); }
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   SUDS_WAVEFORM *wv, *wv_new;
+   FLOAT4 *new_data;
+   INT2 *data;
+   INTV i,j,k;
+   SUDS_STREAM *out;
+
+   progname=argv[0];
+   i=st_create(WAVEFORMS,(GENPTR *)&wv,2000L);
+.eo
+   printf("st_create of waveforms returns %d\n",i);
+   wv->data_length=1000;
+   wv->data_type=IN2;
+   data=(INT2 *)pointer_to_data((GENPTR)wv);
+   for(i=0;i<1000;i++)data[i]=i;
+
+   i=copy_struct((GENPTR *)&wv_new,(GENPTR)wv,4000L);       
+   printf("copy_struct returns %d\n",i);
+   data=(INT2 *)pointer_to_data((GENPTR)wv);
+   new_data=(FLOAT4 *)pointer_to_data((GENPTR)wv_new);
+   wv_new->data_type=FL4;
+   for(i=0;i<1000;i++) new_data[i]=data[i];
+   printf("Write out short version to cp_short.out\n"); 
+   out=st_open("cp_short.out","wb");
+   st_put((GENPTR)wv,NULL,out);
+   st_close(out);
+   printf("Write out float version to cp_float.out\n"); 
+.ec
+   out=st_open("cp_float.out","wb");
+   st_put((GENPTR)wv_new,NULL,out);
+   st_close(out);
+
+
+
+
+.eo
+   printf("Compare these files with st2asc or\n");
+   printf("   od -i cp_short.out ; od -f cp_float.out\n");
+   printf("The 1000 data points after the structure should be the same\n");
+.ec
+   exit(0);
+}
+
+Outputs the following:
+
+CHECK copy_str
+st_create of waveforms returns 2184
+copy_struct returns 4184
+Write out short version to cp_short.out
+Write out float version to cp_float.out
+Compare these files with st2asc or
+   od -i cp_short.out ; od -f cp_float.out
+The 1000 data points after the structure should be the same
+End test of copy_str
+.fi
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

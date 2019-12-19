@@ -1,0 +1,164 @@
+.so ../man_macros/suds_man_macros
+.TH SOURCE 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+source \- description of a man-made seismic event such as an explosion
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	source_id;
+	DOMAIN	source_dc;
+	REFERS2	site_id;
+	DOMAIN	site_dc;
+	FIXED	len_src_name;
+	STRING	source_name[12];
+	MS_TIME	origin_time;
+	MS_TIME	nominal_time;
+	FLOAT4	water_depth;
+	FLOAT4	yield;
+	CODE1	coordinates;
+	CODE1	event_type;
+	CODE1	sweep_type;
+	CODE1	taper_type;
+	INT2	begin_freq;
+	INT2	end_freq;
+	INT2	sweep_length;
+	INT2	begin_taper;
+	INT2	end_taper;
+	INT2	signal_lag;
+	FLOAT4	source_static;
+	AUTHOR	authority;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SOURCE;
+.sp 0.5
+#define SOURCES	321L
+.fi
+.ft R
+.SH DESCRIPTION
+Information about a man-made seismic event such as an explosion or
+a Vibroseis sweep.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBsource_id\fI source id\fR
+A number that uniquely identifies, within this \fBsource_dc\fR, an instance 
+of the \fBsource\fR structure.
+.BB
+key=part_primary, db_index=clustered, index_string=true
+.EB
+.TP
+\fBsource_dc\fI source domain\fR
+Domain in which source_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBsite_id\fI site id\fR
+A number that uniquely refers to an instance of 
+the \fBsite\fR structure.
+.BB
+key=part_foreign(1, site.site_id), db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBsite_dc\fI site site domain\fR
+Domain in which site_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,site.site_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP 
+\fBlen_src_name \fIlength source name\fR
+The maximum space reserved for the event name, i.e. 20. 
+Actual string can only contain 19 characters to allow for the NULL byte.
+.TP 
+\fBsource_name\fI event name\fR
+Name of this event.
+.BB
+index_string=true
+.EB
+.TP 
+\fBorigin_time \fIorigin time\fR
+Origin time.
+.TP
+\fBnominal_time\fI nominal origin time\fR
+Nominal origin time of the explosion with no time corrections.
+.TP 
+\fBwater_depth\fI water depth\fR
+Depth of water in kilometers below the \fBorigin_elev\fR. If shot is in the
+water, \fBorigin_depth\fR is less than \fBwater_depth\fR. Plus is down.
+.TP
+\fByield\fI source yield\fR
+Kilograms of explosive or equivalent for this type of source.
+.TP
+\fBcoordinates\fI coordinates\fR
+Units of the latitude and longitude if not in degrees.
+.BB
+codelist=units_types
+.EB
+.TP
+\fBevent_type\fI type of event\fR
+A character designating the type of event.
+.BB
+codelist=event_types
+.EB
+.TP
+\fBsweep_type\fI sweep function\fR
+Type of sweep.
+.BB
+codelist=functions
+.EB
+.TP
+\fBtaper_type\fI type of taper\fR
+Type of taper applied to the sweep signal.
+.BB
+codelist=functions
+.EB
+.TP
+\fBbegin_freq\fI frequency begin sweep\fR
+For a vibroseis type signal source, beginning frequency in hertz.
+.TP
+\fBend_freq\fI frequency end sweep\fR
+For a vibroseis type signal source, ending frequency in hertz.
+.TP
+\fBsweep_length\fI sweep length\fR
+For a vibroseis type signal source, length of the frequency sweep in milliseconds.
+.TP
+\fBbegin_taper\fI beginning taper\fR
+For a vibroseis type signal source, length of the beginning taper in milliseconds.
+.TP
+\fBend_taper\fI ending taper\fR
+For a vibroseis type signal source, length of the ending taper in milliseconds.
+.TP
+\fBsignal_lag\fI lag of signal\fR
+Amount in degrees that seismic signal lags pilot signal to vibrator.
+.TP
+\fBsource_static\fI source static\fR
+Static time correction at the source.
+.TP
+\fBauthority\fI authority\fR
+.so ../man_macros/authority.descrip
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

@@ -1,0 +1,41 @@
+
+struct func {
+   int      tnum;
+   char   *tname;
+   int (*tran)();
+   int (*init)();
+};
+
+struct func tr[]={
+ 0,"user",		user,	iuser,	/* user defined transformation       */
+ 1,"linlin",		linlin,	ilinlg,	/* linear x vs linear y              */
+ 2,"linlog",		linlog,	ilinlg,	/* linear x vs log y                 */
+ 3,"linln",		linln,	ilinlg,	/* linear x vs ln y                  */
+ 4,"loglin",		loglin,	ilinlg,	/* log x    vs linear y              */
+ 5,"loglog",		loglog,	ilinlg,	/* log x    vs log y                 */
+ 6,"logln",		logln,	ilinlg,	/* log x    vs ln y                  */
+ 7,"lnlin",		lnlin,	ilinlg,	/* ln x     vs linear y              */
+ 8,"lnlog",		lnlog,	ilinlg,	/* ln x     vs log y                 */
+ 9,"lnln",		lnln,	ilinlg,	/* ln x     vs ln y                  */
+10,"polar",		polar,	ipolar,	/* polar cc from east, x deg, y dist */
+11,"npolar",		npolar,	ipolar,	/* polar from north,   x deg, y dist */
+12,"wulff",		wulff,	ipolar,	/* wulff  equal angle net,x azm,y dip*/
+13,"schmidt",		schmid,	ipolar,	/* schmidt equal area net,x azm,y dip*/
+14,"mercator",		mercat,	imerca,	/* mercator cylindrical              */
+15,"miller",		miller,	imerca,	/* miller   cylindrical              */
+16,"transverse",	transv,	imerca,	/* transverse mercator cylindrical   */
+17,"utm",		utm,	iutm,	/* universal transverse mercator     */
+18,"areaequal",		areaeq,	iareae,	/* equal area azimuthal              */
+19,"distequal",		disteq,	iareae,	/* equal distance azimuthal          */
+20,"gnomonic",		gnomon,	ignomo,	/* gnomonic azimuthal                */
+21,"orthographic",	orthog,	iareae,	/* orthographic azimuthal            */
+22,"perspective",	perspe,	iareae,	/* perspective azimuthal             */
+23,"stereographic",	stereo,	iareae,	/* stereographic azimuthal           */
+24,"lambert",		lamber,	ilambe,	/* lambert conformal conic           */
+25,"ptolemy",		ptolem,	iptole,	/* ptolemy equal interval conic      */
+26,"kavraisky",		ptolem,	ikavra,	/* kavraisky equal interval conic    */
+27,"albers",		albers,	ialber,	/* albers equal area conic           */
+28,"polyconic",		polyco,	iutm,	/* polyconic                         */
+29,"sinusoidal",	sinuso,	imerca,	/* sinusoidal                        */
+30,"newpole",		newpl,  none,   /* rotate coordinates about a pole[2]*/
+};

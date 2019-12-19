@@ -1,0 +1,51 @@
+.so ../man_macros/suds_man_macros
+.TH RESP_FAP_DATA 4 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+resp_fap_data \- response values for frequency, amplitude, and phase
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FLOAT4	frequency;
+	FLOAT4	amplitude;
+	FLOAT4	amplitude_err;
+	FLOAT4	phase;
+	FLOAT4	phase_error;
+	INT4	spare;
+} SUDS_RESP_FAP_DATA;
+.sp 0.5
+#define RESP_FAP_DATAS	303L
+.fi
+.ft R
+.SH DESCRIPTION
+Response information when specified as a sequence of triplets specifying 
+frequency, amplitude, and phase. A number of these structures 
+(\fBresponse.data_length\fR) follow structure \fBresponse\fR as data.
+.BB
+data_only=RESPONSES
+.EB
+.SH MEMBERS
+.TP
+\fBfrequency\fI frequency\fR
+Frequency point on the amplitude versus frequency curve in hertz.
+.TP
+\fBamplitude\fI amplitude\fR
+Amplitude point on the amplitude versus frequency curve.
+.TP
+\fBamplitude_err\fI amplitude error\fR
+Error in the amplitude point on the amplitude versus frequency curve.
+.TP
+\fBphase\fI phase\fR
+Phase angle in degrees for a point on the amplitude versus frequency curve.
+.TP
+\fBphase_error\fI phase error\fR
+Error in the phase angle in degrees for a point on the amplitude versus 
+frequency curve.
+.TP
+\fBspare\fI for future use\fR
+.SH "SEE ALSO"
+response(4), resp_cfs_data(4), resp_fir_data(4),
+resp_pz_data(4), resp_sen_data(4)
+
+

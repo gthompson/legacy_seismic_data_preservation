@@ -1,0 +1,132 @@
+.so ../man_macros/suds_man_macros
+.TH SET_LABEL 2 "13 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+set_label \- assign label from previous values or return a unique new value 
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+INT4 load_label(CHAR **list, INT4 *list_len, GENPTR struct_ptr, CHAR *name,
+   INT4 model,INT4 domain);
+INT4 set_label(CHAR **list, INT4 *list_len, GENPTR struct_ptr, CHAR *name,
+   INT4 model,INT4 domain);
+.fi
+.ft R
+.SH DESCRIPTION
+\fBLABELS\fR are unique integers that identify a particular instance of
+a structure within a given domain. These numbers are assigned in
+increasing order by the subroutine \fBget_label(2)\fR.
+Often when assigning labels for equipment, for example, a label might
+have already been assigned.  These routines create a list of labels
+including their corresponding domain, an ASCII name, and a model.
+\fBload_label\fR simply loads these values into the list.
+\fBset_label\fR looks up the values in the list, and if no entry with
+name and model matching is found, \fBget_label(2)\fR is called and the
+a new entry made in the list.
+.PP
+\fBset_label\fR resets the value of \fBLABEL\fR and the corresponding
+\fBDOMAIN\fR in the structure.  The \fBLABEL\fR is always the 3rd
+member of any structure that has a \fBLABEL\fR.  Structures that do not
+have a \fBLABEL\fR should not be used with these routines.
+\fBload_label\fR will simply put their 3rd and 4th members in the list,
+but an error will be returned by \fBset_label\fR when it tries to call
+\fBget_label(2)\fR to get a new unique value for a non-existent label.
+.PP
+\fBlist\fR points to space dynamically allocated to contain the list.
+A different pointer and associated \fBlist_len\fR should be declared
+for each \fBLABEL\fR.  \fBname\fR is, for example,
+signal_path.signal_name, sig_path_cmp.serial_number, site.site_name,
+source.source_name, etc. and is limited to 19 characters plus a null
+byte in length.  If \fBmodel\fR equals \fBNODATL\fR, it is not
+searched.  It might be set to sig_path_cmp.model, site.network, etc.
+\fBdomain\fR is used by \fBset_label\fR when getting a new \fBLABEL\fR
+and assigning the corresponding \fBDOMAIN\fR.
+.PP
+\fBset_label\fR returns \fBFOUND\fR if the name, model, and domain were
+found in the list, \fBSUCCESSFUL\fR if added to the list, or
+\fBFAILED\fR if there are problems in allocating space, in which case
+an error message is also printed.  \fBload_label\fR returns 
+\fBSUCCESSFUL\fR or \fBFAILED\fR
+.SH "SEE ALSO"
+make_lab(1), get_label(2)
+.SH EXAMPLE
+.ft B
+.nf
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   SUDS_SIGNAL_PATH sp;
+   CHAR *sp_list;
+   INT4 list_len,domain,ret;
+
+   progname=argv[0];
+   list_len=argc;
+   list_len=0;
+   domain=10000;
+   st_init(SIGNAL_PATHS,(GENPTR)&sp);
+   sp.network=domain;
+
+   strcpy(sp.signal_name,"gsmen_ABCD_very");
+   sp.signal_path_id=0;
+   sp.signal_path_dc=0;
+   ret=set_label(&sp_list, &list_len, (GENPTR)&sp, sp.signal_name, 
+      sp.network,domain);
+.eo
+   printf("set_label for %-15s returns %ld label=%ld domain=%ld\n",
+      sp.signal_name,ret,sp.signal_path_id,sp.signal_path_dc);
+.ec
+
+   strcpy(sp.signal_name,"gsmen_ABCD_bad");
+   sp.signal_path_id=0;
+   sp.signal_path_dc=0;
+   ret=set_label(&sp_list, &list_len, (GENPTR)&sp, sp.signal_name,
+       sp.network,domain);
+.eo
+   printf("set_label for %-15s returns %ld label=%ld domain=%ld\n",
+      sp.signal_name,ret,sp.signal_path_id,sp.signal_path_dc);
+.ec
+
+   strcpy(sp.signal_name,"gsmen_ABCD_exam");
+   sp.signal_path_id=0;
+   sp.signal_path_dc=0;
+   ret=set_label(&sp_list, &list_len, (GENPTR)&sp, sp.signal_name,
+       sp.network,domain);
+.eo
+   printf("set_label for %-15s returns %ld label=%ld domain=%ld\n",
+      sp.signal_name,ret,sp.signal_path_id,sp.signal_path_dc);
+.ec
+
+   strcpy(sp.signal_name,"gsmen_ABCD_ple");
+   sp.signal_path_id=0;
+   sp.signal_path_dc=0;
+   ret=set_label(&sp_list, &list_len, (GENPTR)&sp, sp.signal_name, 
+      sp.network,domain);
+.eo
+   printf("set_label for %-15s returns %ld label=%ld domain=%ld\n",
+      sp.signal_name,ret,sp.signal_path_id,sp.signal_path_dc);
+.ec
+
+   strcpy(sp.signal_name,"gsmen_ABCD_bad");
+   sp.signal_path_id=0;
+   sp.signal_path_dc=0;
+   ret=set_label(&sp_list, &list_len, (GENPTR)&sp, sp.signal_name, 
+      sp.network,domain);
+.eo
+   printf("set_label for %-15s returns %ld label=%ld domain=%ld\n",
+      sp.signal_name,ret,sp.signal_path_id,sp.signal_path_dc);
+.ec
+   return(0);
+}
+.LP
+Produces the output:
+.LP
+set_label for gsmen_ABCD_very returns 0 label=3153 domain=10000
+set_label for gsmen_ABCD_bad  returns 0 label=3154 domain=10000
+set_label for gsmen_ABCD_exam returns 0 label=3155 domain=10000
+set_label for gsmen_ABCD_ple  returns 0 label=3156 domain=10000
+set_label for gsmen_ABCD_bad  returns 0 label=3154 domain=10000
+.ft R
+.fi
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

@@ -1,0 +1,50 @@
+.so ../man_macros/suds_man_macros
+.TH RESP_FIR_DATA 4 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+resp_fir_data \- response values for finite impulse response filters
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	INT4	position;
+	INT4	spare;
+	FLOAT4	numer_coef;
+	FLOAT4	numer_coef_err;
+	FLOAT4	denom_coef;
+	FLOAT4	denom_coef_err;
+} SUDS_RESP_FIR_DATA;
+.sp 0.5
+#define RESP_FIR_DATAS	314L
+.fi
+.ft R
+.SH DESCRIPTION
+Response information when specified as a sequence of finite impulse response
+coefficients. A number of these structures (\fBresponse.data_length\fR) 
+follow structure \fBresponse\fR as data.
+.BB
+data_only=RESPONSES
+.EB
+.SH MEMBERS
+.TP
+\fBposition\fI position\fR
+Position of this coefficient in the sequence, counting from 0.
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBnumer_coef\fI numerator coefficient\fR
+Numerator of the finite impulse response coefficient.
+.TP
+\fBnumer_coef_err\fI numerator coef error\fR
+Error in the numerator of the finite impulse response coefficient.
+.TP
+\fBdenom_coef\fI denominator coefficient\fR
+Denominator of the finite impulse response coefficient.
+.TP
+\fBdenom_coef_err\fI denominator coef error\fR
+Error in the denominator of the finite impulse response coefficient.
+.SH "SEE ALSO"
+response(4), resp_cfs_data(4), resp_fap_data(4), 
+resp_pz_data(4), resp_sen_data(4)
+
+

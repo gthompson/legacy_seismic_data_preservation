@@ -1,0 +1,59 @@
+.so ../man_macros/suds_man_macros
+.TH RESP_PZ_DATA 4 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+resp_pz_data \- response values for infinite impulse response filters
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FLOAT4	pole_r;
+	FLOAT4	pole_i;
+	FLOAT4	pole_err_r;
+	FLOAT4	pole_err_i;
+	FLOAT4	zero_r;
+	FLOAT4	zero_i;
+	FLOAT4	zero_err_r;
+	FLOAT4	zero_err_i;
+} SUDS_RESP_PZ_DATA;
+.sp 0.5
+#define RESP_PZ_DATAS	123L
+.fi
+.ft R
+.SH DESCRIPTION
+Response information when specified as a sequence of poles and zeroes. 
+A number of these structures (\fBresponse.data_length\fR) 
+follow structure \fBresponse\fR as data.  If there are more poles than
+zeros or visa versa, set unknowns to NODATF.
+.BB
+data_only=RESPONSES
+.EB
+.SH MEMBERS
+.TP
+\fBpole_r\fI pole real\fR
+Real part response pole value.
+.TP
+\fBpole_i\fI pole imaginary\fR
+Imaginary part response pole value.
+.TP
+\fBpole_err_r\fI pole error real\fR
+Real part response pole errors.
+.TP
+\fBpole_err_i\fI pole error imaginary\fR
+Imaginary part response pole errors.
+.TP
+\fBzero_r\fI zero real\fR
+Real part response zero value.
+.TP
+\fBzero_i\fI zero imaginary\fR
+Imaginary part response zero value.
+.TP
+\fBzero_err_r\fI zero error real\fR
+Real part response zero errors.
+.TP
+\fBzero_err_i\fI zero error imaginary\fR
+Imaginary part response zero errors.
+.SH "SEE ALSO"
+response(4), resp_cfs_data(4), resp_fap_data(4), resp_fir_data(4),
+resp_sen_data(4)
+

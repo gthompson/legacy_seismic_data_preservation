@@ -1,0 +1,299 @@
+.so ../man_macros/suds_man_macros
+.TH FOCAL_MECH 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+focal_mech \- information about the focal mechanism and moment for a solution of an event
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	focal_mech_id;
+	DOMAIN	focal_mech_dc;
+	REFERS2	solution_id;
+	DOMAIN	solution_dc;
+	MS_TIME	origin_time;
+	LATIT	origin_lat;
+	LONGIT	origin_long;
+	FLOAT4	origin_depth;
+	CHAR	prefer_plane; 
+	CODE1	mechanism_type;
+	CODE1	time_func_type;
+	CHAR	spare;
+	REFERS2	vel_model_id;
+	DOMAIN	vel_model_dc;
+	MS_TIME	centroid_time;
+	LATIT	centroid_lat;
+	LONGIT	centroid_long;
+	FLOAT4	centroid_depth;
+	FLOAT4	cent_time_err;
+	FLOAT4	cent_lat_err;
+	FLOAT4	cent_long_err;
+	FLOAT4	cent_depth_err;
+	FLOAT4	time_func_dur;
+	FLOAT4	scalar_moment;
+	FLOAT4	scalar_mom_err;
+	FLOAT4	moment_magnit;
+	FLOAT4	stress_drop;
+	FLOAT4	a_strike; 
+	FLOAT4	a_strike_err; 
+	FLOAT4	a_dip;
+	FLOAT4	a_dip_err;
+	FLOAT4	a_rake; 
+	FLOAT4	a_rake_err; 
+	FLOAT4	b_strike; 
+	FLOAT4	b_strike_err; 
+	FLOAT4	b_dip;
+	FLOAT4	b_dip_err;
+	FLOAT4	b_rake; 
+	FLOAT4	b_rake_err; 
+	FLOAT4	moment_xx;
+	FLOAT4	moment_yy;
+	FLOAT4	moment_zz;
+	FLOAT4	moment_xy;
+	FLOAT4	moment_xz;
+	FLOAT4	moment_yz;
+	FLOAT4	eigen_pressure;
+	FLOAT4	plunge_pressure;
+	FLOAT4	strike_pressure;
+	FLOAT4	eigen_null;
+	FLOAT4	plunge_null;
+	FLOAT4	strike_null;
+	FLOAT4	eigen_tension;
+	FLOAT4	plunge_tension;
+	FLOAT4	strike_tension;
+	FLOAT4	percent_dc;
+	FLOAT4	percent_clvd;
+	FLOAT4	percent_iso;
+	INT4	authority;
+	ST_TIME	from_time;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_FOCAL_MECH;
+.sp 0.5
+#define FOCAL_MECHS	116L
+.fi
+.ft R
+.SH DESCRIPTION
+Focal mechanism of an earthquake including focal planes, moment, and
+stress-axes.  May be followed by structures of type \fBsig_path_data\fR
+to list stations used in this moment of focal mechanism.
+.BB
+permissions="siud_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBfocal_mech_id\fI focal mechanism id\fR
+Unique number of this focal mechanism.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBfocal_mech_dc\fI focal mechanism domain\fR
+Domain in which focal_mech_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBsolution_id\fI solution id\fR
+.so ../man_macros/solution.descrip
+.BB
+key=part_foreign(1,solution.solution_id), db_delete=nullify,
+index_string=true
+.EB
+.TP
+\fBsolution_dc\fI solution domain\fR
+Domain in which solution_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,solution.solution_dc), db_delete=nullify
+.EB
+.TP 
+\fBorigin_time \fIorigin time\fR
+Origin time.  These origin parameters were those used in the solution
+refered to by \fBsolution_id\fR.  They are included because often a
+moment that is not very sensitive to the starting solution may be
+calculated based on a soution that will later be discarded as too
+preliminary.  If the \fBsolution_id\fR is defined, parameters from that
+structure should be used in preference to the values given in this
+structure.
+.TP 
+\fBorigin_lat\fI origin latitude\fR
+Latitude, south is negative.
+.TP 
+\fBorigin_long\fI origin longitude\fR
+Longitude, west is negative.
+.TP 
+\fBorigin_depth\fI origin depth\fR
+Depth of hypocenter in kilometers below the ground surface.
+.TP
+\fBprefer_plane\fI preferred plane\fR
+Preferred slip plane, either a or b.
+.BB
+allow_char="ab"
+.EB
+.TP
+\fBmechanism_type\fI mechanism type\fR
+.BB
+codelist=mechanism_types
+.EB
+.TP
+\fBtime_func_type\fI time function type\fR
+.BB
+codelist=time_func_types
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP 
+\fBvel_model_id\fI velocity model id\fR
+Unique identifier of velocity model used to calculate this residual.
+.BB
+key=part_foreign(2,vel_model.vel_model_id), db_delete=cascade, 
+db_must_exist=true
+.EB
+.TP
+\fBvel_model_dc\fI velocity model domain\fR
+Domain in which vel_model_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,vel_model.vel_model_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBcentroid_time\fI centroid time\fR
+.TP
+\fBcentroid_lat\fI centroid latitude\fR
+.TP
+\fBcentroid_long\fI centroid longitude\fR
+.TP
+\fBcentroid_depth\fI centroid depth\fR
+.TP
+\fBcent_time_err\fI centroid time error\fR
+.TP
+\fBcent_lat_err\fI centroid latitude error\fR
+.TP
+\fBcent_long_err\fI centroid longit error\fR
+.TP
+\fBcent_depth_err\fI centroid depth error\fR
+.TP
+\fBtime_func_dur\fI time function duration\fR
+.TP
+\fBscalar_moment\fI scalar moment\fR
+.TP
+\fBscalar_mom_err\fI scalar moment error\fR
+.TP
+\fBmoment_magnit\fI moment magnitude\fR
+.TP
+\fBstress_drop\fI stress drop\fR
+.TP
+\fBa_strike\fI strike of a plane\fR
+Strike of the \fBa\fR plane.
+.TP
+\fBa_strike_err\fI strike a plane error\fR
+Error in strike of the \fBa\fR plane.
+.TP
+\fBa_dip\fI dip of the a plane\fR
+Dip of the \fBa\fR plane.
+.TP
+\fBa_dip_err\fI dip of the a plane\fR
+Dip of the \fBa\fR plane.
+.TP
+\fBa_rake\fI rake of a plane\fR
+Rake of the \fBa\fR plane.
+.TP
+\fBa_rake_err\fI rake a plane error\fR
+Error in rake of the \fBa\fR plane.
+.TP
+\fBb_strike\fI strike of b plane\fR
+Strike of the \fBb\fR plane.
+.TP
+\fBb_strike_err\fI strike b plane error\fR
+Error in strike of the \fBb\fR plane.
+.TP
+\fBb_dip\fI dip of b plane\fR
+Dip of the \fBb\fR plane.
+.TP
+\fBb_dip_err\fI dip b plane error\fR
+Error in dip of the \fBb\fR plane.
+.TP
+\fBb_rake\fI rake of b plane\fR
+Rake of the \fBb\fR plane.
+.TP
+\fBb_rake_err\fI rake b plane error\fR
+Error in rake of the \fBb\fR plane.
+.TP
+\fBmoment_xx\fI moment xx\fR
+.TP
+\fBmoment_yy\fI moment yy\fR
+.TP
+\fBmoment_zz\fI moment zz\fR
+.TP
+\fBmoment_xy\fI moment xy\fR
+.TP
+\fBmoment_xz\fI moment xz\fR
+.TP
+\fBmoment_yz\fI moment yz\fR
+.TP
+\fBeigen_pressure\fI eigenval pressure axis\fR
+.TP
+\fBplunge_pressure\fI plunge pressure axis\fR
+.TP
+\fBstrike_pressure\fI strike pressure axis\fR
+.TP
+\fBeigen_null\fI eigenvalue null axis\fR
+.TP
+\fBplunge_null\fI plunge null axis\fR
+.TP
+\fBstrike_null\fI strike null axis\fR
+.TP
+\fBeigen_tension\fI eigenvalue tension axis\fR
+.TP
+\fBplunge_tension\fI plunge tension axis\fR
+.TP
+\fBstrike_tension\fI strike tension axis\fR
+.TP
+\fBpercent_dc\fI percent dc\fR
+.TP
+\fBpercent_clvd\fI percent clvd\fR
+.TP
+\fBpercent_iso\fI percent iso\fR
+.TP
+\fBauthority\fI authority\fR
+.TP
+\fBfrom_time\fI time of solution\fR
+.TP
+\fBdata_type\fI data storage type\fR
+.so ../man_macros/data_type.descrip
+This structure should be followed by structures of type \fBsig_path_data\fR.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of samples\fR
+Number of samples of type \fBdata_type\fR in the waveform.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(3,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+.SH AUTHOR
+Peter Ward, U. S. Geological Survey and Lind Gee, University of
+California, Berkeley.

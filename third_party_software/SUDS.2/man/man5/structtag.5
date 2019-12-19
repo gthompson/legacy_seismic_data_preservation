@@ -1,0 +1,63 @@
+.so ../man_macros/suds_man_macros
+.TH STRUCTTAG 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+structtag \- structure to identify structures when archived together
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	CHAR	sync;
+	CODE1	machine;
+	INT2	id_struct;
+	INT4	len_struct;
+	INT4	len_data;
+	PAD4	pad_S;
+} PCSUDS_STRUCTTAG;
+.sp 0.5
+#define PC_STRUCTTAG	2L
+.fi
+.ft R
+.SH DESCRIPTION
+All structures written in a stream such as on a disk, tape, and over
+the network, must be followed by a \fBstructtag\fR. This tag is
+used for error detection and to explain what structure follows and how
+much data follow the structure.  The \fBstructtag\fR is the label
+used to identify structures.
+.PP
+Required in a stream before each structure.
+.SH MEMBERS
+.TP
+\fBsync\fI synchronization char\fR
+All \fBstructtags\fR must begin with the letter S. When a structure
+and any data following the structure are read, the next structure_tag
+is also read, and if the first letter is not S, an error is declared.
+In this way when a structure is read, the computer knows that it has
+been read properly.
+.BB
+default_value="S", allow_char="S"
+.EB
+.TP
+\fBmachine\fI type of computer\fR
+Type of computer this structure was written on.  For PC_SUDS this
+must be a '6' respresenting an 80x86 computer in PC_SUDS format.
+The input/output library routines identify PC_SUDS data by this
+character.  Anything other than a '6' will be interpreted as SUDS
+data and will cause program termination for PC_SUDS data.
+.BB
+codelist=computer_types
+.EB
+.TP
+\fBid_struct\fI structure id\fR
+An integer defining the type of structure that follows. The integers
+are defined on the manual pages defining the structures.
+.TP
+\fBlen_struct\fI len structure\fR
+The length of the structure in bytes.
+.TP
+\fBlen_data\fI len data\fR
+Length of data in bytes that follows the structure. The type of data is
+defined within the structure.
+.TP
+\fBpad_S\fI padding\fR
+.SH "SEE ALSO"

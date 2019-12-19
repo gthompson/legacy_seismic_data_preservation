@@ -1,0 +1,11 @@
+Name of a sensor component whose data are transmitted along a specific path and
+recorded on a particular recorder. Name is expected to be of the form
+network_station_CSBGP where the network is the abbreviation (part of the
+authority string preceeding the colon, 5 or less characters) for the
+\fBsignal_path.network\fR code, station is \fBsignal_path.station_name\fR (7 or
+less characters), C is the \fBsignal_path.component_type\fR code (usually v, n,
+or e), S is the \fBsignal_path.sensor_type\fR code, B is the
+\fBsignal_path.band_type\fR code, G is the \fBsignal_path.gain_type\fR, and P
+is the \fBsignal_path.path_type\fR in only those stations where the same
+component may be recorded on two or more different recorders or transmitted
+over different paths.

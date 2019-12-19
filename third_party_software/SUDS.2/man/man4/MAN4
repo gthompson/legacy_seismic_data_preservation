@@ -1,0 +1,105 @@
+. \" To add a manual page to the printed manual and to have it compiled
+. \" add the file name in alphabetical order in this file.
+. \" If the page should not be compiled, add a line to comp_man/man_script
+. \" Run this file as ptroff -rD1 -rC1 -man MAN5
+. \" .rs is required to skip to top of next page due to a bug in the man macros
+.rs
+.so Title.4
+.rs
+.so st_intro.4
+.rs
+.so beam_data.4
+.rs
+.so calibration.4
+.rs
+.so clock_rate.4
+.rs
+.so coordinate_sys.4
+.rs
+.so data_group.4
+.rs
+.so event.4
+.rs
+.so filter.4
+.rs
+.so focal_mech.4
+.rs
+.so lsa_detection.4
+.rs
+.so lsa_setting.4
+.rs
+.so lsa_set_data.4
+.rs
+.so magnitude.4
+.rs
+.so map_element.4
+.rs
+.so mux_waveform.4
+.rs
+.so pick.4
+.rs
+.so pick_residual.4
+.rs
+.so polarity.4
+.rs
+.so processing.4
+.rs
+.so recorder.4
+.rs
+.so recorder_ass.4
+.rs
+.so response.4
+.rs
+.so resp_cfs_data.4
+.rs
+.so resp_fap_data.4
+.rs
+.so resp_fir_data.4
+.rs
+.so resp_pz_data.4
+.rs
+.so resp_sen_data.4
+.rs
+.so seismometer.4
+.rs
+.so seismo_ass.4
+.rs
+.so service.4
+.rs
+.so signal_path.4
+.rs
+.so sig_cmp_data.4
+.rs
+.so sig_path_ass.4
+.rs
+.so sig_path_cmp.4
+.rs
+.so sig_path_data.4
+.rs
+.so signif_event.4
+.rs
+.so site.4
+.rs
+.so solution.4
+.rs
+.so solution_err.4
+.rs
+.so source.4
+.rs
+.so spectra.4
+.rs
+.so ssam_output.4
+.rs
+.so ssam_band_data.4
+.rs
+.so ssam_setup.4
+.rs
+.so user_vars.4
+.rs
+.so vel_layer_data.4
+.rs
+.so vel_model.4
+.rs
+.so waveform.4
+.rs
+. \" Last line of MAN4 preceeded by .rs for manual compiler

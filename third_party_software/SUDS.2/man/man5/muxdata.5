@@ -1,0 +1,81 @@
+.so ../man_macros/suds_man_macros
+.TH MUXDATA 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+muxdata \- header for multiplexed data
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netname;
+	STRING	netname[4];
+	MS_TIME	begintime;
+	INT2	loctime;
+	INT2	numchans;
+	FLOAT4	dig_rate;
+	CODE1	typedata;
+	CODE1	descript;
+	INT2	spareG;
+	INT4	numsamps;
+	INT4	blocksize;
+	PAD4	pad_L;
+} PCSUDS_MUXDATA;
+.sp 0.5
+#define PC_MUXDATA		6L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.  Description of multiplexed data from an
+online detector.  The multiplexed data follows this structure in the
+form of \fBtypedata\fR and the length of \fBnumsamps\fR.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netname\fI len net name\fR
+.TP
+\fBnetname\fI network name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBbegintime\fI begin time\fR
+.TP
+\fBloctime\fI local time\fR
+.TP
+\fBnumchans\fI num channels\fR
+.TP
+\fBdig_rate\fI digitization rate\fR
+.TP
+\fBtypedata\fI type of data\fR
+.BB
+sets_data_type=true, codelist=datatyp
+.EB
+.TP
+\fBdescript\fI description\fR
+Description of event.
+.BB
+codelist=descript
+.EB
+.TP
+\fBspareG\fI for future use\fR
+.TP
+\fBnumsamps\fI num samples\fR
+Number of sample sweeps. Typically not known when header is written,
+but can be added later.
+.BB
+sets_data_length=true
+.EB
+.TP
+\fBblocksize\fI block size\fR
+Number of demultiplexed samples per channel if data is partially 
+demultiplexed, otherwise=0.
+.TP
+\fBpad_L\fI padding\fR
+.SH "SEE ALSO"

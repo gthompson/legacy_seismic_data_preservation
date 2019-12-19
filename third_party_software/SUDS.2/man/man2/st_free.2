@@ -1,0 +1,30 @@
+.so ../man_macros/suds_man_macros
+.TH ST_FREE 2  "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_free \- deallocate memory occupied by a SUDS structure
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.LP
+.ft B
+INT4 st_free(GENPTR suds_struct_ptr);
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+integer*4 st_free
+.br
+function st_free(suds_struct_ptr)
+.br
+	integer*4 suds_struct_ptr
+.ft R
+.SH DESCRIPTION
+Deallocate space in memory occupied by the structure referenced by
+\fIsuds_struct_ptr\fR, together with memory occupied by any accompanying
+data.
+.SH "SEE ALSO"
+st_get(2)
+.SH DIAGNOSTICS
+Returns SUCCESSFUL or FAILED.  Errors are reported by st_error(2).
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

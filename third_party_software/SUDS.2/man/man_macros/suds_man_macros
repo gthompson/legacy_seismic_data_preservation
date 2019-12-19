@@ -1,0 +1,11 @@
+.ds v 2.6
+.de BB 			\" Begin square bracketed information
+.br
+.na
+\s-1[
+..
+.de EB			 \" End square bracketed information
+]\s+1
+.br
+.ad
+..

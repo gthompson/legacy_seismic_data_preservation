@@ -1,0 +1,70 @@
+.so ../man_macros/suds_man_macros
+.TH FILE_INDEX 3 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+file_index \- structure to index locations of structures in a file
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT4	struct_number;
+	INT4	bytes_data;
+	INT4	tag_offset;
+	FIXED	len_indexed_n;
+	STRING	indexed_name[24];
+	INT4	label_id;
+	INT4	label_dc;
+	ST_TIME	from_time;
+	ST_TIME	thru_time;
+} SUDS_FILE_INDEX, *IDXPTR;
+.sp 0.5
+#define FILE_INDEXS	204L
+.fi
+.ft R
+.SH DESCRIPTION
+This structure is used to index a file so that individual structures in the
+file can be read in any order desired by the program. An index for a file
+is put in a file of the same name but with the suffix 'I'.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBstruct_number\fI structure number\fR
+Number of the structure.
+.TP
+\fBbytes_data\fI bytes of data\fR
+Bytes of data following the structure.
+.TP
+\fBtag_offset\fI offset to structure_tag\fR
+.TP 
+\fBlen_indexed_n\fR \fIlength indexed name\fR
+The maximum space reserved for the indexed name, i.e. 24. 
+Actual string can only contain 23 characters to allow for the NULL byte.
+.TP 
+\fBindexed_name\fI indexed name\fR
+If signal_name does not exist in a structure, this string would be the ASCII
+value of the member where the definition sets_index=true is found.  If the
+field being indexed if longer than 23 bytes, this is the last 23 bytes.
+.BB
+index_string=true
+.EB
+.TP
+\fBlabel_id\fI primary key id\fR
+LABEL or primary key for this structure.
+.TP
+\fBlabel_dc\fI primary key dc\fR
+Domain in which label_id is unique.
+.TP
+\fBfrom_time\fI beginning time\fR
+Beginning time if specifed in this structure.
+.TP
+\fBthru_time\fI ending time\fR
+Ending time if specifed in this structure.
+.SH "SEE ALSO"
+st_index(2)

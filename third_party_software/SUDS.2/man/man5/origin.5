@@ -1,0 +1,153 @@
+.so ../man_macros/suds_man_macros
+.TH ORIGIN 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+origin \- information about a specific solution for a given event
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT4	number;
+	INT2	authority;
+	CHAR	version;
+	CHAR	or_status;
+	CHAR	preferred;
+	CHAR	program;
+	CHAR	depcontrl;
+	CHAR	convergence;
+	INT4	region;
+	MS_TIME	orgtime;
+	LATIT	or_lat;
+	LONGIT	or_long;
+	FLOAT4	depth;
+	FLOAT4	err_horiz;
+	FLOAT4	err_depth;
+	FLOAT4	res_rms;
+	FIXED	len_crustmod;
+	STRING	crustmodel[6];
+	INT2	gap;
+	FLOAT4	nearstat;
+	INT2	num_stats;
+	INT2	rep_p;
+	INT2	used_p;
+	INT2	rep_s;
+	INT2	used_s;
+	INT2	mag_type;
+	INT2	rep_m;
+	INT2	used_m;
+	FLOAT4	magnitude_val;
+	FLOAT4	weight;
+	FLOAT4	mag_rms;
+	ST_TIME	effective;
+} PCSUDS_ORIGIN;
+.sp 0.5
+#define PC_ORIGIN	 	14L
+.fi
+.ft R
+.SH DESCRIPTION
+Very commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBnumber\fI event number\fR
+Unique event number assigned by organization.
+.TP
+\fBauthority\fI authority\fR
+Organization processing the data.
+.TP
+\fBversion\fI version\fR
+Version of solution within organization.
+.TP
+\fBor_status\fI processing status\fR
+Processing status.
+.TP
+\fBpreferred\fI preferred sol\fR
+.TP
+\fBprogram\fI processing program\fR
+Name of processing program.
+.TP
+\fBdepcontrl\fI depth control\fR
+Depth control.
+.TP
+\fBconvergence\fI convergence\fR
+hypocentral convergence.
+.TP
+\fBregion\fI region\fR
+Geographic region code assigned locally.
+.TP
+\fBorgtime\fI origin time\fR
+Origin time in GMT.
+.BB
+index_string=true
+.EB
+.TP
+\fBor_lat\fI latitude\fR
+Origin latitude, north is plus.
+.TP
+\fBor_long\fI longitude\fR
+Origin longitude, east is plus.
+.TP
+\fBdepth\fI depth\fR
+Origin depth in kilometers, + down.
+.TP
+\fBerr_horiz\fI horizontal error\fR
+Horizontal error in km.
+.TP
+\fBerr_depth\fI depth error\fR
+Vertical error in km.
+.TP
+\fBres_rms\fI rms of residuals\fR
+Root mean square of the residuals.
+.TP
+\fBlen_crustmod\fI len crustmodel\fR
+.TP
+\fBcrustmodel\fI name of crustmodel\fR
+.TP
+\fBgap\fI gap\fR
+Azimuthal gap in degrees.
+.TP
+\fBnearstat\fI nearest station\fR
+Distance in km to nearest station.
+.TP
+\fBnum_stats\fI number of stations\fR
+Number of stations reporting phases.
+.TP
+\fBrep_p\fI P reported\fR
+Number of p phases reported.
+.TP
+\fBused_p\fI P used\fR
+Number of p times used in the solution.
+.TP
+\fBrep_s\fI S reported\fR
+Number of s phases reported.
+.TP
+\fBused_s\fI S used\fR
+Number of s times used in the solution.
+.TP
+\fBmag_type\fI magnitude type\fR
+Magnitude type: coda,tau,xmag ml,mb,ms,mw.
+.TP
+\fBrep_m\fI mags reported\fR
+Number of magnitude readings reported.
+.TP
+\fBused_m\fI mags used\fR
+Number of magnitude readings used.
+.TP
+\fBmagnitude_val\fI magnitude\fR
+.TP
+\fBweight\fI weight\fR
+Average magnitude weight.
+.TP
+\fBmag_rms\fI rms of magnitudes\fR
+Rms of magnitudes.
+.TP
+\fBeffective\fI date calculated\fR
+Time this solution was calculated.
+.SH "SEE ALSO"

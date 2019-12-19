@@ -1,0 +1,236 @@
+.so ../man_macros/suds_man_macros
+.TH MENU 3 "6 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+menu \- SUDS menus
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	menu_id;
+	DOMAIN	menu_dc;
+	INT4	structure_num;
+	INT2	level;
+	INT2	ui_item;
+	FIXED	len_menu_lab;
+	STRING	menu_label[20];
+	FCNPTR	call_back;
+
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_MENU;
+.sp 0.5
+#define MENUS	21L
+.fi
+.ft R
+.SH DESCRIPTION
+Basic information about any type of feature menued from a waveform that is
+associated with a \fBwaveform\fR structure. Features are listed in the
+codelist \fBmenu_types\fR and include different seismic phases, types
+of amplitude measurements, specification of a time or amplitude window, etc.
+.BB
+permissions="siud_siud_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBmenu_id\fI menu identifier\fR
+A number that uniquely refers, within this \fBmenu_dc\fR, to an instance of 
+the \fBmenu\fR structure.
+.BB
+key=part_primary
+.EB
+.TP
+\fBmenu_dc\fI menu domain\fR
+Domain in which menu_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBevent_id\fI event identifier\fR
+A number that uniquely refers, within this \fBevent_dc\fR, to an instance of 
+the \fBevent\fR structure.
+.BB
+key=part_foreign(1,event.event_id), db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBevent_dc\fI event domain\fR
+Domain in which event_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,event.event_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBwaveform_id\fI waveform header id\fR
+A number that uniquely refers, within this \fBwaveform_dc\fR, to an instance of 
+the \fBwaveform\fR structure.
+.BB
+key=part_foreign(2,waveform.waveform_id), db_delete=nullify,
+index_string=true
+.EB
+.TP
+\fBwaveform_dc\fI waveform domain\fR
+Domain in which waveform_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,waveform.waveform_dc), db_delete=nullify
+.EB
+.TP 
+\fBlen_signal_n\fR \fIlength signal name\fR
+The maximum space reserved for the signal name, i.e. 20. 
+Actual string can only contain 19 characters to allow for the NULL byte.
+.TP 
+\fBsignal_name\fI signal name\fR
+.so ../man_macros/signal_name.descrip
+.TP 
+\fBtime \fI time of menu\fR
+Time of menu.
+.TP 
+\fBnominal_time \fI nominal time of menu\fR
+Nominal time of menu.  This is the time based on
+\fBwaveform.nominal_time\fR, which is the base time associated with a
+waveform before any clock corrections have been applied.  A menuing
+program should calculate both time and nominal_time.  The reason for
+keeping both values is to allow correction of time-code corrections by
+always maintaining the uncorrected time and a separate table of
+time-code corrections.
+.TP
+\fBerror_minus\fI menu error minus\fR
+Preferred time of menu minus earliest likely time of menu.
+Errors in timing have traditionally be represented by
+\fBobs_time_qual\fR with a scale from 0 to 4. This member and the
+next member allow a more quantitative measure of error in menuing.
+.TP
+\fBerror_plus\fI menu error plus\fR
+Latest likely time of menu minus preferred time of menu.
+.TP
+\fBobserv_phase\fI observed phase code\fR
+Code for observed phase from \fBmenu_types\fR codelist.
+.BB
+codelist=menu_types
+.EB
+.TP
+\fBobs_time_qual\fI quality of timing\fR
+Quality of timing. 0 equals best, 4 equals worst.  This is an estimation
+of menu time accuracy made by the menuer.
+.BB
+codelist=timing_qualities
+.EB
+.TP
+\fBonset_type\fI type of onset\fR
+e=emersio, i=impulsive.
+.BB
+codelist=onset_types
+.EB
+.TP
+\fBorig_first_mot\fI original first motion\fR
+Original first motion before any correction for polarity.  The reason
+for keeping both values is to allow correction of polarity corrections
+by always maintaining the uncorrected first motion and a separate table
+of polarity corrections.
+.BB
+codelist=first_motions
+.EB
+.TP
+\fBfirst_motion\fI first motion\fR
+U=up, D=down, +=probable up, -=probable down
+.BB
+codelist=first_motions
+.EB
+.TP
+\fBomit_from_sol\fI omit from solution\fR
+To omit this phase from a solution, set to the small letter 'o'.
+.BB
+allow_char="o"
+.EB
+.TP
+\fBmenu_method\fI type of menuing method\fR
+i=interactive,a=automatic,r=rtp, or user code
+.BB
+codelist=menu_methods
+.EB
+.TP
+\fBrecord_media\fI recording media\fR
+Media on which waveform was analyzed if not in digital form.
+.BB
+codelist=recording_medias
+.EB
+.TP
+\fBobs_ampl_qual\fI quality of amplitude\fR
+Quality of amplitude. 0 equals best, 4 equals worst.  This is an estimation
+of amplitude menu accuracy made by the menuer.
+.BB
+codelist=timing_qualities
+.EB
+.TP
+\fBamplitude_type\fI type of amplitude\fR
+.BB
+codelist=amplitude_types
+.EB
+.TP
+\fBampl_units\fI units of amplitude\fR
+Units used for amplitude.
+.BB
+codelist=units_types
+.EB
+.TP
+\fBnom_amplitude\fI nominal amplitude\fR
+Amplitude menued as a signed variable equal to amplitude of later sample
+minus amplitude of earlier sample.  The reason for keeping the sign is
+to make it possible to redraw amplitude lines on top of a waveform.
+.TP
+\fBamp_gain_range\fI gain range\fR
+Factor by which amplitude should be multiplied to correct for automatic
+gain-ranging in the field amplifier.
+.TP
+\fBmedia_gain\fI media gain\fR
+Factor by which amplitude should be multiplied to correct for gain
+of the media if not digital.  
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBperiod\fI period\fR
+Period in seconds of the amplitude menued.  This is the time from peak
+to trough times 2.
+.TP
+\fBobs_azimuth\fI observed azimuth\fR
+Azimuth to event source as observed from waveforms.
+.TP
+\fBobs_slowness\fI observed slowness\fR
+Slowness of the waveform travelling by station.
+.TP
+\fBrectilinearity\fI rectilinearity\fR
+Rectilinearity of the waveform.
+.TP
+\fBtime_menued\fI time menu made\fR
+Time this menu was made.
+.TP
+\fBauthority\fI menu authority\fR
+Who made this menu.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBsignal_2_noise\fI ratio signal to noise\fR
+Ratio of signal to noise.  Can be thought of as the average amplitude
+after the menu divided by the average amplitude before any arrivals. 
+.TP
+\fBcomment_id\fI comment\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(3,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+.SH BUGS

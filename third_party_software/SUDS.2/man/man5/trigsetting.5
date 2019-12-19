@@ -1,0 +1,82 @@
+.so ../man_macros/suds_man_macros
+.TH TRIGSETTING 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+trigsetting \- settings for earthquake trigger system
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netwn;
+	STRING	netwname[4];
+	MS_TIME	beginttime;
+	INT2	const1;
+	INT2	const2;
+	INT2	threshold;
+	INT2	const3;
+	INT2	const4;
+	INT2	wav_inc;
+	FLOAT4	sweep;
+	FLOAT4	aperture;
+	CODE1	algorithm;
+	CHAR	spareJ;
+	INT2	spareI;
+} PCSUDS_TRIGSETTING;
+.sp 0.5
+#define PC_TRIGSETTING	26L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netwn\fI len net name\fR
+.TP
+\fBnetwname\fI network name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBbeginttime\fI time effective\fR
+.TP
+\fBconst1\fI constant 1\fR
+Trigger constant 1.
+.TP
+\fBconst2\fI constant 2\fR
+Trigger constant 2.
+.TP
+\fBthreshold\fI threshold\fR
+Trigger threshold.
+.TP
+\fBconst3\fI constant 3\fR
+Trigger constant 3.
+.TP
+\fBconst4\fI constant 4\fR
+Trigger constant 4.
+.TP
+\fBwav_inc\fI increment\fR
+Weighted average increment.
+.TP
+\fBsweep\fI sweep\fR
+Trigger sweep time in seconds.
+.TP
+\fBaperture\fI aperture\fR
+Seconds for coincident station triggers.
+.TP
+\fBalgorithm\fI algoritm\fR
+.BB
+codelist=algorith
+.EB
+.TP
+\fBspareJ\fI for future use\fR
+.TP
+\fBspareI\fI for future use\fR
+.SH "SEE ALSO"

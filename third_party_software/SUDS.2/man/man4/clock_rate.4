@@ -1,0 +1,148 @@
+.so ../man_macros/suds_man_macros
+.TH CLOCK_RATE 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+clock_rate \- rate of change of a clock error
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	clock_rate_id;
+	DOMAIN	clock_rate_dc;
+	REFERS2	signal_path_id;
+	DOMAIN	signal_path_dc;
+	MS_TIME	from_correct;
+	MS_TIME	thru_correct;
+	ST_TIME	from_time;
+	ST_TIME	thru_time;
+	FLOAT4	drift_rate;
+	CHAR	obsolete;  
+	CHAR	satellite_hops;  
+	CODE1	sync_cd_type;  
+	CODE1	program_type;  
+	ST_TIME	time_done;
+	AUTHOR	authority;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_CLOCK_RATE;
+.sp 0.5
+#define CLOCK_RATES	130L
+.fi
+.ft R
+.SH DESCRIPTION
+Information about the rate that a clock drifts from true Greenwich Mean
+Time for a given recorder.  A number of instances of this structure
+make a table of clock corrections that are searched to determine the
+time correction to be applied at any specific time.  More than one
+instance of this structure may apply to a \fBsignal_path\fR at the same
+time.  For example a signal_path transmitted through an earth-orbiting
+satellite may have one correction for the satellite delay, and another
+for the clock at the recorder.  A time tear is represented by two
+instances of this structure where the \fBthru_time\R of one equals the
+\fBfrom_time\fR of the other.
+.PP
+Structures that contain time-critical values typically include a time
+member and a nominal-time member.  Nominal time is the observed time
+without any clock corrections being applied.  Time is the corrected
+time.  In this way, if a timing error is discovered at a later date, a
+program can recalculate all corrected times based on a new table of
+time corrections.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBclock_rate_id\fI clock rate id\fR
+Number of the clock correction that is unique within this domain.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBclock_rate_dc\fI clock rate domain\fR
+Domain in which clock_rate_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_foreign(1,signal_path.signal_path_id), db_delete=restrict,
+db_must_exist=true, db_index=true, index_string=true
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,signal_path.signal_path_dc),
+db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBfrom_correct\fI from time correction\fR
+True time minus the clock time in seconds at from_time.
+.TP
+\fBthru_correct\fI thru time correction\fR
+True time minus the clock time in seconds at thru_time.
+.TP
+\fBfrom_time\fI valid from time\fR
+Time this clock correction became valid.
+.TP
+\fBthru_time\fI valid thru time\fR
+Time this clock correction became no longer valid.
+.TP
+\fBdrift_rate\fI clock drift rate\fR
+Drift rate of clock between \fBfrom_time\fR and \fBthru_time\fR.
+.TP
+\fBobsolete\fI obsolete\fR
+If this time clock-rate record has been replaced by another, set this
+field to the letter t.  This allows keeping incorrect clock corrections
+as an audit trail to help decipher data corrected with a correction
+that was later changed.
+.TP
+\fBsatellite_hops\fI satellite hops\fR
+Number of times this signal on a telephone line is transmitted through
+an earth-orbiting satellite.  Each hop causes a delay of 0.27 seconds.
+If a number is given for this member, then the \fBfrom_correct\fR and
+\fBthru_correct\fR should be 0.27 times the number of hops.  This
+instance of this structure may be in addition to other instances for a
+given \fBsignal_path\fR.  This field is an ASCII character 1 thru 9,
+not an integer.
+.TP
+\fBsync_cd_type\fI syncronization code\fR
+Method used to determine time correction used.
+.BB
+codelist=synchronization_types
+.EB
+.TP
+\fBprogram_type\fI program type\fR
+Type of program used.
+.BB
+codelist=clock_programs
+.EB
+.TP
+\fBtime_done\fI time correction done\fR
+Time that this correction was determined.
+.TP
+\fBauthority\fI pick authority\fR
+Who determined this correction.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

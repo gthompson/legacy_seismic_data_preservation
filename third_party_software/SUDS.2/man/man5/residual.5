@@ -1,0 +1,105 @@
+.so ../man_macros/suds_man_macros
+.TH RESIDUAL 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+residual \- calculated residuals for arrival times, magnitudes, etc.
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT4	event_num;
+	FIXED	len_netn_H;
+	STRING	network[4];
+	FIXED	len_st_nam_H;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	CODE2	set_phase;
+	CODE1	set_tim_qual;
+	CODE1	set_amp_qual;
+	FLOAT4	residual_val;
+	FLOAT4	weight_used;
+	FLOAT4	delay;
+	FLOAT4	azimuth;
+	FLOAT4	distance;
+	FLOAT4	emergence;
+	PAD4	pad_M;
+} PCSUDS_RESIDUAL;
+.sp 0.5
+#define PC_RESIDUAL	11L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBevent_num\fI event number\fR
+Unique event number.
+.TP
+\fBlen_netn_H\fI len net name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_st_nam_H\fI len stat name\fR
+.TP
+\fBst_name\fI station name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBset_phase\fI observed phase\fR
+Phase code set for this solution.
+.BB
+codelist=feat_phase
+.EB
+.TP
+\fBset_tim_qual\fI timing quality\fR
+Timing quality assigned for this solution.
+.BB
+codelist=timequal
+.EB
+.TP
+\fBset_amp_qual\fI amplitude quality\fR
+Amplitude quality assigned for this solution.
+.BB
+codelist=timequal
+.EB
+.TP
+\fBresidual_val\fI residual\fR
+Traveltime residual or phase magnitude.
+.TP
+\fBweight_used\fI weight used\fR
+Weight used in this solution.
+.TP
+\fBdelay\fI delay\fR
+Delay time or station correction used.
+.TP
+\fBazimuth\fI azimuth\fR
+Azimuth event to station, 0 north.
+.TP
+\fBdistance\fI distance\fR
+Distance in km event to station.
+.TP
+\fBemergence\fI angle emergence\fR
+Angle of emergence from source, 0=down,180=up.
+.TP
+\fBpad_M\fI padding\fR
+.SH "SEE ALSO"

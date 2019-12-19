@@ -1,0 +1,217 @@
+.so ../man_macros/suds_man_macros
+.TH ASC2MEMBER 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+asc2member, member2asc \- convert ascii string to suds member and the inverse
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+void asc2member(CHRPTR string, GENPTR member_ptr, INT4 type, CHRPTR format);
+void asc2member_num(CHRPTR string, GENPTR struct_ptr, INT4 number);
+CHRPTR member2asc(GENPTR member_ptr, INT4 type, INT4 verbose, CHRPTR format,
+	CHRPTR out_string);
+CHRPTR member_num2asc(GENPTR struct_ptr, INT4 number, CHRPTR out_string);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+call asc2member(string,member,type,format)
+	character*(*) string,format
+	integer*4 type
+character*(*) member2asc
+function member2asc(member,type,verbose,format,out_string)
+	integer*4 type,verbose
+	character*(*) format,out_string
+.fi
+.ft R
+.SH DESCRIPTION
+\fBasc2member\fR converts the ascii \fIstring\fR to a variable of a
+specific \fItype\fR pointed to by \fIptr\fR, which is typically an
+address of a member in a \fBsuds\fR structure.  \fBmember2asc\fR
+converts the member pointed to by \fIptr\fR to an ascii string.
+\fItype\fR is defined by the "Integer defines for standard variable
+types" in \fB<suds/suds.h>\fR.  \fBasc2member_num\fR is a form
+of \fBasc2member\fR that only requires the number of the member in
+the structure counting from 0.  \fBmember_num2asc\fR is a form
+of \fBmember2asc\fR that only requires the number of the member in
+the structure counting from 0.  \fBout_string\fR must be declared
+large enough to hold the output string.  \fBmember2asc\fR and 
+\fBmember_num2asc\fR return pointers to \fBout_string\fR.
+.PP
+If \fBverbose\fR is not equal to 0, then members of type LONGIT or
+LATIT will be listed in degrees and minutes (verbose=1) and degrees,
+minutes, and seconds (verbose=2). For members of type MS_TIME and
+ST_TIME, verbose is set equal to form in \fBlist_mstime\fR.
+.SH DIAGNOSTICS
+\fBmember2asc\fR returns a string containing an error message beginning
+with "ERROR:".  \fBasc2member\fR reports errors by \fBst_error\fR.
+.SH EXAMPLE
+.nf
+INTV die(n) INTV n; { exit(n); }
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   CHAR c,temp[40];
+   INT2 i2;
+   INT4 i4,number;
+   INT2TM itm;
+   FLOAT8 l;
+   FLOAT4 ll;
+   SUDS_WAVEFORM wv;
+
+   progname=argv[0];
+.eo
+   printf("\n\nCHECK member2asc and asc2member\n");
+.ec
+   c='c';
+
+
+
+
+.eo
+   printf("CHAR %c is %s\n",c,member2asc(&c,CHR,0L,"%c",temp));
+   i2=321;
+   printf("INT2 %d is %s\n",i2,member2asc((GENPTR)&i2,IN2,0L,"%d",temp));
+   i2=NODATS;
+   strcpy(temp,"NODATS");
+   asc2member(temp,(GENPTR)&l,IN2,"%d");
+   printf("INT2 %s is %d\n",temp,i2);
+   i4=123;
+   printf("INT4 %ld is %s\n",i4,member2asc((GENPTR)&i4,IN4,0L,"%ld",temp));
+   i4=NODATL;
+   printf("INT4 %ld is %s\n",i4,member2asc((GENPTR)&i4,IN4,0L,"%ld",temp));
+   itm=1911*16+0xf;
+   printf("INT2TM %d or 0x%x or 1911:f is %s\n",
+      itm,itm,member2asc((GENPTR)&itm,I2T,0L,"%d:%x",temp));
+   itm= -1911*16+0xf;
+   printf("INT2TM %d or 0x%x or -1911:f is %s\n",
+      itm,itm,member2asc((GENPTR)&itm,I2T,0L,"%d:%x",temp));
+   l= -123.1234567;
+   printf("FLOAT8 %lf is %s\n",l,member2asc((GENPTR)&l,FL8,0L,"%lf",temp));
+   ll= -123.1234;
+   printf("FLOAT4 %lf is %s\n",ll,member2asc((GENPTR)&ll,FL4,0L,"%f",temp));
+
+   printf("LONGIT: verbose=0: %f is %s\n",
+      l,member2asc((GENPTR)&l,LON,0L,"%lf",temp));
+   printf("LONGIT: verbose=1: %f is %s\n",
+      l,member2asc((GENPTR)&l,LON,1L,"%lf",temp));
+   printf("LONGIT: verbose=2: %f is %s\n",
+      l,member2asc((GENPTR)&l,LON,2L,"%lf",temp));
+   strcpy(temp,"123W  7 24.44412");
+   asc2member(temp,(GENPTR)&l,LON,"%lf");
+   printf("LONGIT: %s is %lf\n",temp,l);
+   strcpy(temp,"123W  7.40740");
+   asc2member(temp,(GENPTR)&l,LON,"%lf");
+   printf("LONGIT: %s is %lf\n",temp,l);
+   strcpy(temp,"-123.123457");
+   asc2member(temp,(GENPTR)&l,LON,"%lf");
+   printf("LONGIT: %s is %lf\n",temp,l);
+
+   l=get_mstime();
+   printf("MS_TIME %f verbose=0 is %s\n",
+      l,member2asc((GENPTR)&l,MST,0L,"%lf",temp));
+   printf("MS_TIME %f verbose=1 is %s\n",
+      l,member2asc((GENPTR)&l,MST,1L,"%lf",temp));
+   printf("MS_TIME %f verbose=2 is %s\n",
+      l,member2asc((GENPTR)&l,MST,2L,"%lf",temp));
+   printf("MS_TIME %f verbose=3 is %s\n",
+      l,member2asc((GENPTR)&l,MST,3L,"%lf",temp));
+   printf("MS_TIME %f verbose=4 is %s\n",
+      l,member2asc((GENPTR)&l,MST,4L,"%lf",temp));
+   printf("MS_TIME %f verbose=5 is %s\n",
+.ec
+      l,member2asc((GENPTR)&l,MST,5L,"%lf",temp));
+
+
+
+.eo
+   printf("MS_TIME %f verbose=6 is %s\n",
+      l,member2asc((GENPTR)&l,MST,6L,"%lf",temp));
+   printf("MS_TIME %f verbose=7 is %s\n",
+      l,member2asc((GENPTR)&l,MST,7L,"%lf",temp));
+   printf("MS_TIME %f verbose=8 is %s\n",
+      l,member2asc((GENPTR)&l,MST,8L,"%lf",temp));
+   printf("MS_TIME %f verbose=9 is %s\n",
+      l,member2asc((GENPTR)&l,MST,9L,"%lf",temp));
+   l=MINTIME;
+   printf("MS_TIME %f verbose=3 is %s\n",
+      l,member2asc((GENPTR)&l,MST,3L,"%lf",temp));
+   l=MAXTIME;
+   printf("MS_TIME %f verbose=3 is %s\n",
+      l,member2asc((GENPTR)&l,MST,3L,"%lf",temp));
+
+   strcpy(temp,"686336312.710000");
+   asc2member(temp,(GENPTR)&l,MST,"%lf");
+   printf("MS_TIME: %s is %lf\n",temp,l);
+   strcpy(temp,"911001165832.710");
+   asc2member(temp,(GENPTR)&l,MST,"%lf");
+   printf("MS_TIME: %s is %lf\n",temp,l);
+   strcpy(temp,"911001165832");
+   asc2member(temp,(GENPTR)&l,MST,"%lf");
+   printf("MS_TIME: %s is %lf\n",temp,l);
+   strcpy(temp,"91 10 01 16 58 32.710");
+   asc2member(temp,(GENPTR)&l,MST,"%lf");
+   printf("MS_TIME: %s is %lf\n",temp,l);
+   strcpy(temp,"10/01/91 16:58 32.710");
+   asc2member(temp,(GENPTR)&l,MST,"%lf");
+   printf("MS_TIME: %s is %lf\n",temp,l);
+   strcpy(temp,"Oct 1, 1991 16:58 32.710 GMT");
+   asc2member(temp,(GENPTR)&l,MST,"%lf");
+   printf("MS_TIME: %s is %lf\n",temp,l);
+
+   wv.structure_type=WAVEFORMS;
+   wv.waveform_id=12345;
+   number=2;
+   printf("Member 2 of waveform structure is %s\n",
+      member_num2asc((GENPTR)&wv,number,temp));
+   asc2member_num("99999",(GENPTR)&wv,number);
+   printf("Member 2 of waveform structure is %s\n",
+.ec
+      member_num2asc((GENPTR)&wv,number,temp));
+   exit(0);
+}
+
+
+This program produces the following output:
+
+CHAR c is c
+INT2 321 is 321
+INT4 123 is 123
+INT4 -2147483640 is NODATL
+INT2TM 30591 or 0x777f or 1911:f is 1911:f
+INT2TM -30561 or 0xffff889f or -1911:f is -1911:f
+FLOAT8 -123.123457 is -123.123457
+FLOAT4 -123.123398 is -123.123398
+LONGIT: verbose=0: -123.123457 is -123.123457
+LONGIT: verbose=1: -123.123457 is 123W  7.40740
+LONGIT: verbose=2: -123.123457 is 123W  7 24.44412
+LONGIT: 123W  7 24.44412 is -123.123457
+LONGIT: 123W  7.40740 is -123.123457
+LONGIT: -123.123457 is -123.123457
+MS_TIME 742576103.760697 verbose=0 is 742576103.760697
+MS_TIME 742576103.760697 verbose=1 is 930713150823.761
+MS_TIME 742576103.760697 verbose=2 is 930713150823
+MS_TIME 742576103.760697 verbose=3 is 93 07 13 15 08 23.761
+MS_TIME 742576103.760697 verbose=4 is 93 07 13 15 08 23
+MS_TIME 742576103.760697 verbose=5 is 07/13/93 15:08 23.761
+MS_TIME 742576103.760697 verbose=6 is 07/13/93 15:08 23
+MS_TIME 742576103.760697 verbose=7 is Jul 13, 1993 15:08 23.761 GMT
+MS_TIME 742576103.760697 verbose=8 is Jul 13, 1993 15:08 23 GMT
+MS_TIME 742576103.760697 verbose=9 is 1993/Jul/13/930713.150824
+MS_TIME -2147472000.000000 verbose=3 is MINTIME
+MS_TIME 2147472000.000000 verbose=3 is MAXTIME
+MS_TIME: 686336312.710000 is 686336312.710000
+MS_TIME: 911001165832.710 is 686336312.710000
+MS_TIME: 911001165832 is 686336312.000000
+MS_TIME: 91 10 01 16 58 32.710 is 686336312.710000
+MS_TIME: 10 01 91 16 58 32.710 is 686336312.710000
+MS_TIME: Oct 1, 1991 16:58 32.710 GMT is 665427512.710000
+Member 2 of waveform structure is 12345
+Member 2 of waveform structure is 99999
+.fi
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+

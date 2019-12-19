@@ -1,0 +1,4 @@
+A number that uniquely refers, within this \fBdomain_code\fR, to one instance
+of the \fBsignal_path\fR structure representing a total signal path from a
+particular sensor to its recorder. In some cases the same sensor and recorder
+may be connected by separate paths.

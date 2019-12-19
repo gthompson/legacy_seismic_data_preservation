@@ -1,0 +1,29 @@
+.so ../man_macros/suds_man_macros
+.TH MAP_DATA 4 "11 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+map_data \- map coordinates
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	LATIT	latitude;
+	LONGIT	longitude;
+} SUDS_MAP_DATA;
+.sp 0.5
+#define MAP_DATAS	327L
+.fi
+.ft R
+.SH DESCRIPTION
+Map location data that follows the \fBmap_element\fR structure.
+.BB
+data_only=MAP_ELEMENTS
+.EB
+.SH MEMBERS
+.TP
+\fBlatitude\fI latitude\fR
+Latitude of a map point, south is negative.
+.TP
+\fBlongitude\fI longitude\fR
+Longitude of a map point, west is negative.
+.SH "SEE ALSO"

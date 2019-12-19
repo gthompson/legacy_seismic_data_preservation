@@ -1,0 +1,178 @@
+.so ../man_macros/suds_man_macros
+.TH STATIONCOMP 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+stationcomp \- generic station component information
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netn_I;
+	STRING	network[4];
+	FIXED	len_st_nam_I;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	INT2	azim;
+	INT2	incid;
+	LATIT	st_lat;
+	LONGIT	st_long;
+	FLOAT4	elev;
+	CODE1	enclosure;
+	CODE1	annotation;
+	CODE1	recorder_type;
+	CODE1	rockclass;
+	CODE2	rocktype;
+	CODE1	sitecondition;
+	CODE1	sensor_type;
+	CODE1	datatyp;
+	CODE1	data_units;
+	CODE1	polarity_type;
+	CODE1	st_status;
+	FLOAT4	max_gain;
+	FLOAT4	clip_value;
+	FLOAT4	con_mvolts;
+	INT2	channel_num;
+	INT2	atod_gain;
+	ST_TIME	effective;
+	FLOAT4	clock_correct;
+	FLOAT4	station_delay;
+	PAD4	pad_N;
+} PCSUDS_STATIONCOMP;
+.sp 0.5
+#define PC_STATIONCOMP	5L
+.fi
+.ft R
+.SH DESCRIPTION
+Very commonly used in PC-SUDS.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netn_I\fI len net name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_st_nam_I\fI len stat name\fR
+.TP
+\fBst_name\fI station name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBazim\fI azimuth\fR
+Component azimuth clockwise from north.
+.TP
+\fBincid\fI angle incidence\fR
+Component angle of incidence from vertical. 0 is vertical, 90 is 
+horizontal.
+.TP
+\fBst_lat\fI latitude\fR
+Station latitude, north is plus.
+.TP
+\fBst_long\fI longitude\fR
+Station longitude, east is plus.
+.TP
+\fBelev\fI elevation\fR
+Station elevation in meters.
+.TP
+\fBenclosure\fI enclosure\fR
+.BB
+codelist=enclosur
+.EB
+.TP
+\fBannotation\fI annotation\fR
+Annotated comment code.
+.BB
+codelist=ann_com
+.EB
+.TP
+\fBrecorder_type\fI type recorder\fR
+Type device data recorded on.
+.BB
+codelist=reco_type
+.EB
+.TP
+\fBrockclass\fI class of rock\fR
+.BB
+codelist=rock_class
+.EB
+.TP
+\fBrocktype\fI type rock\fR
+.BB
+codelist=rock_type
+.EB
+.TP
+\fBsitecondition\fI site condition\fR
+.BB
+codelist=site_condit
+.EB
+.TP
+\fBsensor_type\fI sensor type\fR
+.BB
+codelist=sensor
+.EB
+.TP
+\fBdatatyp\fI data type\fR
+.BB
+codelist=datatyp
+.EB
+.TP
+\fBdata_units\fI data units\fR
+.BB
+codelist=ampunits
+.EB
+.TP
+\fBpolarity_type\fI polarity\fR
+.BB
+codelist=polar
+.EB
+.TP
+\fBst_status\fI station status\fR
+.BB
+codelist=stat_stat
+.EB
+.TP
+\fBmax_gain\fI maximum gain\fR
+Maximum gain of the amplifier.
+.TP
+\fBclip_value\fI clipping value\fR
++-value of data where clipping begins.
+.TP
+\fBcon_mvolts\fI conversion to mv\fR
+Conversion factor to millivolts: mv per count.  0 means not defined or
+not appropriate. Max_ground_motion = digital_sample*con_mvolts.
+.TP
+\fBchannel_num\fI channel number\fR
+Analog to digital converter channel number.
+.TP
+\fBatod_gain\fI atod gain\fR
+Gain of analog to digital converter.
+.TP
+\fBeffective\fI time effective\fR
+Date/time these values became effective.
+.TP
+\fBclock_correct\fI clock correction\fR
+Clock correction in seconds.
+.TP
+\fBstation_delay\fI station delay\fR
+Seismological station delay.
+.TP
+\fBpad_N\fI padding\fR
+.SH "SEE ALSO"

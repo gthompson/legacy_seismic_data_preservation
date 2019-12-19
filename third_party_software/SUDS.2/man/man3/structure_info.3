@@ -1,0 +1,135 @@
+.so ../man_macros/suds_man_macros
+.TH STRUCTURE_INFO 3 "1 July 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+structure_info \- system information about a SUDS structure
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT4	struct_number;
+	INT4	struct_length;
+	MEMPTR	member_table;
+	INT4	num_members;
+	FIXED	len_struct_n;
+	STRING	struct_name[16];
+	FIXED	len_typedef;
+	STRING	typedef_name[24];
+	FIXED	len_define;
+	STRING	define_name[20];
+	INT4	data_only_to;
+	INT4	db_permission;
+	INT4	data_type_off;
+	INT4	data_len_off;
+	INT4	data_off_off;
+	INT4	xdr_struct_len;
+	INT2	total_width;
+	INT2	short_width;
+	INT4	help_ptr;
+} SUDS_STRUCTURE_INFO;
+.sp 0.5
+.fi
+#define STRUCTURE_INFOS	201L
+.ft R
+.SH DESCRIPTION
+This structure explains all of the properties of a particular structure
+in a manner used by \fBSUDS\fR utility programs. This information is
+created automatically from the manual pages by \fBcompile_man(1)\fR and
+stored in the file \fBsuds_str.h\fR.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure, i.e. 48.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure_info structure in bytes.  Calculated by 
+\fBsize_of\fR for this particular computer at compilation time.
+.TP
+\fBstruct_number\fI structure number\fR
+Define number of the structure described by this instance.
+.TP
+\fBstruct_length\fI length of structure\fR
+Number of bytes in the structure described by this instance. 
+Calculated by \fBsize_of\fR for this particular computer at 
+compilation time.
+.TP
+\fBmember_table\fI member table pointer\fR
+Pointer to member table for this structure.
+.TP
+\fBnum_members\fI number of members\fR
+Number of members in the member_table.
+.TP 
+\fBlen_struct_n\fR \fIname length\fR
+The maximum space reserved for the member name, i.e. 16. 
+Actual string can only contain 15 characters to allow for the NULL byte.
+.TP
+\fBstruct_name \fIname of structure\fR
+Name of this structure.
+.BB
+index_string=true
+.EB
+.TP 
+\fBlen_typedef\fR \fIlength typedef \fR
+The maximum space reserved for the typedef name, i.e. 24. 
+Actual string can only contain 23 characters to allow for the NULL byte.
+.TP
+\fBtypedef_name \fItypedef name\fR
+Typedef name of this structure.
+.TP 
+\fBlen_define\fR \fIlength of define\fR
+The maximum space reserved for the define name, i.e. 20. 
+Actual string can only contain 19 characters to allow for the NULL byte.
+.TP
+\fBdefine_name \fIdefine name\fR
+Define name of this structure.
+.TP
+\fBdata_only_to\fI data for struct\fR
+This structure is intended only to be used as data following
+a structure with struct_number=data_only_to.
+.TP
+\fBdb_permission\fI database permissions\fR
+Default database permissions for all members in this structure. See
+\fBmember_info.db_permission\fR (\fBmember_info(3)\fR).  If a default
+is not specified in the manual then it is set by the following define
+statement to \fBPERMIS\fR = duis_uis_uis_s = 0xf771
+.br
+#define PERMIS 0xf771
+.TP
+\fBdata_type_off\fI offset to data type\fR
+If this structure is followed by data, this field tells the offset in bytes
+from the beginning of the structure to the member that contains the value
+of the INT4 data_type. Otherwise this field = NODATL.
+.TP
+\fBdata_len_off\fI offset to data length\fR
+If this structure is followed by data, this field tells the offset in bytes
+from the beginning of the structure to the member that contains the value
+of the \fBINT4 data_length\fR, i.e. the number of data of unit data_type that 
+follow this structure. Otherwise this field = NODATL.
+.TP
+\fBdata_off_off\fI offset to data length\fR
+If this structure is followed by data, this field tells the offset in bytes
+from the beginning of the structure to the member that contains the value
+of the \fBINT4 data_offset\fR, i.e. offset in a \fBdata_group\fR file to the 
+beginning of the \fBstructure_tag\fR before this waveform structure.
+.TP
+\fBxdr_struct_len\fI structure len in XDR\fR
+Length of this structure in XDR (eXternal Data Representation).
+For PC-SUDS structures, this is the length of the structure in
+the file system, i.e. without FIXED, PAD1, PAD2, and PAD4 members.
+.TP
+\fBtotal_width\fI total width\fB
+Number of ASCII spaces to list whole structure in one line.
+Calculated by manual compiler based on \fBwidth_of_field\fR
+(See \fBstructure_properties(2)).
+.TP
+\fBshort_width\fI short width\fB
+Number of ASCII spaces to list whole structure less FIXED, PAD1,
+PAD2, and PAD4 members in one line.
+Calculated by manual compiler based on \fBwidth_of_field\fR
+(See \fBstructure_properties(2)).
+.TP
+\fBhelp_ptr\fI help pointer\fB
+Offset in bytes in help file to description of this structure.
+.SH "SEE ALSO"

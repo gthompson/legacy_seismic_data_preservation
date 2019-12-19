@@ -1,0 +1,141 @@
+.so ../man_macros/suds_man_macros
+.TH USER_VARS 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+user_vars \- user defined variables
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	user_vars_id;
+	DOMAIN	user_vars_dc;
+	REFERS2	waveform_id;
+	DOMAIN	waveform_dc;
+	INT4	waveform_type;
+	INT2	spare;
+	CHAR	type_zero;
+	CHAR	type_one;
+	CHAR	type_two;
+	CHAR	type_three;
+	CHAR	type_four;
+	CHAR	type_five;
+	CHAR	type_six;
+	CHAR	type_seven;
+	CHAR	type_eight;
+	CHAR	type_nine;
+	FLOAT4	zero;
+	FLOAT4	one;
+	FLOAT4	two;
+	FLOAT4	three;
+	FLOAT4	four;
+	FLOAT4	five;
+	FLOAT4	six;
+	FLOAT4	seven;
+	FLOAT4	eight;
+	FLOAT4	nine;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_USER_VARS;
+.sp 0.5
+#define USER_VARSS	322L
+.fi
+.ft R
+.SH DESCRIPTION
+A list of 10 variables that can be defined by a user and referenced to
+a particular instance of a waveform or any other structure through the
+primary key of any other structure type.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBuser_vars_id\fI user variables id\fR
+A number that uniquely identifies, within this \fBuser_vars_dc\fR, an instance 
+of the \fBuser_vars\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBuser_vars_dc\fI user variables domain\fR
+Domain in which user_vars_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP 
+\fBwaveform_id\fI waveform id\fR
+A number that uniquely refers, within this \fBwaveform_dc\fR, to an instance of 
+the waveform structure.
+.BB
+key=part_foreign(1,waveform.waveform_id), 
+db_delete=cascade, index_string=true, db_must_exist=true
+.EB
+.TP
+\fBwaveform_dc\fI waveform domain\fR
+Domain in which waveform_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,waveform.waveform_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBwaveform_type\fI waveform structure\fR
+Number of the structure type whose primary key the waveform_id refers to.
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBtype_zero\fI type zero\fR
+.TP
+\fBtype_one\fI type one\fR
+.TP
+\fBtype_two\fI type two\fR
+.TP
+\fBtype_three\fI type three\fR
+.TP
+\fBtype_four\fI type four\fR
+.TP
+\fBtype_five\fI type five\fR
+.TP
+\fBtype_six\fI type six\fR
+.TP
+\fBtype_seven\fI type seven\fR
+.TP
+\fBtype_eight\fI type eight\fR
+.TP
+\fBtype_nine\fI type nine\fR
+.TP
+\fBzero\fI variable zero\fR
+.TP
+\fBone\fI variable one\fR
+.TP
+\fBtwo\fI variable two\fR
+.TP
+\fBthree\fI variable three\fR
+.TP
+\fBfour\fI variable four\fR
+.TP
+\fBfive\fI variable five\fR
+.TP
+\fBsix\fI variable six\fR
+.TP
+\fBseven\fI variable seven\fR
+.TP
+\fBeight\fI variable eight\fR
+.TP
+\fBnine\fI variable nine\fR
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

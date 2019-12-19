@@ -1,0 +1,74 @@
+.so ../man_macros/suds_man_macros
+.TH ST_SEEK 2 "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_seek, st_tell, st_rewind, st_peek \- reposition a stream of suds structures
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <stdio.h>
+INT4 st_index(CHRPTR file_name,SUDS_STREAM *stream,SUDS_FILE_INDEX *index[]);
+INT4 st_position(SUDS_STREAM *stream, INT4 number_of_structure);
+INT4 st_tell(SUDS_STREAM *stream);
+INT4 st_peek(SUDS_STREAM *stream);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 st_seek, st_tell, st_rewind, st_peek
+function st_seek(stream, number_of_structure)
+function st_tell(stream)
+function st_peek(stream)
+	integer*4 stream, number_of_structure
+.fi
+.ft R
+.SH DESCRIPTION
+.B st_seek
+sets the position of the next input or output operation on the
+.IR stream .
+The new position is just before the nth structure specified by
+.I offset
+counting the first structure in the stream as zero. The offset is relative
+to the beginning of the stream if direction==0, relative to the present position
+in the stream if direction==1, and relative to the end of the stream if direction==2.
+.PP
+.B st_rewind ( stream )
+is equivalent to
+.B st_seek ( stream, 0, 0).
+.PP
+.B st_seek
+and
+.B st_rewind
+undo any effects of
+.B  st_unget (2).
+.PP
+.B st_tell
+returns the offset, i.e. the number of the current structure relative to the 
+beginning of the file associated with the named
+.IR stream .
+.PP
+.B st_peek
+returns the structure type number of the next structure to be read by
+.B st_get.
+.SH "SEE ALSO" 
+fseek(2), st_open(2), st_unget(2)
+.SH DIAGNOSTICS
+.B st_seek
+returns FAILURE for improper seeks,
+otherwise SUCCESSFUL.
+An improper seek can be, for example, an
+.B st_seek
+done on a file that has not been opened via
+.B st_open .
+.SH DIAGNOSTICS
+Errors are reported by
+.IR st_error
+and a user supplied subroutine called
+.IR die(errno) 
+is called (See
+.IR st_error(3s)
+).
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH BUGS
+NOT PRESENTLY IMPLEMENTED

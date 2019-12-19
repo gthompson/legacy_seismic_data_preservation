@@ -1,0 +1,59 @@
+LABEL   calibration_id;	
+LABEL   clock_rate_id;	
+LABEL   comment_id;	
+LABEL   coordinate_id;	 grid_name[20]
+LABEL   data_group_id;	
+LABEL   event_id;	
+LABEL   focal_mech_id;	
+LABEL   detection_id;	
+LABEL   lsa_setting_id;	
+LABEL   magnitude_id;	
+LABEL   map_element_id;	
+LABEL   mux_waveform_id;	
+LABEL   pick_id;	
+LABEL   polarity_id;	
+LABEL   processing_id;	
+LABEL   recorder_id;	 recorder_name[12]
+LABEL   response_id;	 name_response[20]
+LABEL   seismometer_id;	 serial_number[12]
+LABEL   service_id;	
+LABEL   sig_path_cmp_id; serial_number[12]	model
+LABEL   signal_path_id;	 signal_name[20]
+LABEL   site_id;	 site_name[8]		network	
+LABEL   solution_id;	
+LABEL   source_id;	 source_name[12]
+LABEL   spectra_id;	
+LABEL   ssam_setup_id;
+LABEL   user_vars_id;	
+LABEL   vel_model_id;	 model_name[16]
+LABEL   waveform_id;	
+
+CALIBRATION_IDS
+CLOCK_RATE_IDS
+COMMENT_IDS
+COORDINATE_IDS
+DATA_GROUP_IDS
+EVENT_IDS
+FOCAL_MECH_IDS
+DETECTION_IDS
+LSA_SETTING_IDS
+MAGNITUDE_IDS
+MAP_ELEMENT_IDS
+MUX_WAVEFORM_IDS
+PICK_IDS
+POLARITY_IDS
+PROCESSING_IDS
+RECORDER_IDS
+RESPONSE_IDS
+SEISMOMETER_IDS
+SERVICE_IDS
+SIG_PATH_CMP_IDS
+SIGNAL_PATH_IDS
+SITE_IDS
+SOLUTION_IDS
+SOURCE_IDS
+SPECTRA_IDS
+SSAM_SETUP_IDS
+USER_VARS_IDS
+VEL_MODEL_IDS
+WAVEFORM_IDS

@@ -1,0 +1,63 @@
+.so ../man_macros/suds_man_macros
+.TH ST_DELETE 2 "2 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_delete \- delete a SUDS structure from a database SUDS stream
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.LP
+.ft B
+INT4 st_delete(GENPTR suds_structure_ptr, SUDS_STREAM *suds_stream);
+.LP
+.ft R
+.SH FORTRAN_SYNOPSIS
+.LP
+.ft B
+integer*4 st_delete
+.br
+function st_delete(suds_stream)
+.br
+	integer*4 suds_stream
+.ft R
+.SH DESCRIPTION
+Delete from a database the structure with the same primary key as that referenced by \fIsuds_structure_ptr\fR.  Any data associated with the
+target structure is also deleted.
+.PP
+A request to delete one structure from a database management system
+(DBMS) may cause zero, one, or many structures to be deleted.
+Structures related to the target structure may restrict the deletion of
+the target structure or they may be deleted along with it in order to
+preserve logical consistency within the DBMS.  Relations are
+specified by keys where each structure has a unique \fBprimary key\fR
+and related structures contain \fBforeign keys\fR that refer to a
+\fBprimary key\fR. The nature of this relation is specified in the
+manual page in Chapter 5 describing each structure.  Each \fBforeign
+key\fR has a deletion property specified as \fBdb_delete=string\fR
+where the string is \fBrestrict, nullify, \fRor \fBdelete\fR.
+.PP
+Restrict means that the DBMS will not allow the target structure to be
+deleted if its specific \fBprimary key\fR is referenced by at least one
+\fBforeign key\fR in the database. Nullify means that before the target
+structure is deleted, the DBMS nullifies all \fBforeign keys\fR
+pointing to the target structure throughout the database.  Cascade
+means that if \fBforeign keys\fR in other structures point to the
+specific \fBprimary key\fR of the target structure, the DBMS will also
+delete these other structures.
+.PP
+Because \fBst_delete\fR acts upon the underlying database rather than
+directly upon \fIsuds_stream\fR, the effects of an \fBst_delete\fR will
+not be visible until the next \fBst_command(2)\fR to \fIsuds_stream\fR
+is issued.
+.PP
+If \fIsuds_stream\fR is a file, the \fBst_delete\fR is ignored and
+SUCCESSFUL is returned.
+.SH "SEE ALSO"
+st_get(2), st_command(2)
+.SH DIAGNOSTICS
+Returns number of structures deleted or 0 if structure exists but can
+not be deleted. Returns FAILED if structure does not exist or if the
+user has only read access to \fIsuds_stream\fR.  Errors are reported by
+st_error(2).
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

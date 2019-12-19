@@ -1,0 +1,165 @@
+.so ../man_macros/suds_man_macros
+.TH DATA_GROUP 4 "1 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+data_group \- information about storage of a collection of waveforms
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	data_group_id;
+	DOMAIN	data_group_dc;
+	REFERS2	source_id;
+	DOMAIN	source_dc;
+	MS_TIME	from_time;
+	MS_TIME	thru_time;
+	CODE1	media_type;
+	CODE1	group_type;
+	INT2	spare;
+	FIXED	len_media_l;
+	STRING	media_label[16];
+	FIXED	len_media_p;
+	STRING	media_path[64];
+	INT4	media_block;
+	INT4	job_number;
+	INT4	line_number;
+	INT4	reel_number;
+	FIXED	len_online_p;
+	STRING	online_path[64];
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_DATA_GROUP;
+.sp 0.5
+#define DATA_GROUPS	108L
+.fi
+.ft R
+.SH DESCRIPTION
+\fBdata_group\fR identifies a collection of \fBwaveform\fR
+structures and their corresponding waveforms, and specifies where this
+collection is archived, and (if applicable) its disk location
+on-line. For refraction or reflection type data, a \fBdata_group\fR is a
+equivalent to a shot_gather.
+.PP
+In an institution where the majority of event-detected data
+is recorded on a single machine, the beginning time of a recorded event
+is used as an identifier of a \fBdata_group\fR. \fBwaveform\fR structures and
+waveforms from other sources, possibly with differing start times but
+covering the same event, may later also be associated with a
+\fBdata_group\fR. Normally, only one event is present in the \fBdata_group\fR
+collection, but during aftershock sequences and volcanic eruptions, a
+single \fBdata_group\fR may contain several events of interest.
+.BB
+permissions="siu_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBdata_group_id\fI data group id\fR
+.so ../man_macros/data_group.descrip
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBdata_group_dc\fI data group domain\fR
+Domain in which data_group_id is unique.
+.BB
+key=part_primary, codelist=authorities
+.EB
+.TP
+\fBsource_id\fI source id\fR
+A number that uniquely identifies, within this \fBsource_dc\fR, an 
+instance of the \fBsource\fR structure.
+.BB
+key=part_foreign(1,source.source_id), db_delete=nullify
+.EB
+.TP
+\fBsource_dc\fI source domain\fR
+Domain in which source_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,source.source_dc)
+.EB
+.TP
+\fBfrom_time\fR \fIbeginning time\fR
+GMT time of the first sample in
+the waveforms including all clock corrections.
+.TP
+\fBthru_time\fR \fIending time\fR
+GMT time of the last sample in the
+waveform including all clock corrections.
+.TP
+\fBmedia_type\fI type of media\fR
+Specifies the media on which this data group is archived.
+.BB
+codelist=media
+.EB
+.TP
+\fBgroup_type\fI data group type\fR
+Type of this data_group.
+.BB
+codelist=data_group_types
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBlen_media_l\fI length of media label\fR
+The maximum space reserved for the label written on the media, i.e. 12. 
+Actual string can only contain 11 characters to allow for the NULL byte.
+.TP
+\fBmedia_label\fI media label\fR
+Specifies the label written on the optical disk or tape containing the data. 
+In other words the name that is physically written on the
+paper label stuck to the disk or tape, for example: May-1990.
+.TP
+\fBlen_media_p\fI len media pathname\fR
+The maximum space reserved for the media_path string, i.e. 64. 
+Actual string can only contain 63 characters to allow for the NULL byte.
+.TP
+\fBmedia_path\fI pathname on media\fR
+Name of the file on the media containing the data.
+.BB
+ed_col=18
+.EB
+.TP
+\fBmedia_block\fI block on media\fR
+Block in which this \fBdata_group\fR occurs on the media.
+.TP
+\fBjob_number\fI job number\fR
+Primarily for reflection/refraction jobs.
+.TP
+\fBline_number\fI line number\fR
+Primarily for reflection/refraction jobs.
+.TP
+\fBreel_number\fI reel number\fR
+Primarily for reflection/refraction jobs.
+.TP
+\fBlen_online_p\fI len online pathname\fR
+The maximum space reserved for the path string, i.e. 64. 
+Actual string can only contain 63 characters to allow for the NULL byte.
+.TP
+\fBonline_path\fI pathname online\fR
+Specifies where to find the data if it is mounted on the computer or
+network. This field may be valid for only a short period of time, while the
+data is actively being processed. 
+.BB
+ed_col=18, index_string=true
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

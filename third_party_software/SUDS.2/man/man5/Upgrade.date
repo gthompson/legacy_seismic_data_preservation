@@ -1,0 +1,11 @@
+#
+#set OLD = (28 August 1991)
+#set NEW = (29 August 1991)
+set OLD = (suds 2.4)
+set NEW = ()
+
+
+foreach i ($*)
+   sed -e "s/$OLD/$NEW/" $i >! sedtemp
+   mv sedtemp $i
+end

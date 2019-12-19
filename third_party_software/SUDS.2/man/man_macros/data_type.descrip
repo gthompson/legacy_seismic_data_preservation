@@ -1,0 +1,3 @@
+An integer representing the type of data that follows this structure. If the
+integer is negative, it refers to \fBvariable_tab.define_num\fR. If the integer 
+is positive, it refers to \fBstructure_tab.struct_number\fR.

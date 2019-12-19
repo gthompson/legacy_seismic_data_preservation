@@ -1,0 +1,115 @@
+.so ../man5/.suds_man_macros
+.TH ATOD 3S  "18 July 1988" "suds \*v" "SUDS SUBROUTINE"
+
+.SH NAME
+atod_open, atod_settime, atod_incrtime, atod_geterr, atod_reset \- contol analog-to-digital converter
+.SH SYNOPSIS
+.B 
+.nf
+int atod_open(device,ms_sample,numchan)
+	char *device;
+	int ms_sample, numchan;
+int atod_settime(atod_fd,day,hour,min,seconds)
+	int atod_fd,day,hour,min,seconds;
+int atod_incrtime(atod_fd,milliseconds)
+int atod_fd,milliseconds;
+	int atod_geterr(atod_fd)
+	int atod_fd;
+int atod_reset(atod_fd)
+	int atod_fd;
+.SH DESCRIPTION
+These routines provide the software interface to the Cutler Digital Design (CDD)
+Data Sampler. 
+.I atod_open
+opens and initializes the atod with the pathname given by
+.I device,
+typically
+.B /dev/rst1,
+and returns an integer file descriptor,
+.I atod_fd,
+used in the other subroutines. 
+.I atod_open
+checks the byte order on the host machine and adjusts
+the CDD atod accordingly. The year is initialized in the atod
+with the last digit of the current year in the host machine's clock. The
+.I ms_sample,
+milliseconds per sample, may be any value such that the total throughput
+of the atod is 25,600 samples per second or less. Thus for 256 channels
+.I ms_sample
+may be
+.B 10
+or larger, for 128 channels
+.I ms_sample
+may be
+.B 5
+or larger, and for 16 channels (the minimum number of channels)
+.I ms_sample
+may be
+.B 1
+or larger.
+.I numchan
+is the number of individual channels of data to be collected and may be
+any number from 1 to the maximum number of input channels installed in the
+Data Sampler. Since the Data Sampler digitizes in units of 16 channels, 
+this number is rounded up to the next multiple of 16 by the software.
+.LP
+.I atod_settime
+sets the internal clock in the Data Sampler. If day is a negative number,
+the internal clock is disabled.
+.I atod_settime 
+returns
+.B 1
+if the time specified is impossible, such as a day of 34 or hour of 25,
+returns
+.B 4
+if the atod buffer is overflowed, although the time will still be reset, and
+returns
+.B 0
+if there are no errors.
+.LP
+.I atod_incrtime 
+changes the internal clock by 
+.I milliseconds,
+which may be positive or negative.
+.I atod_incrtime 
+returns 
+.B 4
+or
+.B 0
+as discussed above.
+.LP
+.I atod_reset
+clears the buffer in the Data Sampler and resets the digitizing process but
+leaves sample-rate, time, and other constants unchanged.
+.LP
+.I atod_geterr
+returns the error code from the Data Sampler. When an I/O error occurs the
+Data Sampler sends a message to the host machine that an error occurred.
+The host machine then asks the sampler for the error number and stores the value
+of the error in the driver software.
+.I atod_geterr
+returns this error value and resets the value to 
+.B 0
+so that a second call will return
+.B 0.
+Other return values are
+.B 4 
+meaning the atod's buffer overflowed and
+.B 5
+meaning an illegal command was sent to the atod.
+.SH DIAGNOSTICS
+These routines use
+.B st_error(3s)
+to report errors and call
+.B die,
+which you must provide, after fatal errors. 
+.SH SEE ALSO
+cdd(1s), plotatod(1s), st_error(3s)
+.SH BUGS
+The maximum throughput rate of 25,600 samples per second may not be
+attainable on a continuous basis on a SUN 3/50, depending on the
+use of the SCSI bus by other peripherals such as the disk and
+tape drive. Digitization of 32 stations at 100 samples per second uses
+less than 10% of the system resources.
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, Ca. 94025

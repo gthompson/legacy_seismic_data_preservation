@@ -1,0 +1,44 @@
+.so ../man_macros/suds_man_macros
+.TH DESCR_TRACE 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+descr_trace \- calculate minimum, maximum, average noise, and number of clipped values
+.SH C_SYNOPSIS
+.ft B 
+#include <suds/suds.h>
+.LP
+.ft B 
+.nf
+INTV descr_trace(FLOAT4 clip_value, SUDS_WAVEFORM *wv, GENPTR trace);
+.fi
+.ft R
+.SH DESCRIPTION
+.I descr_trace
+calculates and sets the values in
+.B struct waveform
+for
+.B min_val_data
+(minimum value of trace),
+.B max_val_data
+(maximum value of the trace),
+.B average_noise
+(average value of the first 200 samples), and
+.B num_pos_clip
+(number of positive clipped samples) and
+.B num_neg_clip
+(number of negative clipped samples). 
+If the trace type is not short, long, or float,
+.B descr_trace
+has a return value of FAILED and no change was made. Otherwise the return value is SUCCESSFUL.
+If the pointer
+.B trace 
+is 0, the trace is assumed to be contiguous to the end of 
+.B struct waveform.
+The number of clipped samples is set only if the 
+.B clip_value
+is not zero in
+.B struct stationcomp
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH BUGS
+This routine needs to be improved.
+

@@ -1,0 +1,65 @@
+.so ../man_macros/suds_man_macros
+.TH ATODINFO 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+atodinfo \- information on the A to D converter
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT2	base_address;
+	INT2	device_id;
+	UINT2	device_flags;
+	INT2	extended_bufs;
+	INT2	external_mux;
+	CODE1	timing_source;
+	CODE1	trigger_source;
+	PAD4	pad_A;
+} PCSUDS_ATODINFO;
+.sp 0.5
+#define PC_ATODINFO	29L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.  Information about the analog to digital 
+converter used on PC computers.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBbase_address\fI base address\fR
+Base I/O address of this device.
+.TP
+\fBdevice_id\fI device identifier\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBdevice_flags\fI device flags\fR
+.TP
+\fBextended_bufs\fI # of extended bufs\fR
+Number of extended buffers used.
+.TP
+\fBexternal_mux\fI external mux\fR
+AtoD external mux control word.
+.TP
+\fBtiming_source\fI AtoD timing source\fR
+AtoD timing source: i=internal, e=external.
+.BB
+codelist=timings
+.EB
+.TP
+\fBtrigger_source\fI AtoD trigger source\fR
+AtoD trigger source: i=internal, e=external.
+.BB
+codelist=timings
+.EB
+.TP
+\fBpad_A\fI padding\fR
+.SH "SEE ALSO"

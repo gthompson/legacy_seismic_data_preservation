@@ -1,0 +1,1 @@
+#define AMPLITUDE_TYPES	101

@@ -1,0 +1,95 @@
+.so ../man_macros/suds_man_macros
+.TH PROCESSING 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+processing \- a processing command or error message
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	processing_id;
+	DOMAIN	processing_dc;
+	CODE1	process_type;
+	CHAR	spare;
+	INT2	spare_a;
+	AUTHOR	authority;
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_PROCESSING;
+.sp 0.5
+#define PROCESSINGS	308L
+.fi
+.ft R
+.SH DESCRIPTION
+This structure is followed by an ASCII string containing commands that
+would duplicate the processing done on this waveform.  The command
+language has not been fully developed.  These could be Unix shell type
+commands, but we also would like to have a way that the actions taken within
+the SUDS graphical user interface ciould be specified.
+.PP
+In other words this structure is a proposal, not a full implementation as of this date.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBprocessing_id\fI processing id\fR
+A number that uniquely identifies, within this \fBprocessing_dc\fR, an instance 
+of the \fBprocessing\fR structure.
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBprocessing_dc\fI processing domain\fR
+Domain in which processing_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBprocess_type\fI type of processing\fR
+.BB
+codelist=process_types
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBspare_a\fI for future use\fR
+.TP
+\fBauthority\fI authority\fR
+.so ../man_macros/authority.descrip
+.BB
+codelist=authorities, index_string=true
+.EB
+.TP
+\fBdata_type\fI data storage type\fR
+.so ../man_macros/data_type.descrip
+Typically type \fBCHAR\fR.
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of samples\fR
+Number of characters that follow this structure.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(1,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"

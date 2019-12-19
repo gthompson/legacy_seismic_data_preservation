@@ -1,0 +1,15 @@
+A number identifying a collection of waveform data. The number is assigned by an
+authority when many waveforms are associated into a group that normally
+contains all the waveforms for one earthquake. The value must be unique within
+a domain and is assumed to be of type \fBST_TIME\fR (i.e. seconds
+since the beginning of Jan, 1970) representing a time at or near the time of
+the first samples of much of the data. In practice this number would typically
+be assigned when the data from the primary network detector are demultiplexed.
+Then as data from other detectors are added, they are assigned this
+data_group_id. \fBwaveform\fR structures and their associated waveforms
+for all station components within a data group will usually be stored together
+either in a file or in a directory with the name based on the ASCII
+representation of this time. The ascii string is of the form: YYMMDD.HHMMSS,
+where YY is the year (00-99), MM is the month (01-12), DD is the day(01-31), HH is
+the hour (00-23), MM is the minute (00-59), and SS the second (00-59), in
+universal (GMT) time. For example 910824.123600

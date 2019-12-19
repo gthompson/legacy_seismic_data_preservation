@@ -1,0 +1,60 @@
+.so ../man_macros/suds_man_macros
+.TH ERROR 5 "6 February 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+error \- error matrix
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FLOAT4	covarr0;
+	FLOAT4	covarr1;
+	FLOAT4	covarr2;
+	FLOAT4	covarr3;
+	FLOAT4	covarr4;
+	FLOAT4	covarr5;
+	FLOAT4	covarr6;
+	FLOAT4	covarr7;
+	FLOAT4	covarr8;
+	FLOAT4	covarr9;
+} PCSUDS_ERROR;
+.sp 0.5
+#define PC_ERROR	 	15L
+.fi
+.ft R
+.SH DESCRIPTION
+Not commonly used in PC-SUDS.  Covariance error matrix for an origin.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBcovarr0\fI covariance 0\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcovarr1\fI covariance 1\fR
+.TP
+\fBcovarr2\fI covariance 2\fR
+.TP
+\fBcovarr3\fI covariance 3\fR
+.TP
+\fBcovarr4\fI covariance 4\fR
+.TP
+\fBcovarr5\fI covariance 5\fR
+.TP
+\fBcovarr6\fI covariance 6\fR
+.TP
+\fBcovarr7\fI covariance 7\fR
+.TP
+\fBcovarr8\fI covariance 8\fR
+.TP
+\fBcovarr9\fI covariance 9\fR
+.SH "SEE ALSO"
+origin(pc)

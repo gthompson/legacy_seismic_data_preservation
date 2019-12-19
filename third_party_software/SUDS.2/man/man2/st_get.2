@@ -1,0 +1,138 @@
+.so ../man_macros/suds_man_macros
+.TH ST_GET 2 "1 May 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+st_get, st_load \- get the next suds structure and data from a stream
+.SH C_SYNOPSIS
+.ft B
+#include <suds/suds.h>
+.LP
+.ft B
+INT4 st_get(GENPTR *suds_struct_ptr, SUDS_STREAM *input_stream);
+INT4 st_load(GENPTR suds_struct_ptr, INT4 max_bytes, SUDS_STREAM *input_stream);
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+integer*4 st_get, st_bind, st_free
+.br
+function st_get(struct_ptr,stream)
+.br
+function st_bind(struct_ptr,record,data)
+.br
+	integer*4 struct_ptr,stream
+.ft R
+.SH DESCRIPTION
+\fBst_get\fR returns through its arguments a pointer
+\fB*suds_struct_ptr\fR to the next SUDS structure in the stream. If
+this type of structure can be followed by data, then the data are read
+according to the structure members typically named \fBdata_length\fR
+and \fBdata_type\fR and specified in the manual as
+\fBsets_data_length=true\fR and \fBsets_data_type=true\fR and can be
+accessed through \fBptr_to_data\fR (see \fBstructure_properties(2)\fR).
+.PP
+\fBst_load\fR reads a structure into existing storage space containing
+\fImax_bytes\fR for the structure and any data.
+.PP
+If \fIinput_stream\fR is a database, the \fBst_get\fR call must be
+preceded by an \fBst_command(2)\fR call that creates a list of
+structures to be read by \fBst_get\fR. Otherwise \fBst_get\fR will 
+return \fBEOF\fR.
+.PP
+In FORTRAN, \fBst_get\fR returns an integer*4 pointing to the
+structure.  This structure pointer can be used with \fBst_free\fR and
+the functions described in \fBstructure_properties(3)\fR to determine
+the type of structure, the type and length of data, etc.  Then
+\fBst_bind\fR should be used to put the values into records and data
+arrays that have been declared in FORTRAN. \fBst_bind\fR will cause the
+structure pointer to be deallocated or freed.  Otherwise the function
+\fBst_free\fR should be used to free up memory allocated by the C
+routine \fBst_get\fR.
+.PP
+The properties of the structure read and of any data associated with the
+structure are best determined using the functions described in
+\fBstructure_properties(2).\fR
+.PP
+All structures in a stream from a file are preceeded by a
+\fBstructure_tag\fR(5) that tells what structure is coming, how long
+the structure is, how much data follows the structure, what machine
+format the data is in, and that contains a magic letter used to confirm
+that the structure was read correctly. When a stream is opened, the
+first \fBstructure_tag\fR is read. When \fBst_get\fR is called, the
+structure is read as well as the next \fBstructure_tag\fR to be sure
+that the structure was read correctly.
+.PP
+The return value of \fBst_get\fR is the total length in bytes of the
+structure and the total length in bytes of any data following the
+structure.  When a structure is read from an older version of
+\fBsuds\fR that does not have the same length as the current version,
+the new members are added to the old structure and initialized to their
+default values by \fBst_get\fR. Thus older versions are automatically
+updated when read. In all cases the length of the structure is defined
+as the return value minus \fBbytes_of_data(suds_struct_ptr)\fR or
+\fBlength_of_structure(suds_struct_ptr)\fR (See
+\fBstructure_properties(2)\fR).
+.PP
+\fBst_get\fR uses \fBmalloc(3)\fR to allocate space for the structure.
+When the structure is no longer needed, the space previously reserved
+by \fBmalloc(3)\fR should be freed using \fBst_free(2)\fR.
+.PP
+\fBst_get\fR does any necessary conversion of data from \fBxdr\fR or
+other binary format known to SUDS to the binary format for this machine
+based on the value of \fBstructure_tag.computer_type\fR. \fBSuds\fR
+structures and data read by \fBst_get\fR must either be in \fBxdr\fR
+binary format (Big-endian, IEEE), 80x86 binary format (Little_endian,
+IEEE) or VAX binary format (Little-endian, VAX float).
+.PP
+Often when multiplexed data are written by an online detection program,
+the length of data to be written is not known when the STRUCTURE_TAG
+and MUX_DATA structures must be written. When a MUX_DATA structure is
+read, if \fBmux_waveform.length_data = NODATL\fR and \fBmux_waveform.data_type
+!= NODATL\fR, then the \fBSUDS\fR input routine \fBst_get\fR assumes
+that the data goes to the end of the file. The number of bytes from the
+end of the structure to the end of the file is determined. Four times
+\fBmux_waveform.numb_stations\fR rounded up to modulus 2 is subtracted to
+allow for one \fBsignal_path_id\fR for each station.
+\fBstructure_tag.len_data\fR is set equal to the remainder and
+\fBmux_waveform.data_length\fR is set equal to the remainder divided by the
+length of \fBmux_waveform.data_type\fR.
+.SH "SEE ALSO"
+st_open(2), st_put(2), st_error(2), st_free(2), structure_properties(2)
+.SH DIAGNOSTICS
+The most common error is likely to be a \fBSegmentation Violation\fR
+caused by not passing the addresses of \fBsuds_struct_ptr\fR.  Errors
+are reported by \fBst_error\fR and a user supplied subroutine called
+\fBdie(errno)\fR is called (See \fBst_error(3s)\fR).  \fBst_get\fR
+returns \fBEOF\fR on end of file and \fBFAILED\fR if an error occurred
+and \fBdie\fR does not call \fBexit\fR.
+.SH EXAMPLE
+.LP
+Read a \fBsuds\fR stream saving only \fBwaveform\fR and \fBpick\fR structures.
+.ft B
+.nf
+	#include <stdio.h>
+	#include <suds/suds.h>
+.LP
+.ft B
+	FILE	*file_in;
+	INT4	numin,i,j;
+	CHAR	*suds_struct_ptr;
+	SUDS_WAVEFORM	*wv[20];
+	SUDS_PICK	*pk[100];
+.LP
+.ft B
+	i=j=0;
+	while(numin=st_get((GENPTR *)&suds_struct_ptr,file_in)!=EOF) {
+		switch(type_of_structure(suds_struct_ptr)) {
+			case WAVEFORMS:	wv[i++]=(SUDS_WAVEFORM *)suds_struct_ptr;
+					break;
+ 			case PICK:	pk[j++]=(SUDS_PICK *)suds_struct_ptr; 
+					break;
+			default:	st_free(suds_struct_ptr);
+		}
+	}
+.ft R
+.fi
+.LP
+Note the use of the address of pointers \fBsp\fR in \fBst_get\fR!
+.SH AUTHOR
+Mark Anderson, Geophysical Institute, University of Alaska, 
+Fairbanks, AK 99701 and Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025

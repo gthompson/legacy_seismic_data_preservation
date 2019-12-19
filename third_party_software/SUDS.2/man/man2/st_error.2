@@ -1,0 +1,104 @@
+.so ../man_macros/suds_man_macros
+.TH ST_ERROR 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.UC 4
+.de en
+.HP
+\\$1  \\$2  \\$3
+.br
+..
+.SH NAME
+st_error, die \- general purpose error reporting and handling
+.SH C_SYNOPSIS
+.nf
+.ft B
+#include <suds/suds.h>
+void die(INTV error);
+.sp 0.5
+INTV st_error(void fcn(INTV error), CHAR *format, ...);
+extern char *progname;
+extern char *st_errout;
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.nf
+.ft B
+integer*4 die
+subroutine st_error(function,format [,arg ]...)
+function die(value)
+ 	integer value
+	character*(*) format
+.fi
+.ft R
+.SH DESCRIPTION
+\fBst_error\fR reports errors on \fIstderr\fR and calls \fIfunction\fR
+before returning. \fIprogname\fR should be set equal to \fIargv[0]\fR
+in the user's \fImain\fR.  \fBst_error\fR outputs a message "ERROR in
+progname". The next line is the message given in the \fIprintf(3)\fR
+type \fIformat\fR and by \fIargs\fR. The third line is
+the system error associated with \fIerrno\fR (\fBINTRO(2)\fR) if
+\fIerrno!=0\fR.  \fIerrno\fR is then reset to 0 and the
+\fIfunction\fR is called, if it is not equal to \fINULL\fR, with
+\fIerrnum\fR as an argument.
+.PP
+\fIfunction\fR can be \fBexit(2)\fR, any user defined function,
+typically \fBdie\fR, or \fINULL\fR.
+.PP
+Errors are normally output on \fBstderr\fR, however if \fBst_errout\fR
+is set to point at a file pathname before the first call to
+\fBst_error\fR, the errors will be put in that file.
+.PP
+Most st_routines call \fBst_error\fR.  If the error should be fatal,
+the function passed is \fBdie\fR.  A user must define this function. A
+simple definition could be:
+.br
+.ce
+\fBINTV die(err) INTV err; { exit(err); }\fR
+.br
+If the user has set special tty modes, these should be restored in 
+\fBdie\fR. To cause a core dump call \fBabort(3)\fR in \fBdie\fR.
+.SH "SEE ALSO"
+intro(2), st_intro(3)
+.SH BUGS
+\fBerrno\fR is not typically reset by standard UNIX routines and thus
+could have a spurious value. It is a good idea to set \fBerrno=0\fR
+before calling any routines for which you plan to use \fBst_error\fR to
+report the errors.
+.SH AUTHORS
+Peter Ward and Bruce Julian, U.S. Geological Survey, Menlo Park, CA 94025.
+.SH EXAMPLE
+.nf
+INTV die(n) INTV n; { exit(n); }
+INTV err(n) INTV n; {printf("   function err called with value %d\n",n);}
+CHAR d[10]="Smile!";
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   MS_TIME clock;
+   CHAR out_strg[48];
+   INT2   a = 1;
+   INT4   b = 2;
+   FLOAT4 c = 3.0;
+
+   progname=argv[0];
+.eo
+   printf("\nThe following errors are anticipated:\n");
+.ec
+   errno=2;
+   st_error(err,"   testing: outputs are %d %ld %5.2f %s",a,b,c,d);
+   st_error(NULL,"   Error of type: %d",45);
+   return(0);
+}
+
+Produces the following output when run as "my_program" on a UNIX system:
+
+The following errors are anticipated:
+ERROR in my_program:
+   testing: outputs are 1 2  3.00 Smile!
+   errno=2: No such file or directory
+   function err called with value 2
+ERROR in my_program:
+   Error of type: 45
+End test of dep_unix
+.fi

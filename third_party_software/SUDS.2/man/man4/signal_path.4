@@ -1,0 +1,233 @@
+.so ../man_macros/suds_man_macros
+.TH SIGNAL_PATH 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+signal_path \- information about a data path from a single sensor to a recorder
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	LABEL	signal_path_id;
+	DOMAIN	signal_path_dc;
+	REFERS2	site_id;
+	DOMAIN	site_dc;
+	FIXED	len_signal_n;
+	STRING	signal_name[20];
+	FIXED	len_site_n;
+	STRING	site_name[8];
+	AUTHOR	network;
+	CODE1	component_type;
+	CODE1	sensor_type;
+	CODE1	band_type;
+	CODE1	gain_type;
+	CHAR	path_type; 
+	CODE1	amp_response;
+	INT2	sensor_depth;
+	FLOAT4	sensor_azimuth;
+	FLOAT4	sensor_dip;
+	FLOAT4	time_delay;
+	FLOAT4	seismic_delay;
+	ST_TIME	from_time;
+	ST_TIME	thru_time; 
+	CODE4	data_type;
+	INT4	data_length;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_SIGNAL_PATH;
+.sp 0.5
+.fi
+#define SIGNAL_PATHS	105L
+.ft R
+.SH DESCRIPTION
+The \fBsignal_path\fR structure is the primary link between data
+recorded and information about the hardware used to detect, transmit,
+and record the data.  This structure contains information about a
+signal that is being recorded including the sensor type and sensor
+location as well as the path by which the signal is transmitted to the
+recorder. There should be at least one \fBsignal_path\fR structure for
+each sensor. If a signal from the same sensor is transmitted by several
+paths to the same recorder, then a \fBsignal_path\fR structure should
+exist for each path. If a signal from the same sensor is recorded on
+different recorders, then a \fBsignal_path\fR structure should exist
+for each recorder.  Once created, signal_path structures should not be
+modified, unless an error is discovered.  If the path between a sensor
+and recorder changes, a new signal_path structure should be created,
+and the old one left alone so that it accurately describes the
+signal_path on which old data was transmitted.
+.LP
+Signal paths are labeled by the member \fBsignal_name\fR which includes
+information about the site site name, the network name, the
+\fBcomponent_type\fR (vertical, NS, EW), the \fBsensor_type\fR, the
+\fBband_type\fR, the \fBgain_type\fR, and the \fBpath_type\fR.  This is
+an extension of the old site names, and would typically be kept the
+same as the signal_path changes, as long as the pieces making up the
+name remain the same.  In other words, the signal_name is not an
+identifier for the signal_path; use signal_path_id for unique
+identification.
+.PP
+When a \fBwaveform\fR is formed by the addition of several waveforms, a
+separate \fBsignal_path\fR structure should be created with at least
+\fBcomponent\fR and \fBpath_type\fR members reset and followed by a
+number of \fBbeam_data\fR structures.  The beam azimuth and dip (a
+function of slowness) should be put in the \fBsensor_azimuth\fR and
+\fBsensor_dip\fR members. This method also applies to specifying radial
+and transverse components formed by summing signals from two horizontal
+sensors.
+.BB
+permissions="s_s_siu_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBsignal_path_id\fI signal path id\fR
+.so ../man_macros/signal_path.descrip
+.BB
+key=part_primary, db_index=clustered
+.EB
+.TP
+\fBsignal_path_dc\fI signal path domain\fR
+Domain in which signal_path_id is unique.
+.BB
+codelist=authorities, key=part_primary
+.EB
+.TP
+\fBsite_id\fI site id\fR
+A number that uniquely refers to an instance of 
+the \fBsite\fR structure.
+.BB
+key=part_foreign(1, site.site_id), db_delete=restrict, db_must_exist=true
+.EB
+.TP
+\fBsite_dc\fI site site domain\fR
+Domain in which site_id is unique.
+.BB
+codelist=authorities, key=part_foreign(1,site.site_dc), 
+db_delete=restrict, db_must_exist=true
+.EB
+.TP 
+\fBlen_signal_n\fI length signal name\fR
+The maximum space reserved for the signal name, i.e. 20. 
+Actual string can only contain 19 characters to allow for the NULL byte.
+.TP 
+\fBsignal_name\fI signal name\fR
+.so ../man_macros/signal_name.descrip
+.BB
+index_string=true
+.EB
+.TP 
+\fBlen_site_n\fI length site name\fR
+The maximum space reserved for the site name, i.e. 8. 
+Actual string can only contain 7 characters to allow for the NULL byte.
+.TP 
+\fBsite_name\fI site name\fR
+Name of the site. Must be unique within this network.
+The site name is concatenated into the \fBsignal_name.\fR
+.TP
+\fBnetwork\fI network\fR
+The network containing this site. Typically this is an authority
+code assigned by the organization that installed and maintains the
+physical site.  If a site is part of two or more networks, users may
+decide to have only one site structure with the network code for the
+primary operator or duplicate site structures for each network with
+different network codes.
+.BB
+codelist=authorities
+.EB
+.TP
+\fBcomponent_type\fI component type\fR
+Sensor component: v=vertical, e=east-west, n=north-south, o=other (specified by
+sensor_azimuth and sensor_dip), etc.
+The \fBcomponent_type\fR is concatenated into the \fBsignal_name.\fR
+.BB
+codelist=components
+.EB
+.TP
+\fBsensor_type\fI sensor type\fR
+Type of sensor.  The \fBsensor type\fR is concatenated into the \fBsignal_name.\fR
+.BB
+codelist=sensor_types
+.EB
+.TP
+\fBband_type\fI bandpass type\fR
+Passband and general sampling rate of the sensor and signal_path.
+The \fBband_type\fR is concatenated into the \fBsignal_name.\fR
+.BB
+codelist=band_types
+.EB
+.TP
+\fBgain_type\fI gain type\fR
+Gain type for sites with several different outputs at several different gains
+from one amplifier or sensor.
+.BB
+codelist=gain_types
+.EB
+.TP
+\fBpath_type\fI path type\fR
+Type of path: a character locally defined for a network to differentiate 
+between different signal paths between a specific sensor and a recorder.
+If this character is defined, it is concatenated into the \fBsignal_name\fR.
+.TP
+\fBamp_response\fI amplitude response type\fR
+Type of amplitude response: n=normal, g=gain ranged.
+.BB
+codelist=amplitude_types
+.EB
+.TP
+\fBsensor_depth\fI depth to sensor, meters\fR
+If sensor is in a borehole below a site, this is the depth in meters.
+.TP
+\fBsensor_azimuth\fI seismometer azimuth\fR
+Azimuth of sensor in degrees from north.  Set =0 for vertical component.
+.TP
+\fBsensor_dip\fI seismometer incidence\fR
+Angle sensor makes with the horizontal in degrees. Thus for a vertical
+seismometer, the dip is 90 and for a horizontal seismometer the
+dip is 0.
+.TP
+\fBtime_delay\fI total time delay\fR
+Total time delay of the path.
+.TP
+\fBseismic_delay\fI seismic delay\fR
+A time delay in seconds assigned to this \fBpath\fR based on 
+traveltime residuals determined when locating earthquakes. This delay will
+be subtracted from arrival times when locating an earthquake.
+.TP
+\fBfrom_time\fI valid from time\fR
+Time this calibration became valid.
+.TP
+\fBthru_time\fI valid thru time\fR
+Time this calibration became no longer valid.
+.TP
+\fBdata_type\fI data storage type\fR
+.so ../man_macros/data_type.descrip
+Data should only be BEAM_COMP_DATAS
+.BB
+sets_data_type=true, codelist=data_types
+.EB
+.TP
+\fBdata_length\fI number of samples\fR
+Number of structures of type \fBdata_type\fR (beam_data(4)) that follow this structure.
+.BB
+sets_data_length=true, default_value=0
+.EB
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(2,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(2,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+make_signal_name(2)

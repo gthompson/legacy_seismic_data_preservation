@@ -1,0 +1,56 @@
+.so ../man_macros/suds_man_macros
+.TH MAKE_SIG_NAME 2 "6 February 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+make_sig_name \- make up the signal_name from its components
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+CHAR *make_sig_name(SUDS_SIGNAL_PATH *signal_path);
+.ft R
+.fi
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+character*(*) make_sig_name
+function make_sig_name(sig_path)
+	record /signal_path/ sig_path
+.ft R
+.fi
+.SH DESCRIPTION
+.so ../man_macros/signal_name.descrip
+.PP
+\fBmake_sig_name\fR catenates the components of \fBsignal_name\fR,
+copies the string into \fBsignal_path.signal_name\fR and returns a
+pointer to the string.
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH EXAMPLE
+.nf
+#include <string.h>
+INTV die(n) INTV n; { exit(n);}
+
+main(argc,argv)
+   INTV argc;
+   CHAR **argv;
+{
+   SUDS_SIGNAL_PATH sp;
+
+   progname=argv[0];
+   st_init(SIGNAL_PATHS,&sp);
+   strcat(sp.station_name,"ksv");
+   sp.network=10000;
+   sp.component_type='e';
+   sp.sensor_type='v';
+   sp.path_type='s';
+.eo
+   printf("signal_name is (%s)\n",make_sig_name(&sp));
+.ec
+   exit(0);
+}
+
+Produces the output:
+
+signal_name is (ksv.gsmen_evs)
+.fi
+

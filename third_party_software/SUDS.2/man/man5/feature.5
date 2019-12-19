@@ -1,0 +1,136 @@
+.so ../man_macros/suds_man_macros
+.TH FEATURE 5 "28 March 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+feature \- observed phase arrival time, amplitude, and period
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	FIXED	len_netn_E;
+	STRING	network[4];
+	FIXED	len_st_nam_E;
+	STRING	st_name[5];
+	CODE1	component;
+	CODE2	inst_type;
+	CODE2	obs_phase;
+	CODE1	onset;
+	CODE1	direction;
+	INT2	sig_noise;
+	CODE1	data_source;
+	CODE1	tim_qual;
+	CODE1	amp_qual;
+	CODE1	ampunits;
+	INT2	gain_range;
+	MS_TIME	pick_time;
+	FLOAT4	amplitude;
+	FLOAT4	period;
+	ST_TIME	time_of_pick;
+	CODE2	pick_authority;
+	INT2	pick_reader;
+} PCSUDS_FEATURE;
+.sp 0.5
+#define PC_FEATURE		10L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.  A feature such as a phase picked from a
+waveform.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBlen_netn_E\fI len network name\fR
+.TP
+\fBnetwork\fI network name\fR
+.TP
+\fBlen_st_nam_E\fI len stat name\fR
+.TP
+\fBst_name\fI station name\fR
+.BB
+index_string=true
+.EB
+.TP
+\fBcomponent\fI component\fR
+.BB
+codelist=comps
+.EB
+.TP
+\fBinst_type\fI instrument type\fR
+.BB
+codelist=inst_type
+.EB
+.TP
+\fBobs_phase\fI observed phase\fR
+Observed phase code.
+.BB
+codelist=feat_phase
+.EB
+.TP
+\fBonset\fI onset type\fR
+Wave onset descriptor, i or e.
+.BB
+codelist=onsetz
+.EB
+.TP
+\fBdirection\fI first motion\fR
+.BB
+codelist=firstm
+.EB
+.TP
+\fBsig_noise\fI signal to noise\fR
+Ratio of amplitude of the first peak or trough to the noise.
+.TP
+\fBdata_source\fI data source\fR
+.BB
+codelist=datasrc
+.EB
+.TP
+\fBtim_qual\fI timing quality\fR
+Timing quality assigned by the analyst.
+.BB
+codelist=timequal
+.EB
+.TP
+\fBamp_qual\fI amplitude quality\fR
+Amplitude quality assigned by the analyst.
+.BB
+codelist=timequal
+.EB
+.TP
+\fBampunits\fI amplitude units\fR
+Units amplitude measured in.
+.BB
+codelist=ampunits
+.EB
+.TP
+\fBgain_range\fI gain range\fR
+1 or gain multiplier if gain range in effect.
+.TP
+\fBpick_time\fI phase time\fR
+Phase time, x value where pick was made.
+.TP
+\fBamplitude\fI amplitude\fR
+Peak-to-peak amplitude of phase.
+.TP
+\fBperiod\fI period\fR
+Period of waveform measured.
+.TP
+\fBtime_of_pick\fI time picked\fR
+Time this pick was made.
+.TP
+\fBpick_authority\fI organization picking\fR
+Organization processing the data.
+.BB
+codelist=authority
+.EB
+.TP
+\fBpick_reader\fI person picking\fR
+Person processing the data.
+.SH "SEE ALSO"

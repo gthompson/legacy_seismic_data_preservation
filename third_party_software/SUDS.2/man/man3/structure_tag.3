@@ -1,0 +1,67 @@
+.so ../man_macros/suds_man_macros
+.TH STRUCTURE_TAG 3 "17 April 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+structure_tag \- tag that identifies the next structure in a stream
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	CHAR	sync_char;
+	CODE1	computer_type; 
+	INT2	suds_version;
+	INT4	struct_number;
+	INT4	struct_length; 
+	INT4	length_data; 
+} SUDS_STRUCTURE_TAG;
+.sp 0.5
+#define STRUCTURE_TAGS	212L
+.sp 0.5
+#define ST_MAGIC	'S'
+#define LEN_ST_TAG	16
+.fi
+.ft R
+.SH DESCRIPTION
+All structures written in a stream such as on a disk, tape, and over
+the network, must be followed by a \fBstructure_tag\fR. This tag is
+used for error detection and to explain what structure follows and how
+much data follow the structure.  The \fBstructure_tag\fR is the label
+used to identify structures.
+.SH MEMBERS
+.TP
+\fBsync_char\fI synchronization char\fR
+All \fBstructure_tags\fR must begin with the letter S. When a structure
+and any data following the structure are read, the next structure_tag
+is also read, and if the first letter is not S, an error is declared.
+In this way when a structure is read, the computer knows that it has
+been read properly.
+.BB
+default_value="S", allow_char="S"
+.EB
+.TP
+\fBcomputer_type\fI type of computer\fR
+Type of computer this structure was written on: x=xdr compatible
+computer such as a SUN-3 or SUN-4 SPARC, v=DEC VAX or similar computer,
+i=ibm PC or similar computer.
+.BB
+codelist=computer_types
+.EB
+.TP
+\fBsuds_version\fI version of suds\fR
+Version of suds software times 100. Thus version 2.0 is 200.
+.TP
+\fBstruct_number\fI structure code number\fR
+An integer defining the type of structure that follows. The integers
+are defined on the manual pages defining the structures.
+.TP
+\fBstruct_length\fI length of the structure\fR
+The length of the structure in bytes. \fBSUDS\fR allows for future
+extension of the lengths of structures. If a structure is read that is
+shorter than the version the program currently expects, the additional
+members are added to the structure being input and set to default
+values.
+.TP
+\fBlength_data\fI length of data\fR
+Length of data in bytes that follows the structure. The type of data is
+defined within the structure.
+.SH "SEE ALSO"

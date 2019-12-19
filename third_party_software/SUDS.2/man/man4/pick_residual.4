@@ -1,0 +1,176 @@
+.so ../man_macros/suds_man_macros
+.TH PICK_RESIDUAL 4 "2 March 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+pick_residual \- residual for one pick in a solution and association of the pick with the solution
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	REFERS2	pick_id;
+	DOMAIN	pick_dc;
+	REFERS2	solution_id;
+	DOMAIN	solution_dc;
+	REFERS2	vel_model_id;
+	DOMAIN	vel_model_dc;
+	CODE1	cal_time_qual;
+	CODE1	cal_ampl_qual;
+	CODE1	mag_type;
+	CHAR	omit_from_sol;
+	CODE1	weighted_out;
+	CHAR	spare;
+	INT2	spare_a;
+	FLOAT4	pick_magnitude;
+	FLOAT4	residual_val;
+	FLOAT4	weight_used;
+	FLOAT4	site_delay;
+	FLOAT4	elevation_delay;
+	FLOAT4	azm_2_stat;
+	FLOAT4	dist_2_stat;
+	FLOAT4	angle_emerg;
+	REFERS2	comment_id;
+	DOMAIN	comment_dc;
+} SUDS_PICK_RESIDUAL;
+.sp 0.5
+#define PICK_RESIDUALS	111L
+.fi
+.ft R
+.SH DESCRIPTION
+The \fBpick_residual\fR structure serves a dual purpose: to associate
+picks with solutions (accomplished by the foreign key pair
+\fBpick_id\fR and \fBsolution_id\fR), and to store information about
+the residual calculated by the location program for the associated
+pick.
+.BB
+permissions="siu_siu_s_s"
+.EB
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP 
+\fBpick_id\fI pick id\fR
+A number that uniquely refers, within this \fBpick_dc\fR, to an
+instance of the \fBpick\fR structure.
+.BB
+key=part_primary, key=part_foreign(1,pick.pick_id), db_delete=cascade,
+db_must_exist=true, index_string=true
+.EB
+.TP
+\fBpick_dc\fI pick domain\fR
+Domain in which pick_id is unique.
+.BB
+codelist=authorities, key=part_primary, key=part_foreign(1,pick.pick_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP 
+\fBsolution_id\fI solution id\fR
+.so ../man_macros/solution.descrip
+.BB
+key=part_primary, key=part_foreign(2,solution.solution_id), db_delete=cascade, 
+db_must_exist=true
+.EB
+.TP
+\fBsolution_dc\fI solution domain\fR
+Domain in which solution_id is unique.
+.BB
+codelist=authorities, key=part_primary, key=part_foreign(2,solution.solution_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP 
+\fBvel_model_id\fI velocity model id\fR
+Unique identifier of velocity model used to calculate this residual.
+.BB
+key=part_foreign(3,vel_model.vel_model_id), db_delete=cascade, 
+db_must_exist=true
+.EB
+.TP
+\fBvel_model_dc\fI velocity model domain\fR
+Domain in which vel_model_id is unique.
+.BB
+codelist=authorities, key=part_foreign(3,vel_model.vel_model_dc), 
+db_delete=cascade, db_must_exist=true
+.EB
+.TP
+\fBcal_time_qual\fI quality of timing\fR Quality of timing: 0 equals
+best, 4 equals worst. Calculated by the location program.
+.BB
+codelist=timing_qualities
+.EB
+.TP
+\fBcal_ampl_qual\fI quality of amplitude\fR Quality of amplitude: 0
+equals best, 4 equals worst. Calculated by the location program.
+.BB
+codelist=timing_qualities
+.EB
+.TP
+\fBmag_type\fI magnitude code\fR
+Type of magnitude calculated.
+.BB
+codelist=magnitude_types
+.EB
+.TP
+\fBomit_from_sol\fI omit from solution\fR
+If this phase was omitted from the solution, this field is set to the 
+small letter 'o'.
+.BB
+allow_char="o"
+.EB
+.TP
+\fBweighted_out\fI reason weighted out\fR
+Reason this phase was weighted out of the solution.
+.BB
+codelist=zero_weights
+.EB
+.TP
+\fBspare\fI for future use\fR
+.TP
+\fBspare_a\fI for future use\fR
+.TP
+\fBpick_magnitude\fI pick magnitude\fR
+Magnitude calculated from this pick at this station.
+.TP
+\fBresidual_val\fI residual value\fR
+Residual in seconds defined as the observed arrival time minus the origin
+time of the solution minus the calculated traveltime minus the site_delay
+minus the elevation delay.
+.TP
+\fBweight_used\fI weight used\fR
+Weight used in the solution.
+.TP
+\fBsite_delay\fI site delay used\fR
+Station delay used in the solution.  Sum of all delays related to this
+site except for the elevation delay.
+.TP
+\fBelevation_delay\fI elevation delay\fR
+Elevation delay used in the solution.  Typically elevation of site 
+divided by some velocity.
+.TP
+\fBazm_2_stat\fI azimuth to station\fR
+Azimuth from earthquake to station. 0 is north.
+.TP
+\fBdist_2_stat\fI distance to station\fR
+Distance from epicenter to station in kilometers.
+.TP
+\fBangle_emerg\fI angle of emergence\fR
+Angle of emergence of wave from the hypocenter. 0 is vertical.
+.TP
+\fBcomment_id\fI comment id\fR
+.so ../man_macros/comment_id.descrip
+.BB
+key=part_foreign(4,comment.comment_id), db_delete=nullify
+.EB
+.TP
+\fBcomment_dc\fI comment domain\fR
+Domain in which comment_id is unique.
+.BB
+codelist=authorities, key=part_foreign(4,comment.comment_dc), db_delete=nullify
+.EB
+.SH "SEE ALSO"
+.SH BUGS
+Should a magnitude structure be available for each pick_residual?

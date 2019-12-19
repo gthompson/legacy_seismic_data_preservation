@@ -1,0 +1,49 @@
+.so ../man_macros/suds_man_macros
+.TH PC_COMMENT 5 "28 March 1994" "pc_suds" "PC_SUDS STRUCTURE"
+.SH NAME
+pc_comment \- comment tag to be followed by the bytes of comment
+.SH SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef	struct {
+	FIXED	structure_type;
+	FIXED	structure_len;
+	INT2	refer;
+	INT2	item;
+	INT2	data_length;
+	INT2	unused;
+} PCSUDS_COMMENT;
+.sp 0.5
+#define PC_COMMENT	 	20L
+.fi
+.ft R
+.SH DESCRIPTION
+Commonly used in PC-SUDS.  Comment about a structure.  Followed by
+the comment as data in ASCII.
+.SH MEMBERS
+.TP
+\fBstructure_type\fI structure type\fR
+Define number of this type of structure.
+.TP
+\fBstructure_len\fI structure length\fR
+Length of this structure in bytes.
+.TP
+\fBrefer\fI structure identifier\fR
+Type of structure that this comment refers to.
+.BB
+index_string=true
+.EB
+.TP
+\fBitem\fI member number\fR
+Number of member, counting from 0 after structure_len, that this
+comment refers to.
+.TP
+\fBdata_length\fI comment length\fR
+Length of comment in bytes.
+.BB
+sets_data_length=true
+.EB
+.TP
+\fBunused\fI for future use\fR
+.SH "SEE ALSO"

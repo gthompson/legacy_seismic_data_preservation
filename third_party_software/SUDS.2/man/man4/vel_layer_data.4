@@ -1,0 +1,75 @@
+.so ../man_macros/suds_man_macros
+.TH VEL_LAYER_DATA 4 "14 February 1994" "suds \*v" "SUDS STRUCTURE"
+.SH NAME
+vel_layer_data \- information about a horizontal layer in a crustal velocity model
+.SH C_SYNOPSIS
+.nf
+.ta 0.7i +1.4i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i +0.7i
+.ft B
+typedef struct {
+	FLOAT4	depth_2_top; 
+	FLOAT4	p_vel_top; 
+	FLOAT4	s_vel_top; 
+	FLOAT4	depth_2_base; 
+	FLOAT4	p_vel_base;
+	FLOAT4	s_vel_base;
+	CODE2	vel_function;
+	CODE2	dens_function;
+	FLOAT4	density;
+	FLOAT4	attenuation;
+	INT4	spare;
+} SUDS_VEL_LAYER_DATA;
+.sp 0.5
+#define VEL_LAYER_DATAS	119L
+.fi
+.ft R
+.SH DESCRIPTION
+Description of a horizontal layer in a crustal velocity model. A number 
+(\fBvel_model.data_length\fR) of these structures follow 
+the \fBvel_model\fR structure.
+.BB
+data_only=VEL_MODELS
+.EB
+.SH MEMBERS
+.TP
+\fBdepth_2_top\fI depth to top\fR
+Depth in kilometers to the top of this layer.
+.TP
+\fBp_vel_top\fI p velocity top\fR
+P wave velocity at the top of this layer.
+.TP
+\fBs_vel_top\fI s velocity _top\fR
+S wave velocity at the top of this layer.
+.TP
+\fBdepth_2_base\fI depth to base\fR
+Depth in kilometers to the top of this layer.
+.TP
+\fBp_vel_base\fI p velocity base\fR
+P wave velocity at the base of this layer.
+.TP
+\fBs_vel_base\fI s velocity base\fR
+S wave velocity at the base of this layer.
+.TP
+\fBvel_function\fI velocity function\fR
+Velocity function within this layer, such as linear increase, 
+exponential increase, etc.
+.BB
+codelist=functions
+.EB
+.TP
+\fBdens_function\fI density function\fR
+Density function within this layer, such as linear increase, 
+exponential increase, etc.
+.BB
+codelist=functions
+.EB
+.TP
+\fBdensity\fI density\fR
+Density at the top of the layer.
+.TP
+\fBattenuation\fI attenuation\fR
+Attenuation of \fBQ\fR of the layer.
+.TP
+\fBspare\fI for future use\fR
+.SH "SEE ALSO"
+vel_model(4)

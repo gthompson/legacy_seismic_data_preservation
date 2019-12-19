@@ -1,0 +1,88 @@
+.so ../man_macros/suds_man_macros
+.TH GET_LABEL 2 "26 March 1994" "suds \*v" "SUDS SUBROUTINE"
+.SH NAME
+get_label \- find next unique value for this label
+.SH C_SYNOPSIS
+.ft B
+.nf
+#include <suds/suds.h>
+#include <suds/00000.lab>
+INT4 get_label(DOMAIN domain, CHAR *name);
+.fi
+.ft R
+.SH FORTRAN_SYNOPSIS
+.ft B
+.nf
+integer*4 get_label
+function get_label(domain,name)
+	integer*4 domain
+	character*(*) name
+.fi
+.ft R
+.SH DESCRIPTION
+\fBLABELS\fR are unique integers that identify a particular instance of
+a structure within a given domain. These numbers are assigned in
+increasing order starting at 1. The largest value assigned to date is
+kept in a file \fB00000.lab\fR where the 00000 is the
+\fBdomain_number\fR . This file is stored in the directory specified
+by the environmental variable \fBSUDS_INCLUDE\fR.  If this variable
+does not exist, \fBget_label\fR tries to access the file in the directory
+\fB/usr/include/suds\fR.  The format is one long integer in \fBXDR\fR
+binary format for each label in the order listed in the \fBcode_list
+labels\fR (See \fBcode_lists(5)\fR).  This file is created with the
+command \fBmake_lab\fR and accessed with the subroutine
+\fBget_label\fR.
+.PP
+\fBget_label\fR returns an integer one larger than the last integer
+used for a given \fBname\fR which must be the name of a label or
+primary key listed in the code_list labels (See code_lists(6)).
+A return value of \fBNODATL\fR designates an error.
+.PP
+In cases where \fBget_label\fR is being used continuously in a filter
+or similar program, it is much more efficient to leave the \fB00000.lab\fR
+file open.  This should be done with care because if someone else
+accesses the file at the same time, the file would be corrupted, or
+if your program terminates abnormally, the updated values may not be
+written back to the disk.  To leave the file open use the special
+call \fBget_label(domain,"OPEN");\fR and to close the file use the special
+call \fBget_label(domain,"CLOSE");\fR.  These calls 
+return \fBNODATL\fR.  \fBBe sure to put the CLOSE call
+also in \fBdie\fR(st_error(2)).\fR
+.PP
+When the value assigned to LABEL equals -NODATL, a very large positive
+number, then it is set equal to NODATL+1, a very large negative number.
+.SH "SEE ALSO"
+make_lab(1), set_label(2)
+.SH AUTHOR
+Peter L. Ward, U.S. Geological Survey, Menlo Park, CA 94025
+.SH EXAMPLE
+.nf
+static INT4 domain=10000;
+
+#if defined (__STDC__) || defined (__cplusplus)
+void die(INTV n)
+#else
+void die(n) INTV n;
+#endif
+{ 
+   get_label(domain,"event_id");
+   exit(n); 
+}
+
+INTV main()
+{
+   INT4 ret;
+
+   ret=get_label(domain,"source_id");
+   printf("get_label(%ld,\"source_id\") returns %ld\n",domain,ret);
+   ret=get_label(domain,"OPEN");
+   ret=get_label(domain,"source_id");
+   printf("get_label(%ld,\"source_id\") returns %ld\n",domain,ret);
+   ret=get_label(domain,"event_id");
+   printf("get_label(%ld,\"event_id\") returns %ld\n",domain,ret);
+   ret=get_label(domain,"waveform_id");
+   printf("get_label(%ld,\"waveform_id\") returns %ld\n",domain,ret);
+   ret=get_label(domain,"CLOSE");
+   return(0);
+}
+.fi
